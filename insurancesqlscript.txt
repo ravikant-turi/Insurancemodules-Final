@@ -1,0 +1,153 @@
+
+
+CREATE DATABASE healthsure;
+ drop database healthsure;
+USE healthsure;
+
+select * from insurance_company;
+
+CREATE TABLE insurance_company (
+
+    company_id VARCHAR(50) PRIMARY KEY,
+
+    name VARCHAR(100) NOT NULL,
+
+    logo_url VARCHAR(255),
+
+    head_office VARCHAR(255),
+
+    contact_email VARCHAR(100),
+
+    contact_phone VARCHAR(20)
+
+);
+
+CREATE TABLE insurance_plan (
+
+    plan_id VARCHAR(50) PRIMARY KEY,
+
+    company_id VARCHAR(50) NOT NULL,
+
+    plan_name VARCHAR(100) NOT NULL,
+
+    plan_type ENUM('SELF', 'FAMILY', 'SENIOR', 'CRITICAL_ILLNESS'),
+ 
+    min_entry_age INT DEFAULT 18,
+
+    max_entry_age INT DEFAULT 65,
+ 
+    description TEXT,
+
+    available_cover_amounts VARCHAR(100),
+
+    waiting_period VARCHAR(50),
+ 
+    created_on DATE DEFAULT '2025-06-01',
+
+    expire_date DATE DEFAULT '2099-12-31',
+
+    periodic_diseases ENUM('YES', 'NO'),
+ 
+    FOREIGN KEY (company_id) REFERENCES insurance_company(company_id)
+
+);
+
+CREATE TABLE insurance_coverage_option (
+
+    coverage_id VARCHAR(50) PRIMARY KEY,
+
+    plan_id VARCHAR(50),
+ 
+    premium_amount NUMERIC(9,2),
+
+    coverage_amount NUMERIC(9,2),
+
+    status VARCHAR(30) DEFAULT 'ACTIVE',
+ 
+    FOREIGN KEY (plan_id) REFERENCES insurance_plan(plan_id)
+
+);
+INSERT INTO insurance_company (company_id, name, logo_url, head_office, contact_email, contact_phone) VALUES
+('COM001', 'HealthFirst Insurance', 'https://example.com/logos/healthfirst.png', 'Mumbai, India', 'contact@healthfirst.com', '+91-9876543210'),
+('COM006', 'SafeCare Life', 'https://example.com/logos/safecare.png', 'Delhi, India', 'support@safecare.com', '+91-9123456789'),
+('COM007', 'LifeSecure Health', 'https://example.com/logos/lifesecure.png', 'Bangalore, India', 'info@lifesecure.com', '+91-9988776655');
+
+INSERT INTO insurance_plan (plan_id, company_id, plan_name, plan_type, min_entry_age, max_entry_age, description, available_cover_amounts, waiting_period, created_on, expire_date, periodic_diseases) VALUES
+('P001', 'COM007', 'HealthPlus Basic', 'SELF', 18, 60, 'Basic individual health insurance', '100000,200000,300000', '30 Days', '2025-06-01', '2099-12-31', 'NO'),
+('P002', 'COM007', 'FamilyCare Shield', 'FAMILY', 21, 65, 'Comprehensive family floater plan', '200000,500000,1000000', '60 Days', '2025-06-01', '2099-12-31', 'YES'),
+('P003', 'COM007', 'Critical Cover Plan', 'CRITICAL_ILLNESS', 25, 65, 'Coverage for critical illnesses', '500000,1000000,1500000', '90 Days', '2025-06-01', '2099-12-31', 'YES');
+
+INSERT INTO insurance_coverage_option (coverage_id, plan_id, premium_amount, coverage_amount, status) VALUES
+('COV001', 'P001', 5000.00, 100000.00, 'ACTIVE'),
+('COV002', 'P002', 12000.00, 500000.00, 'ACTIVE'),
+('COV003', 'P003', 20000.00, 1000000.00, 'ACTIVE');
+
+
+-- insurance_coverage_option --
+describe  insurance_coverage_option;
+
+
+ALTER TABLE insurance_coverage_option
+MODIFY COLUMN premium_amount DECIMAL(9,2),
+MODIFY COLUMN coverage_amount DECIMAL(9,2);
+
+select * from insurance_coverage_option;
+
+ describe insurance_coverage_option;
+ 
+ DELETE FROM insurance_coverage_option WHERE coverage_id = 'cov117';
+
+ use healthsure;
+ 
+ 
+--  insurance_plan --
+ALTER TABLE insurance_plan
+ADD COLUMN active_on DATE ;
+
+describe insurance_plan;
+
+select * from insurance_plan;
+select * from insurance_company;
+describe insurance_plan;
+
+DELETE FROM insurance_plan WHERE plan_id = 'p006';
+
+INSERT INTO insurance_plan (plan_id, company_id, plan_name, plan_type, min_entry_age, max_entry_age, description, available_cover_amounts, waiting_period, created_on, expire_date, periodic_diseases) VALUES
+('P004', 'COM007', 'HealthPlus Basic', 'SENIOR', 18, 65, 'Basic individual health insurance', '200000,150000,110000', '30 Days', '2025-06-01', '2099-12-31', 'NO'),
+('P005', 'COM007', 'FamilyCare Shield', 'FAMILY', 21, 70, 'Comprehensive family floater plan', '210000,1500000,1100000', '50 Days', '2025-06-01', '2099-12-31', 'YES'),
+('P006', 'COM007', 'Critical Cover Plan', 'CRITICAL_ILLNESS', 21, 65, 'Coverage for critical illnesses', '510000,1200000,1300000', '90 Days', '2025-06-01', '2099-12-31', 'YES'),
+('P0010', 'COM007', 'HealthPlus Basic', 'SELF', 18, 65, 'Basic individual health insurance', '200000,150000,110000', '30 Days', '2025-06-01', '2099-12-31', 'NO'),
+('P0011', 'COM007', 'FamilyCare Shield', 'SUPER_ELITE', 21, 70, 'Comprehensive family floater plan', '210000,1500000,1100000', '50 Days', '2025-06-01', '2099-12-31', 'YES'),
+('P0012', 'COM007', 'Critical Cover Plan', 'EPIDEMIC_PROTECT', 21, 65, 'Coverage for critical illnesses', '510000,1200000,1300000', '90 Days', '2025-06-01', '2099-12-31', 'YES');
+
+
+ALTER TABLE insurance_plan 
+MODIFY plan_type ENUM('SELF', 'FAMILY', 'SENIOR', 'CRITICAL_ILLNESS', 'SUPER_ELITE','EPIDEMIC_PROTECT');
+
+
+-- ======================INSURANCE COVERAGE======================== --
+INSERT INTO insurance_coverage_option (coverage_id, plan_id, premium_amount, coverage_amount, status) VALUES
+('COV004', 'P001', 5000.00, 100000.00, 'INACTIVE'),
+('COV005', 'P002', 12000.00, 500000.00, 'ACTIVE'),
+('COV006', 'P003', 20000.00, 1000000.00, 'INACTIVE'),
+('COV007', 'P004', 5000.00, 100000.00, 'ACTIVE'),
+('COV008', 'P005', 12000.00, 500000.00, 'ACTIVE'),
+('COV009', 'P006', 20000.00, 1000000.00, 'ACTIVE'),
+('COV0010', 'P007', 5000.00, 100000.00, 'ACTIVE'),
+('COV0012', 'P008', 12000.00, 500000.00, 'INACTIVE'),
+('COV0013', 'P009', 20000.00, 1000000.00, 'ACTIVE'),
+('COV0011', 'P0010', 5000.00, 100000.00, 'INACTIVE'),
+('COV0014', 'P0012', 12000.00, 500000.00, 'ACTIVE'),
+('COV0015', 'P004', 20000.00, 1000000.00, 'ACTIVE');
+
+INSERT INTO insurance_coverage_option (coverage_id, plan_id, premium_amount, coverage_amount, status) VALUES
+('COV0016', 'P0011', 5000.00, 100000.00, 'INACTIVE');
+
+-- =====================search karte hia PLANtYPE===================== --
+use healthsure;
+SELECT *
+FROM insurance_coverage_option c
+JOIN insurance_plan p
+
+  ON p.plan_id = c.plan_id
+WHERE p.plan_type = 'FAMILY';

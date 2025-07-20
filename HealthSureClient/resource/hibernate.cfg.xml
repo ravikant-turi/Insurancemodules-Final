@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+      "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+      "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- MySQL Connection Settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/healthsure</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">ROOT</property>
+
+        <!-- Hibernate Settings -->
+       <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        
+        
+       <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        <property name="hibernate.use_sql_comments">true</property>
+
+        <!-- Disable JPA validation integration -->
+        <property name="javax.persistence.validation.mode">none</property>
+
+        <!-- Mappings -->
+        <mapping resource="com/infinite/jsf/insurance/mapping/InsuranceCompany.hbm.xml" />
+        
+        <mapping resource="com/infinite/jsf/insurance/mapping/InsurancePlan.hbm.xml" />
+        
+        <mapping resource="com/infinite/jsf/insurance/mapping/InsuranceCoverageOption.hbm.xml" />
+
+        <!-- Optionally enable if you want auto schema update -->
+        <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->
+
+    </session-factory>
+</hibernate-configuration>

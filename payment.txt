@@ -1,0 +1,38 @@
+CREATE TABLE payment_history (
+
+
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+
+
+    hId INT NOT NULL,
+
+
+    provider_id INT NOT NULL,
+
+
+    amount DECIMAL(10, 2) NOT NULL,
+
+
+    payment_method VARCHAR(50),
+
+
+    payment_status ENUM('pending', 'completed', 'failed') DEFAULT 'pending',
+
+
+    payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+
+    remarks TEXT,
+
+
+    -- Foreign key constraints (optional, depends on how you're storing doctor/hospital/dentist)
+
+
+    -- FOREIGN KEY (hId) REFERENCES Recipient(hId)
+
+
+    -- FOREIGN KEY (provider_id) REFERENCES providers(provider_id) 
+
+
+);
+ 
