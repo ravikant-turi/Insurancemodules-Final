@@ -1,0 +1,19 @@
+CREATE TABLE insurance_coverage_option (
+    coverage_id VARCHAR(50) PRIMARY KEY,
+    plan_id VARCHAR(50),
+    premium_amount DOUBLE,
+    coverage_amount DOUBLE,
+    status VARCHAR(20),
+    maximum_member_allowed INT,
+    minimum_member_allowed INT,
+    coverage_type VARCHAR(20),
+    FOREIGN KEY (plan_id) REFERENCES insurance_plan(plan_id)
+);CREATE TABLE member (
+    member_id VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(100),
+    age INT,
+    gender gender_enum,
+    relation relation_enum,
+    coverage_id VARCHAR(50),
+    FOREIGN KEY (coverage_id) REFERENCES insurance_coverage_option(coverage_id)
+);

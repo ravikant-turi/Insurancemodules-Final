@@ -1,74 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee /WEB-INF/schema/web-facesconfig_2_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+                                  /WEB-INF/schema/web-facesconfig_2_0.xsd"
 	version="2.0" metadata-complete="false">
-	<!-- This file must be present with our jar, even if it is empty. Otherwise, 
-		our Java annotations won't get scanned! -->
-	<!-- InsuranceCompany model bean -->
-	<managed-bean>
-		<managed-bean-name>insuranceCompany</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCompany
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
 
-	<!-- InsuranceCompany DAO bean -->
-	<managed-bean>
-		<managed-bean-name>insuranceCompanyDao</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.InsuranceCompanyDaoImpl
-		</managed-bean-class>
-		<managed-bean-scope>application</managed-bean-scope>
-	</managed-bean>
+	<!-- ===================== Model Beans ===================== -->
 
-	<!-- InsuranceCompany Controller bean -->
-	<managed-bean>
-		<managed-bean-name>insuranceCompanyController</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.controller.InsuranceCompanyController
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-
-		<managed-property>
-			<property-name>companyDao</property-name>
-			<value>#{insuranceCompanyDao}</value>
-		</managed-property>
-
-		<managed-property>
-			<property-name>company</property-name>
-			<value>#{insuranceCompany}</value>
-		</managed-property>
-	</managed-bean>
-
-
-
-
-
-
-
-
-	<!-- ✅ Model Bean -->
-	<managed-bean>
-		<managed-bean-name>coverageOption1</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<!-- ✅ Model Bean -->
-	<managed-bean>
-		<managed-bean-name>coverageOption2</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<!-- ✅ Model Bean -->
-	<managed-bean>
-		<managed-bean-name>coverageOption3</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<!-- ✅ Model Bean -->
+	<!-- InsurancePlan model -->
 	<managed-bean>
 		<managed-bean-name>insurancePlan</managed-bean-name>
 		<managed-bean-class>com.infinite.jsf.insurance.model.InsurancePlan
@@ -76,14 +15,58 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
-	<!-- ✅ DAO Bean -->
+	<!-- InsuranceCoverageOption models -->
 	<managed-bean>
-		<managed-bean-name>insurancePlanDao</managed-bean-name>
+		<managed-bean-name>coverageOption</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>coverageOption1</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>coverageOption2</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>coverageOption3</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<!-- Member model -->
+	<managed-bean>
+		<managed-bean-name>member</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.Member
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+<!--  insuranceCompany model-->
+	<managed-bean>
+		<managed-bean-name>insuranceCompany</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCompany
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<!-- ===================== DAO Beans ===================== -->
+
+	<!-- InsurancePlan DAO -->
+	<managed-bean>
+		<managed-bean-name>insurancplanDao</managed-bean-name>
 		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
-	<!-- InsuranceCoverageOption DAO bean -->
+
+	<!-- InsuranceCoverageOption DAO -->
 	<managed-bean>
 		<managed-bean-name>insuranceCoverageOptionDao</managed-bean-name>
 		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.InsuranceCoverageOptionDaoImpl
@@ -91,25 +74,38 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
-	<!-- ✅ Controller Bean -->
+	
+	<!-- Member DAO -->
 	<managed-bean>
-		<managed-bean-name>insurancePlanController</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.controller.InsurancePlanController
+		<managed-bean-name>memberDao</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.MemberDaoImpl
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+
+
+
+	<!-- ===================== Controller Beans ===================== -->
+	<!-- CreateInsuranceController -->
+	<managed-bean>
+		<managed-bean-name>createInsuranceController</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.controller.CreateInsuranceController
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 
+		<!-- Inject dependencies -->
+		<managed-property>
+			<property-name>insuranceCompany</property-name>
+			<value>#{insuranceCompany}</value>
+		</managed-property>
 		<managed-property>
 			<property-name>insurancePlan</property-name>
 			<value>#{insurancePlan}</value>
 		</managed-property>
-
 		<managed-property>
-			<property-name>plandao</property-name>
-			<value>#{insurancePlanDao}</value>
-		</managed-property>
-		<managed-property>
-			<property-name>insuranceCompany</property-name>
-			<value>#{insuranceCompany}</value>
+			<property-name>coverageOption</property-name>
+			<value>#{coverageOption}</value>
 		</managed-property>
 		<managed-property>
 			<property-name>coverageOption1</property-name>
@@ -124,50 +120,21 @@
 			<value>#{coverageOption3}</value>
 		</managed-property>
 		<managed-property>
+			<property-name>member</property-name>
+			<value>#{member}</value>
+		</managed-property>
+		<managed-property>
 			<property-name>insuranceCoverageOptionDao</property-name>
 			<value>#{insuranceCoverageOptionDao}</value>
 		</managed-property>
-	</managed-bean>
-
-
-
-	<!-- InsuranceCoverageOption model bean -->
-	<managed-bean>
-		<managed-bean-name>insuranceCoverageOption</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCoverageOption
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-
-
-	
-
-	<!-- Controller bean for managing coverage options in JSF pages -->
-	<managed-bean>
-		<managed-bean-name>insuranceCoverageOptionController
-		</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.controller.InsuranceCoverageOptionController
-		</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-
-		<!-- Inject DAO -->
 		<managed-property>
-			<property-name>coverageOptionDao</property-name>
-			<value>#{insuranceCoverageOptionDao}</value>
+			<property-name>insurancplanDao</property-name>
+			<value>#{insurancplanDao}</value>
 		</managed-property>
-
-		<!-- Inject CoverageOption model -->
 		<managed-property>
-			<property-name>coverageOption</property-name>
-			<value>#{insuranceCoverageOption}</value>
+			<property-name>memberDao</property-name>
+			<value>#{memberDao}</value>
 		</managed-property>
-
-		<!-- Inject InsurancePlan model -->
-		<managed-property>
-			<property-name>insurancePlan</property-name>
-			<value>#{insurancePlan}</value>
-		</managed-property>
-
 	</managed-bean>
 
 </faces-config>

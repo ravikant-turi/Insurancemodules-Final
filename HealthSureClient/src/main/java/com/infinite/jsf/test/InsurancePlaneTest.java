@@ -10,27 +10,7 @@ public class InsurancePlaneTest {
 	
 	public static void main(String[] args) {
 		
-		InsurancePlanController controller=new InsurancePlanController();
 		
-		InsurancePlanDaoImpl daoimpl=new InsurancePlanDaoImpl();
-		
-//		controller.findAllPlan().forEach(e->{System.out.println(e)};
-//		
-		
-		System.out.println("============this is main method");
-		System.out.println("============this is main method");
-		System.out.println("============this is main method");
-		System.out.println("============this is main method");
-
-		controller.findAllPlan().forEach(System.out::println);
-		// Create an InsuranceCompany object (you may already have this from DB or create a dummy one for now)
-		
-		
-		System.out.println("faily plan");
-		
-//		daoimpl.searchByPlanType("FAMILY").forEach(System.out::println);
-		daoimpl.searchByPlanType("SELF").forEach(System.out::println);
-
 	}
 
 }

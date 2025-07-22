@@ -25,7 +25,7 @@ public class ConnectionTest {
 		System.out.println("====================connection id working fine============= ");
 
 		
-		System.out.println("this is ravikant");
+		
 		trans.commit();
 		
 		session.close();

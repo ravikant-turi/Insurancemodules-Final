@@ -2,18 +2,19 @@ package com.infinite.jsf.util;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.apache.log4j.Logger;
 
 public class SessionHelper {
+    private static final Logger logger = Logger.getLogger(SessionHelper.class);
     private static final SessionFactory sessionFactory;
 
     static {
         try {
             Configuration config = new Configuration().configure(); // Loads hibernate.cfg.xml
             sessionFactory = config.buildSessionFactory();
-            System.out.println("✅ Hibernate SessionFactory initialized.");
+            logger.info("Hibernate SessionFactory initialized.");
         } catch (Throwable ex) {
-            System.err.println("❌ SessionFactory creation failed: " + ex);
-            ex.printStackTrace(); // Print full stack
+            logger.error("SessionFactory creation failed: ", ex);
             throw new ExceptionInInitializerError(ex);
         }
     }

@@ -28,6 +28,7 @@
         <mapping resource="com/infinite/jsf/insurance/mapping/InsurancePlan.hbm.xml" />
         
         <mapping resource="com/infinite/jsf/insurance/mapping/InsuranceCoverageOption.hbm.xml" />
+        <mapping resource="com/infinite/jsf/insurance/mapping/Member.hbm.xml" />
 
         <!-- Optionally enable if you want auto schema update -->
         <!-- <property name="hibernate.hbm2ddl.auto">update</property> -->

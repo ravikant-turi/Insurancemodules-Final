@@ -6,22 +6,14 @@ import com.infinite.jsf.insurance.model.InsuranceCoverageOption;
 
 public interface InsuranceCoverageOptionDao {
 
-	String addInsuranceCoverageOption(InsuranceCoverageOption coverageOption);
+	String addCoveragePlan(InsuranceCoverageOption coverageOption);
 
-	String deleteInsuranceCoverageOption(InsuranceCoverageOption coverageOption);
+	List<InsuranceCoverageOption> findAllInsuranceCoverageOptions();
 
-	List<InsuranceCoverageOption> findAllCoverageOption();
+	List<InsuranceCoverageOption> findAllInsuranceCoverageOptionsByPlanId(String planId);
 
-	String updateInsuranceCoverageOption(InsuranceCoverageOption coverageOption);
+	List<InsuranceCoverageOption> findAllInsuranceCoverageOptionsByPlanType(String PlanType);
 
-	InsuranceCoverageOption searchInsuranceCoverageOption(String coverageId);
-
-	InsuranceCoverageOption searchInsuranceCoverageOption(InsuranceCoverageOption coverageOption);
-
-	List<InsuranceCoverageOption> searchInsuranceCoverageOptionByPlanType(String planType);
-
-	List<InsuranceCoverageOption> searchInsuranceCoverageOptionByPlanId(String planId);
-
-	 List<InsuranceCoverageOption> getInsuranceCoverageOptionsByPlanType(String planType);
+	InsuranceCoverageOption findInsuranceCoverageById(String coverageId);
 
 }
