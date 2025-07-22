@@ -365,22 +365,8 @@ form {
 						</h:selectOneMenu>
 						<h:message for="coverageType" styleClass="error" />
 
-						<br /> <br />
-						<!-- Multiple selection for Members -->
-						
 
-  <h:outputLabel value="Select Members:" />
-<br/>
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between;  gap: 10px; width: 240px;">
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['DAUGHTER1']}" /> Daughter</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['DAUGHTER2']}" /> Daughter</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['SON1']}" /> Son</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['SON2']}" /> Son</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['FATHER']}" /> Father</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['MOTHER']}" /> Mother</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['HUSBAND']}" /> Husband</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['WIFE']}" /> Wife</label></div>
-  </div>
+
 
 
 
@@ -421,21 +407,7 @@ form {
 							<f:selectItem itemLabel="PLATINUM" itemValue="PLATINUM" />
 						</h:selectOneMenu>
 						<h:message for="coverageType2" styleClass="error" />
-								<!-- Multiple selection for Members -->
-						
-<br/><br/>
-  <h:outputLabel value="Select Members:" />
-<br/>
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; width: 240px;">
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['DAUGHTER1']}" /> Daughter</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['DAUGHTER2']}" /> Daughter</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['SON1']}" /> Son</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['SON2']}" /> Son</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['FATHER']}" /> Father</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['MOTHER']}" /> Mother</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['HUSBAND']}" /> Husband</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['WIFE']}" /> Wife</label></div>
-  </div>
+
 
 					</div>
 
@@ -473,36 +445,74 @@ form {
 						</h:selectOneMenu>
 						<h:message for="coverageType3" styleClass="error" />
 						<br /> <br />
-								<!-- Multiple selection for Members -->
-						
+						<!-- Multiple selection for Members -->
 
-  <h:outputLabel value="Select Members:" />
-<br/>
-  <div style="display: flex; flex-wrap: wrap; justify-content: space-between;  gap: 10px; width: 240px;">
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['DAUGHTER1']}" /> Daughter</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['DAUGHTER2']}" /> Daughter</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['SON1']}" /> Son</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['SON2']}" /> Son</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['FATHER']}" /> Father</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['MOTHER']}" /> Mother</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['HUSBAND']}" /> Husband</label></div>
-    <div style="width: 100px;"><label><h:selectBooleanCheckbox value="#{createInsuranceController.relationMap['WIFE']}" /> Wife</label></div>
-  </div>
+
+
 
 					</div>
 				</div>
+				<br />
+				<!-- Multiple selection for Members -->
+				<h3>Multiple selection for Members</h3>
 
 
-			</div>
-			<!-- Submit Button -->
 
-			<div class="button-row">
 
-				<h:commandButton value="Cncel" action="InsuranceAdminDashBoard.jsp"
-					styleClass="action-btn right-btn" />
-				<h:commandButton value="Add"
-					action="#{createInsuranceController.addInsurancePlanWithCoveragePlan}"
-					styleClass="action-btn" />
+				<div
+					style="display: flex; flex-wrap: wrap; justify-content: space-evenly; width: 100%;">
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['DAUGHTER1']}" />
+							Daughter</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['DAUGHTER2']}" />
+							Daughter</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['SON1']}" /> Son</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['SON2']}" /> Son</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['FATHER']}" />
+							Father</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['MOTHER']}" />
+							Mother</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['HUSBAND']}" />
+							Husband</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['WIFE']}" />
+							Wife</label>
+					</div>
+				</div>
+				<br />
+
+
+				<!-- Submit Button -->
+
+				<div class="button-row">
+
+					<h:commandButton value="Cancel" action="AInsuranceAdminDashBoard.jsp"
+						styleClass="action-btn right-btn" />
+					<h:commandButton value="Add"
+						action="#{createInsuranceController.addInsurancePlanWithCoveragePlan}"
+						styleClass="action-btn" />
+				</div>
 			</div>
 		</h:form>
 	</div>
