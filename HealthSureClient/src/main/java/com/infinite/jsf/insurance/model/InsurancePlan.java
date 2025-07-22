@@ -1,6 +1,7 @@
 package com.infinite.jsf.insurance.model;
 
 import java.util.Date;
+import java.util.Set;
 
 public class InsurancePlan {
 	private String planId;
@@ -20,6 +21,12 @@ public class InsurancePlan {
 	private Date expireDate;
 	private Date activeOn;
 	private String periodicDiseases; // YES or NO
+	
+	private Set<Member> members;
+
+	private int maximumMemberAllowed;
+
+	private int minimumMeberAllowed;
 
 	// Helper for Hibernate to store enum as string
 	public String getPlanTypeString() {
@@ -134,18 +141,50 @@ public class InsurancePlan {
 		this.periodicDiseases = periodicDiseases;
 	}
 
+	
+	public Set<Member> getMembers() {
+		return members;
+	}
+
+	public void setMembers(Set<Member> members) {
+		this.members = members;
+	}
+
+	public int getMaximumMemberAllowed() {
+		return maximumMemberAllowed;
+	}
+
+	public void setMaximumMemberAllowed(int maximumMemberAllowed) {
+		this.maximumMemberAllowed = maximumMemberAllowed;
+	}
+
+	public int getMinimumMeberAllowed() {
+		return minimumMeberAllowed;
+	}
+
+	public void setMinimumMeberAllowed(int minimumMeberAllowed) {
+		this.minimumMeberAllowed = minimumMeberAllowed;
+	}
+
+	public InsurancePlan() {
+		super();
+	}
+
 	@Override
 	public String toString() {
 		return "InsurancePlan [planId=" + planId + ", insuranceCompany=" + insuranceCompany + ", planName=" + planName
 				+ ", planType=" + planType + ", minEntryAge=" + minEntryAge + ", maxEntryAge=" + maxEntryAge
 				+ ", description=" + description + ", availableCoverAmounts=" + availableCoverAmounts
 				+ ", waitingPeriod=" + waitingPeriod + ", createdOn=" + createdOn + ", expireDate=" + expireDate
-				+ ", activeOn=" + activeOn + ", periodicDiseases=" + periodicDiseases + "]";
+				+ ", activeOn=" + activeOn + ", periodicDiseases=" + periodicDiseases + ", members=" + members
+				+ ", maximumMemberAllowed=" + maximumMemberAllowed + ", minimumMeberAllowed=" + minimumMeberAllowed
+				+ "]";
 	}
 
 	public InsurancePlan(String planId, InsuranceCompany insuranceCompany, String planName, PlanType planType,
 			int minEntryAge, int maxEntryAge, String description, String availableCoverAmounts, String waitingPeriod,
-			Date createdOn, Date expireDate, Date activeOn, String periodicDiseases) {
+			Date createdOn, Date expireDate, Date activeOn, String periodicDiseases, Set<Member> members,
+			int maximumMemberAllowed, int minimumMeberAllowed) {
 		super();
 		this.planId = planId;
 		this.insuranceCompany = insuranceCompany;
@@ -160,10 +199,9 @@ public class InsurancePlan {
 		this.expireDate = expireDate;
 		this.activeOn = activeOn;
 		this.periodicDiseases = periodicDiseases;
-	}
-
-	public InsurancePlan() {
-		super();
+		this.members = members;
+		this.maximumMemberAllowed = maximumMemberAllowed;
+		this.minimumMeberAllowed = minimumMeberAllowed;
 	}
 
 }

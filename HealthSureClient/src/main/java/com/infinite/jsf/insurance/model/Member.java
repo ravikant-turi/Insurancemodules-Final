@@ -9,18 +9,31 @@ public class Member {
 	private int age;
 	private Gender gender;
 	private Relation relation;
-	private InsuranceCoverageOption coverageOption;
+	private InsurancePlan insurancePlan;
 
-	public Member(String meberId, String name, int age, Gender gender, Relation relation,
-			InsuranceCoverageOption coverageOption) {
+	
+
+
+	public Member(String meberId, String name, int age, Gender gender, Relation relation, InsurancePlan insurancePlan) {
 		super();
 		this.meberId = meberId;
 		this.name = name;
 		this.age = age;
 		this.gender = gender;
 		this.relation = relation;
-		this.coverageOption = coverageOption;
+		this.insurancePlan = insurancePlan;
 	}
+
+
+
+
+	@Override
+	public String toString() {
+		return "Member [meberId=" + meberId + ", name=" + name + ", age=" + age + ", gender=" + gender + ", relation="
+				+ relation + ", insurancePlan=" + insurancePlan + "]";
+	}
+
+
 
 
 	public String getMeberId() {
@@ -28,9 +41,13 @@ public class Member {
 	}
 
 
+
+
 	public void setMeberId(String meberId) {
 		this.meberId = meberId;
 	}
+
+
 
 
 	public String getName() {
@@ -38,9 +55,13 @@ public class Member {
 	}
 
 
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
 
 
 	public int getAge() {
@@ -48,9 +69,13 @@ public class Member {
 	}
 
 
+
+
 	public void setAge(int age) {
 		this.age = age;
 	}
+
+
 
 
 	public Gender getGender() {
@@ -58,9 +83,13 @@ public class Member {
 	}
 
 
+
+
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
+
+
 
 
 	public Relation getRelation() {
@@ -68,14 +97,6 @@ public class Member {
 	}
 
 
-	public InsuranceCoverageOption getCoverageOption() {
-		return coverageOption;
-	}
-
-
-	public void setCoverageOption(InsuranceCoverageOption coverageOption) {
-		this.coverageOption = coverageOption;
-	}
 
 
 	public void setRelation(Relation relation) {
@@ -83,11 +104,20 @@ public class Member {
 	}
 
 
-	@Override
-	public String toString() {
-		return "Member [meberId=" + meberId + ", name=" + name + ", age=" + age + ", gender=" + gender + ", relation="
-				+ relation + ", coverageOption=" + coverageOption + "]";
+
+
+	public InsurancePlan getInsurancePlan() {
+		return insurancePlan;
 	}
+
+
+
+
+	public void setInsurancePlan(InsurancePlan insurancePlan) {
+		this.insurancePlan = insurancePlan;
+	}
+
+
 
 
 	public Member() {

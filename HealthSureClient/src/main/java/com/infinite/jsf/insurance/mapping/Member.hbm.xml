@@ -23,6 +23,6 @@
                 <param name="type">12</param>
             </type>
         </property>
-        <many-to-one name="coverageOption" column="coverage_id" class="com.infinite.jsf.insurance.model.InsuranceCoverageOption" not-null="true"/>
+        <many-to-one name="insurancePlan" column="plan_id" class="com.infinite.jsf.insurance.model.InsurancePlan" not-null="true"/>
     </class>
 </hibernate-mapping>

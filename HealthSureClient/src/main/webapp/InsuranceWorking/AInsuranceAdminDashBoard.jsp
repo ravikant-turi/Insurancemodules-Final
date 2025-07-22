@@ -164,6 +164,12 @@ table, th, td {
 			</f:facet>
 			<h:outputText value="#{plan.activeOn}" />
 		</h:column>
+		<h:column>
+			<f:facet name="header">
+				<h:outputLabel value="MaxMember" />
+			</f:facet>
+			<h:outputText value="#{plan.maximumMemberAllowed}" />
+		</h:column>
 
 		<h:column>
 			<f:facet name="header">

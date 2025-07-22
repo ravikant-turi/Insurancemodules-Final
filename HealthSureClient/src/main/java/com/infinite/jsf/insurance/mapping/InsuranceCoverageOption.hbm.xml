@@ -22,9 +22,7 @@
             </type>
         </property>
 
-        <property name="maximumMemberAllowed" column="maximum_member_allowed" type="int"/>
-        <property name="minimumMeberAllowed" column="minimum_member_allowed" type="int"/>
-
+       
         <property name="coverageType">
             <column name="coverage_type" not-null="true"/>
             <type name="org.hibernate.type.EnumType">

@@ -80,7 +80,6 @@ textarea {
 .coverage-box {
 	flex: 1;
 	text-align: center;
-	border: 2px solid green;
 }
 
 .coverage-box h3 {
@@ -210,10 +209,11 @@ form {
 							<f:selectItem itemLabel="--Select--" itemValue="" />
 							<f:selectItem itemLabel="INDIVIDUAL" itemValue="SELF" />
 							<f:selectItem itemLabel="FAMILY" itemValue="FAMILY" />
-							<f:selectItem itemLabel="CRITICAL_ILLNESS [INDIVIDUAL]" itemValue="CRITICAL_ILLNESS" />
-							<f:selectItem itemLabel="EPIDEMIC_PROTECT [INDIVIDUAL]"
-								itemValue="EPIDEMIC_PROTECT [INDIVIDUAL]" />
-							<f:selectItem itemLabel="SUPER_ELITE [INDIVIDUAL]" itemValue="SUPER_ELITE" />
+							<f:selectItem itemLabel="SENIOR" itemValue="SENIOR" />
+							<f:selectItem itemLabel="SELF" itemValue="CRITICAL_ILLNESS" />
+							<f:selectItem itemLabel="EPIDEMIC_PROTECT"
+								itemValue="EPIDEMIC_PROTECT" />
+							<f:selectItem itemLabel="SUPER_ELITE" itemValue="SUPER_ELITE" />
 						</h:selectOneMenu>
 						<br />
 						<h:message for="planType" styleClass="error" />
@@ -254,7 +254,7 @@ form {
 
 					</div>
 				</div>
-				
+
 				<!-- Row 3 -->
 				<div class="form-row">
 					<div class="form-group">
@@ -287,37 +287,7 @@ form {
 
 					</div>
 				</div>
-<!-- Row new -->
-				<div class="form-row">
-					<div class="form-group">
-						<h:outputLabel escape="false"
-							value="<span style='color:red'>*</span>MaximumMemberAllowed: " />
-						<h:inputText id="maximumMemberAllowed"
-							value="#{createInsuranceController.insurancePlan.maximumMemberAllowed}" />
-						<h:message for="maximumMemberAllowed" styleClass="error" />
-						<br />
 
-					</div>
-					<div class="form-group">
-						<h:outputLabel escape="false"
-							value="<span style='color:red'>*</span>minimumMeberAllowed: " />
-						<h:inputText id="minimumMeberAllowed"
-							value="#{createInsuranceController.insurancePlan.minimumMeberAllowed}" />
-						<h:message for="minimumMeberAllowed" styleClass="error" />
-						<br />
-
-					</div>
-					<div class="form-group">
-						<h:outputLabel escape="false"
-							value="<span style='color:red'>*</span>Description: " />
-						<h:inputTextarea id="description1"
-							value="#{createInsuranceController.insurancePlan.description}"
-							rows="2" cols="20" />
-						<h:message for="description1" styleClass="error" />
-						<br />
-
-					</div>
-				</div>
 				<!-- Row 4 -->
 				<div class="form-row">
 					<div class="form-group">
@@ -350,65 +320,6 @@ form {
 
 					</div>
 				</div>
-				<br />
-				<!-- Multiple selection for Members -->
-				<div>
-					<h3>
-						<h:outputLabel id="memberValidation">Multiple selection for Members </h:outputLabel>
-					</h3>
-					
-
-					<br />
-
-					<div
-						style="padding-left: 35px; display: flex; flex-wrap: wrap; justify-content: space-evenly; width: 100%;">
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['DAUGHTER1']}" />
-								Daughter1</label>
-						</div>
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['DAUGHTER2']}" />
-								Daughter2</label>
-						</div>
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['SON1']}" />
-								Son1</label>
-						</div>
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['SON2']}" />
-								Son2</label>
-						</div>
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['FATHER']}" />
-								Father</label>
-						</div>
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['MOTHER']}" />
-								Mother</label>
-						</div>
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['HUSBAND']}" />
-								Husband</label>
-						</div>
-						<div style="flex: 1; min-width: 120px;">
-							<label><h:selectBooleanCheckbox
-									value="#{createInsuranceController.relationMap['WIFE']}" />
-								Wife</label>
-						</div>
-
-
-					</div>
-					<br />
-				</div>
-					<h:message for="memberValidation" styleClass="error" />
-				<br />
 
 				<!-- Coverage Options -->
 				<h3>Add Coverage Options</h3>
@@ -431,15 +342,26 @@ form {
 							value="#{createInsuranceController.coverageOption1.coverageAmount}" />
 						<h:message for="CoverageAmount" styleClass="error" />
 
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>MaximumMemberAllowed :" />
+						<h:inputText id="maximumMemberAllowed"
+							value="#{createInsuranceController.coverageOption1.maximumMemberAllowed}" />
+						<h:message for="maximumMemberAllowed" styleClass="error" />
 
-
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>MinimumMeberAllowed: :" />
+						<h:inputText id="minimumMeberAllowed"
+							value="#{createInsuranceController.coverageOption1.minimumMeberAllowed}" />
+						<h:message for="minimumMeberAllowed" styleClass="error" />
 
 						<h:outputLabel escape="false"
 							value=" <span style='color:red'>*</span>CoverageType " />
 						<h:selectOneMenu id="coverageType"
 							value="#{createInsuranceController.coverageOption1.coverageType}">
+							<f:selectItem itemLabel="--Select--" itemValue="" />
 							<f:selectItem itemLabel="SILVER" itemValue="SILVER" />
-
+							<f:selectItem itemLabel="GOLD" itemValue="GOLD" />
+							<f:selectItem itemLabel="PLATINUM" itemValue="PLATINUM" />
 						</h:selectOneMenu>
 						<h:message for="coverageType" styleClass="error" />
 
@@ -457,20 +379,32 @@ form {
 					<div class="coverage-box">
 						<h3>Add Gold Option</h3>
 						<label>Premium Amount:</label>
-						<h:inputText id="PremiumAmount2"
+						<h:inputText
 							value="#{createInsuranceController.coverageOption2.premiumAmount}" />
-						<h:message for="PremiumAmount2" styleClass="error" />
 
 						<label>Coverage Amount:</label>
-						<h:inputText id="CoverageAmount2"
+						<h:inputText
 							value="#{createInsuranceController.coverageOption2.coverageAmount}" />
-						<h:message for="CoverageAmount2" styleClass="error" />
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>MaximumMemberAllowed :" />
+						<h:inputText id="maximumMemberAllowed2"
+							value="#{createInsuranceController.coverageOption2.maximumMemberAllowed}" />
+						<h:message for="maximumMemberAllowed2" styleClass="error" />
+
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>MinimumMeberAllowed: :" />
+						<h:inputText id="minimumMeberAllowed2"
+							value="#{createInsuranceController.coverageOption2.minimumMeberAllowed}" />
+						<h:message for="minimumMeberAllowed2" styleClass="error" />
 
 						<h:outputLabel escape="false"
 							value=" <span style='color:red'>*</span>CoverageType " />
 						<h:selectOneMenu id="coverageType2"
 							value="#{createInsuranceController.coverageOption2.coverageType}">
+							<f:selectItem itemLabel="--Select--" itemValue="" />
+							<f:selectItem itemLabel="SILVER" itemValue="SILVER" />
 							<f:selectItem itemLabel="GOLD" itemValue="GOLD" />
+							<f:selectItem itemLabel="PLATINUM" itemValue="PLATINUM" />
 						</h:selectOneMenu>
 						<h:message for="coverageType2" styleClass="error" />
 
@@ -481,21 +415,32 @@ form {
 					<div class="coverage-box">
 						<h3>Add Platinum Option</h3>
 						<label>Premium Amount:</label>
-						<h:inputText id="PremiumAmount3"
+						<h:inputText
 							value="#{createInsuranceController.coverageOption3.premiumAmount}" />
-						<h:message for="PremiumAmount3" styleClass="error" />
 
 						<label>Coverage Amount:</label>
-						<h:inputText id="CoverageAmount3"
+						<h:inputText
 							value="#{createInsuranceController.coverageOption3.coverageAmount}" />
-						<h:message for="CoverageAmount3" styleClass="error" />
 
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>MaximumMemberAllowed :" />
+						<h:inputText id="maximumMemberAllowed3"
+							value="#{createInsuranceController.coverageOption3.maximumMemberAllowed}" />
+						<h:message for="maximumMemberAllowed3" styleClass="error" />
+
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>MinimumMeberAllowed: :" />
+						<h:inputText id="minimumMeberAllowed3"
+							value="#{createInsuranceController.coverageOption3.minimumMeberAllowed}" />
+						<h:message for="minimumMeberAllowed3" styleClass="error" />
 
 						<h:outputLabel escape="false"
 							value=" <span style='color:red'>*</span>CoverageType " />
 						<h:selectOneMenu id="coverageType3"
 							value="#{createInsuranceController.coverageOption3.coverageType}">
-
+							<f:selectItem itemLabel="--Select--" itemValue="" />
+							<f:selectItem itemLabel="SILVER" itemValue="SILVER" />
+							<f:selectItem itemLabel="GOLD" itemValue="GOLD" />
 							<f:selectItem itemLabel="PLATINUM" itemValue="PLATINUM" />
 						</h:selectOneMenu>
 						<h:message for="coverageType3" styleClass="error" />
@@ -508,14 +453,61 @@ form {
 					</div>
 				</div>
 				<br />
+				<!-- Multiple selection for Members -->
+				<h3>Multiple selection for Members</h3>
+
+
+
+
+				<div
+					style="display: flex; flex-wrap: wrap; justify-content: space-evenly; width: 100%;">
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['DAUGHTER1']}" />
+							Daughter</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['DAUGHTER2']}" />
+							Daughter</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['SON1']}" /> Son</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['SON2']}" /> Son</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['FATHER']}" />
+							Father</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['MOTHER']}" />
+							Mother</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['HUSBAND']}" />
+							Husband</label>
+					</div>
+					<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['WIFE']}" />
+							Wife</label>
+					</div>
+				</div>
+				<br />
 
 
 				<!-- Submit Button -->
 
 				<div class="button-row">
 
-					<h:commandButton value="Cancel"
-						action="AInsuranceAdminDashBoard.jsp"
+					<h:commandButton value="Cancel" action="AInsuranceAdminDashBoard.jsp"
 						styleClass="action-btn right-btn" />
 					<h:commandButton value="Add"
 						action="#{createInsuranceController.addInsurancePlanWithCoveragePlan}"
