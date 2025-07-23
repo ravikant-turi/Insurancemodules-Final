@@ -1,5 +1,14 @@
 package com.infinite.jsf.insurance.model;
 
+/**
+ * InsuranceCoverageOption.java
+ * 
+ * This class represents a coverage option associated with an insurance plan.
+ * It includes details such as premium amount, coverage amount, and status.
+ * 
+ * Copyright © 2025 Infinite Computer Solution. All rights reserved.
+ */
+
 
 public class InsuranceCoverageOption {
 
@@ -11,7 +20,7 @@ public class InsuranceCoverageOption {
 
 	private double coverageAmount;
 
-	private String status;
+	private CoveragePlanStatus status=CoveragePlanStatus.INACTIVE;
 
 	
 
@@ -49,25 +58,21 @@ public class InsuranceCoverageOption {
 		this.coverageAmount = coverageAmount;
 	}
 
-	public String getStatus() {
+		
+
+	@Override
+	public String toString() {
+		return "InsuranceCoverageOption [coverageId=" + coverageId + ", insurancePlan=" + insurancePlan
+				+ ", premiumAmount=" + premiumAmount + ", coverageAmount=" + coverageAmount + ", status=" + status
+				+ ", coverageType=" + coverageType + "]";
+	}
+
+	public CoveragePlanStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(CoveragePlanStatus status) {
 		this.status = status;
-	}
-
-	
-	
-	public InsuranceCoverageOption(String coverageId, InsurancePlan insurancePlan, double premiumAmount,
-			double coverageAmount, String status, CoverageType coverageType) {
-		super();
-		this.coverageId = coverageId;
-		this.insurancePlan = insurancePlan;
-		this.premiumAmount = premiumAmount;
-		this.coverageAmount = coverageAmount;
-		this.status = status;
-		this.coverageType = coverageType;
 	}
 
 	public CoverageType getCoverageType() {

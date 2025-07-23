@@ -1,6 +1,14 @@
 package com.infinite.jsf.insurance.model;
 
-import com.infinite.jsf.recipient.model.Gender;
+
+/**
+ * Member.java
+ * 
+ * This class represents a member enrolled template or rule in an insurance plan.
+ * It includes property of member such as name, age, gender, and relation to the policyholder.
+ * 
+ * Copyright © 2025 Infinite Computer Solution. All rights reserved.
+ */
 
 public class Member {
 	

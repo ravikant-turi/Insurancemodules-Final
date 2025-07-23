@@ -1,9 +1,19 @@
 package com.infinite.jsf.insurance.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-public class InsurancePlan {
+/**
+ * InsurancePlan.java
+ * 
+ * This class represents an insurance plan offered by an insurance company.
+ * It includes details such as plan type, age limits, coverage, and associated members.
+ * 
+ * Copyright © 2025 Infinite Computer Solution. All rights reserved.
+ */
+
+public class InsurancePlan implements Serializable {
 	private String planId;
 	private InsuranceCompany insuranceCompany;
 

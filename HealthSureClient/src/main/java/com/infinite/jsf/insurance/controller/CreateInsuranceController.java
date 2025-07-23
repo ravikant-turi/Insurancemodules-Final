@@ -1,5 +1,6 @@
 package com.infinite.jsf.insurance.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,22 +10,21 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 
 import com.infinite.jsf.insurance.dao.InsuranceCoverageOptionDao;
 import com.infinite.jsf.insurance.dao.InsurancePlanDao;
 import com.infinite.jsf.insurance.dao.MemberDao;
 import com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl;
+import com.infinite.jsf.insurance.model.CoveragePlanStatus;
+import com.infinite.jsf.insurance.model.Gender;
 import com.infinite.jsf.insurance.model.InsuranceCompany;
 import com.infinite.jsf.insurance.model.InsuranceCoverageOption;
 import com.infinite.jsf.insurance.model.InsurancePlan;
 import com.infinite.jsf.insurance.model.Member;
+import com.infinite.jsf.insurance.model.MessageConstants;
 import com.infinite.jsf.insurance.model.PlanType;
 import com.infinite.jsf.insurance.model.Relation;
-import com.infinite.jsf.recipient.dao.InsuranceDao;
-import com.infinite.jsf.recipient.model.Gender;
 
 public class CreateInsuranceController {
 	private InsuranceCompany insuranceCompany;
@@ -43,6 +43,7 @@ public class CreateInsuranceController {
 	private List<InsurancePlan> planList;
 	private Map<String, Boolean> relationMap = new HashMap<>();
 	List<String> selectedRelations;
+	MessageConstants msg;
 
 	// show plans on dashBoard
 	public List<InsurancePlan> showAllPlan() {
@@ -55,6 +56,11 @@ public class CreateInsuranceController {
 		System.out.println("========Details==========");
 		insurancePlan.setInsuranceCompany(insuranceCompany);
 
+		if (insurancePlan.getActiveOn() != null) {
+			insurancePlan.setExpireDate(calculateExpiryDate(insurancePlan.getActiveOn(), yearsToAdd));
+		}
+		insurancePlan.setActiveOn(new Date());
+
 		if (validateInsurancePlanWithFacesMessage(insurancePlan) || validateInsurancePlanWithFacesMessage(insurancePlan)
 				|| validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1)
 				|| validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)
@@ -65,14 +71,21 @@ public class CreateInsuranceController {
 				if (validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)) {
 
 					if (coverageOption1 != null || coverageOption2 != null || coverageOption3 != null) {
-						insurancplanDao.addInsurancePlan(insurancePlan);
+						coverageOption1.setInsurancePlan(insurancePlan);
+						coverageOption2.setInsurancePlan(insurancePlan);
+						coverageOption3.setInsurancePlan(insurancePlan);
+
+						String planId=insurancplanDao.addInsurancePlan(insurancePlan);
+						insurancePlan.setPlanId(planId);
 						for (String relations : selectedRelations) {
 							Member member = new Member();
+							member.setInsurancePlan(insurancePlan);
 							member.setRelation(Relation.valueOf(relations));
-							if(relations=="SON1"	|| relations=="SON2" || relations=="FATHER"	|| relations=="HUSBAND") {
-								member.setGender(Gender.valueOf("MALE"));
-							}else {
-								member.setGender(Gender.valueOf("FEMALE"));
+							if (relations == "SON1" || relations == "SON2" || relations == "FATHER"
+									|| relations == "HUSBAND") {
+								member.setGender(Gender.MALE);
+							} else {
+								member.setGender(Gender.FEMALE);
 
 							}
 
@@ -224,8 +237,6 @@ public class CreateInsuranceController {
 		this.insuranceCompany = insuranceCompany;
 	}
 
-	
-
 	public List<String> getSelectedRelations() {
 		return selectedRelations;
 	}
@@ -244,6 +255,8 @@ public class CreateInsuranceController {
 
 	@PostConstruct
 	public void init() {
+		msg = MessageConstants.getInstance();
+
 		relationMap.put("SON1", false);
 		relationMap.put("SON2", false);
 		relationMap.put("DAUGHTER1", false);
@@ -253,6 +266,32 @@ public class CreateInsuranceController {
 		relationMap.put("HUSBAND", false);
 		relationMap.put("WIFE", false);
 		relationMap.put("SELF", false);
+//dynamically update the COVERAGEPLAN STATUS : ACTIVE OR INACTIVE
+		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptions();
+		for (InsuranceCoverageOption options : planwithCovrageDetailsList) {
+			if (isActiveBeforeOrEqualToday(options.getInsurancePlan().getActiveOn()))
+				options.setStatus(CoveragePlanStatus.ACTIVE);
+			insuranceCoverageOptionDao.updateInsuranceCoverageOption(options);
+		}
+	}
+
+//Coverage plan status dynamically update so 2 date compare
+	public static boolean isActiveBeforeOrEqualToday(Date activeOn) {
+		try {
+			// Format to yyyy-MM-dd
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+			// Strip time from both dates
+			Date today = sdf.parse(sdf.format(new Date()));
+			Date activeDate = sdf.parse(sdf.format(activeOn));
+
+			// Compare
+
+			return activeDate.equals(today) || activeDate.before(today);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	// Dynamically EXPIRYDATE get calculated from activeDate and
@@ -276,7 +315,7 @@ public class CreateInsuranceController {
 		// Plan Name
 		if (plan.getPlanName() == null || plan.getPlanName().trim().isEmpty()) {
 			context.addMessage("companyForm:planName",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan name is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, msg.getPLAN_NAME_REQUIRED(), null));
 			isValid = false;
 		} else if (plan.getPlanName().trim().length() < 4) {
 			context.addMessage("companyForm:planName",
@@ -360,10 +399,10 @@ public class CreateInsuranceController {
 			context.addMessage("companyForm:maxAge",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maximum age must be greater than 0.", null));
 			isValid = false;
-//		} else if (minAge != null && maxAge < minAge) {
-//			context.addMessage("companyForm:maxAge", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-//					"Maximum age must be greater than or equal to minimum age.", null));
-//			isValid = false;
+		} else if (minAge != null && maxAge < minAge) {
+			context.addMessage("companyForm:maxAge", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Maximum age must be greater than or equal to minimum age.", null));
+			isValid = false;
 		} else if (maxAge > 70) {
 			context.addMessage("companyForm:maxAge",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maximum age must not be greater than 70.", null));

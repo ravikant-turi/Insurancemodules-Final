@@ -1,96 +1,36 @@
 package com.infinite.jsf.insurance.model;
 
+import java.sql.Date;
+
+import com.infinite.jsf.recipient.model.Recipient;
+
 public class SubscribedMember {
-    private String memberId;
-    private Subscribe subscribe;  // Many-to-One with Subscribe
-    private String fullName;
-    private Integer age;
-    private String gender;
-    private String relationWithProposer;
-    private String aadharNo;
 
-    // Constructors
-    public SubscribedMember() {}
+	private String subscribeMeberId; // sub001
 
-    public SubscribedMember(String memberId, Subscribe subscribe, String fullName, 
-                          Integer age, String gender, String relationWithProposer, 
-                          String aadharNo) {
-        this.memberId = memberId;
-        this.subscribe = subscribe;
-        this.fullName = fullName;
-        this.age = age;
-        this.gender = gender;
-        this.relationWithProposer = relationWithProposer;
-        this.aadharNo = aadharNo;
-    }
+	private Recipient recipient; // HID001
 
-    // Getters and Setters
-    public String getMemberId() {
-        return memberId;
-    }
+	private InsuranceCoverageOption coverage; // COO1
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
-    }
+	private Date subscriptionStartDate;// plan subscribeDate
 
-    public Subscribe getSubscribe() {
-        return subscribe;
-    }
+	private Date subscriptionEndDate; // plan subscribe endDate
 
-    public void setSubscribe(Subscribe subscribe) {
-        this.subscribe = subscribe;
-    }
+	private Date enrolledDate;
 
-    public String getFullName() {
-        return fullName;
-    }
+	private SubscriptionType type; // Types [individual/FAMILY]
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	private SubscriptionStatus status; // dynamically calculate by expired date [ACTIVE,INACTIVE] BY DEFALUT ACTIVE
 
-    public Integer getAge() {
-        return age;
-    }
+	private double coverageAmount; //
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
+	private double amountPaid; //
 
-    public String getGender() {
-        return gender;
-    }
+	private String name;
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	private int age;
 
-    public String getRelationWithProposer() {
-        return relationWithProposer;
-    }
+	private Gender gender;
 
-    public void setRelationWithProposer(String relationWithProposer) {
-        this.relationWithProposer = relationWithProposer;
-    }
-
-    public String getAadharNo() {
-        return aadharNo;
-    }
-
-    public void setAadharNo(String aadharNo) {
-        this.aadharNo = aadharNo;
-    }
-
-    @Override
-    public String toString() {
-        return "SubscribedMember{" +
-               "memberId='" + memberId + '\'' +
-               ", subscribe=" + subscribe.getSubscribeId() +
-               ", fullName='" + fullName + '\'' +
-               ", age=" + age +
-               ", gender='" + gender + '\'' +
-               ", relationWithProposer='" + relationWithProposer + '\'' +
-               ", aadharNo='" + aadharNo + '\'' +
-               '}';
-    }
+	private Relation relation;
 }
