@@ -37,4 +37,6 @@ public interface MemberDao {
      * @return status message
      */
     String updateMember(Member member);
+    
+   List< Member> searchMemberByPlanId(String planId);
 }

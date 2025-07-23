@@ -49,7 +49,7 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
-<!--  insuranceCompany model-->
+	<!-- insuranceCompany model -->
 	<managed-bean>
 		<managed-bean-name>insuranceCompany</managed-bean-name>
 		<managed-bean-class>com.infinite.jsf.insurance.model.InsuranceCompany
@@ -74,7 +74,7 @@
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
-	
+
 	<!-- Member DAO -->
 	<managed-bean>
 		<managed-bean-name>memberDao</managed-bean-name>
@@ -136,5 +136,107 @@
 			<value>#{memberDao}</value>
 		</managed-property>
 	</managed-bean>
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- DAO Bean -->
+	<managed-bean>
+		<managed-bean-name>insuranceSubscribeDao</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.InsuranceSubscribedDaoImpl
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+
+	<managed-bean>
+		<managed-bean-name>subscribed</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.Subscribed
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+	<managed-bean>
+		<managed-bean-name>subscribedMember</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember1</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+
+
+	<!-- ✅ Controller Bean -->
+	<managed-bean>
+		<managed-bean-name>insuranceSubscribedController</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.controller.InsuranceSubscribedController
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+
+		<managed-property>
+			<property-name>insurancePlan</property-name>
+			<value>#{insurancePlan}</value>
+		</managed-property>
+
+		<managed-property>
+			<property-name>insuranceSubscribeDao</property-name>
+			<value>#{insuranceSubscribeDao}</value>
+		</managed-property>
+
+		<managed-property>
+			<property-name>insuranceCompany</property-name>
+			<value>#{insuranceCompany}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>coverageOption1</property-name>
+			<value>#{coverageOption1}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>coverageOption2</property-name>
+			<value>#{coverageOption2}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>coverageOption3</property-name>
+			<value>#{coverageOption3}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>insuranceSubscribeDao</property-name>
+			<value>#{insuranceSubscribeDao}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember1</property-name>
+			<value>#{subscribedMember1}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember</property-name>
+			<value>#{subscribedMember}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribe</property-name>
+			<value>#{subscribe}</value>
+		</managed-property>
+	</managed-bean>
+
+
+
+
+
+
+
+
+
+
 
 </faces-config>

@@ -12,7 +12,7 @@
         <property name="gender">
             <column name="gender" not-null="true"/>
             <type name="org.hibernate.type.EnumType">
-                <param name="enumClass">com.infinite.jsf.recipient.model.Gender</param>
+                <param name="enumClass">com.infinite.jsf.insurance.model.Gender</param>
                 <param name="type">12</param>
             </type>
         </property>
@@ -23,6 +23,6 @@
                 <param name="type">12</param>
             </type>
         </property>
-        <many-to-one name="insurancePlan" column="plan_id" class="com.infinite.jsf.insurance.model.InsurancePlan" not-null="true"/>
+        <many-to-one name="insurancePlan" column="plan_id" class="com.infinite.jsf.insurance.model.InsurancePlan" not-null="true" fetch="join" lazy="false"/>
     </class>
 </hibernate-mapping>

@@ -1,0 +1,33 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+	<class name="com.infinite.jsf.insurance.model.Subscribed"
+		table="Subscribed">
+		<id name="subscribeId" column="subscribeId" type="string">
+			<generator class="assigned" />
+		</id>
+		<many-to-one name="recipient" column="recipientId"
+			class="com.infinite.jsf.recipient.model.Recipient" />
+		<many-to-one name="coverage" column="coverageId"
+			class="com.infinite.jsf.insurance.model.InsuranceCoverageOption" />
+		<property name="subscriptionStartDate"
+			column="subscriptionStartDate" />
+		<property name="subscriptionEndDate"
+			column="subscriptionEndDate" />
+		<property name="enrolledDate" column="enrolledDate" />
+		<property name="status" column="status" />
+		<property name="coverageAmount" column="coverageAmount" />
+		<property name="amountPaid" column="amountPaid" />
+		<property name="name" column="name" />
+		<property name="age" column="age" />
+		<property name="gender" column="gender" />
+		<property name="relation" column="relation" />
+		<property name="isPrime" column="isPrime" />
+		<set name="subscribedMember" cascade="all">
+			<key column="subscribeId" />
+			<one-to-many
+				class="com.infinite.jsf.insurance.model.SubscribedMember" />
+		</set>
+	</class>
+</hibernate-mapping>

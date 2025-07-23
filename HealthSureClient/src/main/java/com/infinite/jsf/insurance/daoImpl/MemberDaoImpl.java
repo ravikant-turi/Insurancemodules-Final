@@ -12,6 +12,7 @@ package com.infinite.jsf.insurance.daoImpl;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -120,4 +121,19 @@ public class MemberDaoImpl implements MemberDao {
         logger.debug("updateMember method is not yet implemented.");
         return null;
     }
+
+	@Override
+	public List<Member> searchMemberByPlanId(String planId) {
+		List<Member> memberList=null;
+		session =factory.openSession();
+		Transaction trans=session.beginTransaction();
+
+	    String hql = "FROM Member m WHERE m.insurancePlan.planId = :planId";
+	    Query query = session.createQuery(hql);
+	    query.setParameter("planId", planId);
+	    memberList=query.list();
+		trans.commit();
+		session.clear();
+	    return memberList;
+	}
 }

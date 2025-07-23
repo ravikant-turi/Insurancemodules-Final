@@ -27,7 +27,7 @@ public class InsurancePlan implements Serializable {
 	private String availableCoverAmounts;
 	private String waitingPeriod;
 
-	private Date createdOn ;
+	private Date createdOn =new Date();
 	private Date expireDate;
 	private Date activeOn;
 	private String periodicDiseases; // YES or NO
@@ -124,7 +124,7 @@ public class InsurancePlan implements Serializable {
 	}
 
 	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
+		this.createdOn = new Date();
 	}
 
 	public Date getExpireDate() {

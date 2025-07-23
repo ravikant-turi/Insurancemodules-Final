@@ -202,7 +202,7 @@ table, th, td {
 			</f:facet>
 			<h:form>
 				<h:commandButton value="Details" styleClass="action-btn"
-					action="#{createInsuranceController.showPlanDetailsWithCoveragePlan(plan.planId)}" />
+					action="#{createInsuranceController.findAllPlanDetailsByPlanId(plan.planId)}" />
 			</h:form>
 		</h:column>
 

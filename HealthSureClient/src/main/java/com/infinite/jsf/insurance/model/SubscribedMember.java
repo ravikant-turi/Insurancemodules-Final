@@ -18,8 +18,6 @@ public class SubscribedMember {
 
 	private Date enrolledDate;
 
-	private SubscriptionType type; // Types [individual/FAMILY]
-
 	private SubscriptionStatus status; // dynamically calculate by expired date [ACTIVE,INACTIVE] BY DEFALUT ACTIVE
 
 	private double coverageAmount; //
@@ -32,5 +30,5 @@ public class SubscribedMember {
 
 	private Gender gender;
 
-	private Relation relation;
+
 }

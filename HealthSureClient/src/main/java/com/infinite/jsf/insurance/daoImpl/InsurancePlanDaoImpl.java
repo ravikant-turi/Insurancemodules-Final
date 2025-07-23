@@ -1,8 +1,10 @@
 package com.infinite.jsf.insurance.daoImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -45,7 +47,7 @@ public class InsurancePlanDaoImpl implements InsurancePlanDao {
 		String planId = generateNextPlanId();
 		logger.info(planId + " : planId is generated");
 		insurancePlan.setPlanId(planId);
-
+		insurancePlan.setActiveOn(new Date());
 		session = null;
 		Transaction trans = null;
 
@@ -170,6 +172,29 @@ public class InsurancePlanDaoImpl implements InsurancePlanDao {
 	@Override
 	public String updateInsurancePlan(InsurancePlan insurancePlan) {
 		logger.debug("updateInsurancePlan method is not yet implemented.");
+		return null;
+	}
+
+	@Override
+	public String searchByPlainId(String planId) {
+		session = factory.openSession();
+		Transaction trans = session.beginTransaction();
+
+//		String hql = "FROM InsurancePlan ip " +
+//	             "LEFT JOIN FETCH ip.members m " +
+//	             "LEFT JOIN FETCH ip.coverageOptions c " +
+//	             "WHERE ip.planId = :planId";
+		String hql = "FROM InsurancePlan ip " + "LEFT JOIN FETCH ip.members m "
+				+ "LEFT JOIN FETCH ip.coverageOptions c " + "WHERE ip.planId = :planId";
+
+		Query query = session.createQuery(hql);
+		query.setParameter("planId", planId);
+
+		InsurancePlan plan = (InsurancePlan) query.uniqueResult();
+
+		System.out.println("============");
+		System.out.println(plan);
+
 		return null;
 	}
 }

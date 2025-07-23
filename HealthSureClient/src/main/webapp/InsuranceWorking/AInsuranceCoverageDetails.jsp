@@ -6,7 +6,7 @@
 	<!DOCTYPE html>
 	<html>
 <head>
-<title>Insurance Plan and Coverage Options</title>
+<title>Details Insurance Plan and Coverage Options</title>
 <style>
 body {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -189,7 +189,7 @@ form {
 					<div class="form-group">
 						<label>Company ID:</label>
 						<h:inputText id="companyId"
-							value="#{createInsuranceController.insuranceCompany.companyId}" />
+							value="#{createInsuranceController.insurancePlan.insuranceCompany.name}" />
 						<br />
 						<h:message for="companyId" styleClass="error" />
 
@@ -311,44 +311,34 @@ form {
 					</div>
 					<div class="form-group">
 						<h:outputLabel escape="false"
-							value="<span style='color:red'>*</span>Description: " />
-						<h:inputTextarea id="description1"
-							value="#{createInsuranceController.insurancePlan.description}"
-							rows="2" cols="20" />
-						<h:message for="description1" styleClass="error" />
+							value="<span style='color:red'>*</span>CreatedOn: " />
+						<h:inputText id="createdOn" readonly="true"
+							value="#{createInsuranceController.insurancePlan.createdOn}" />
+						<h:message for="createdOn" styleClass="error" />
 						<br />
 
 					</div>
 				</div>
 				<!-- Row 4 -->
 				<div class="form-row">
-					<div class="form-group">
-						<label>Periodic Diseases:</label>
-						<h:selectOneMenu id="periodicDiseases"
-							value="#{createInsuranceController.insurancePlan.periodicDiseases}">
-							<f:selectItem itemLabel="--Select--" itemValue="" />
-							<f:selectItem itemLabel="YES" itemValue="YES" />
-							<f:selectItem itemLabel="NO" itemValue="NO" />
-						</h:selectOneMenu>
-						<br />
-						<h:message for="periodicDiseases" styleClass="error" />
-					</div>
-					<br />
+
+
 					<div class="form-group">
 						<h:outputLabel escape="false"
-							value=" <span style='color:red'>*</span>DURATION: " />
-						<h:selectOneMenu id="yearsToAdd"
-							value="#{createInsuranceController.yearsToAdd}">
-							<f:selectItem itemLabel="--Select--" itemValue="0" />
-							<f:selectItem itemLabel="1 Years" itemValue="1" />
-							<f:selectItem itemLabel="2 Years" itemValue="2" />
-							<f:selectItem itemLabel="3 Years" itemValue="3" />
-							<f:selectItem itemLabel="5 Years" itemValue="5" />
-							<f:selectItem itemLabel="10 Years" itemValue="10" />
-							<f:selectItem itemLabel="12 Years" itemValue="12" />
-						</h:selectOneMenu>
+							value="<span style='color:red'>*</span>PeriodicDiseases: " />
+						<h:inputText id="periodicDiseases"
+							value="#{createInsuranceController.insurancePlan.periodicDiseases}" />
+						<h:message for="periodicDiseases" styleClass="error" />
 						<br />
-						<h:message for="yearsToAdd" styleClass="error" />
+
+					</div>
+					<div class="form-group">
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>ExpireDate: " />
+						<h:inputText id="expireDate" readonly="true"
+							value="#{createInsuranceController.insurancePlan.expireDate}" />
+						<h:message for="expireDate" styleClass="error" />
+						<br />
 
 					</div>
 				</div>
@@ -519,9 +509,11 @@ form {
 					<h:commandButton value="Cancel"
 						action="AInsuranceAdminDashBoard.jsp"
 						styleClass="action-btn right-btn" />
-					<h:commandButton value="Add"
-						action="#{createInsuranceController.addInsurancePlanWithCoveragePlan}"
+
+					<h:commandButton value="Back"
+						action="AInsuranceAdminDashBoard?faces-redirect=true"
 						styleClass="action-btn" />
+
 				</div>
 			</div>
 		</h:form>

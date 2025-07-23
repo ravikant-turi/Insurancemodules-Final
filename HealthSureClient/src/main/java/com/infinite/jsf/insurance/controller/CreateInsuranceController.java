@@ -15,7 +15,9 @@ import javax.faces.context.FacesContext;
 import com.infinite.jsf.insurance.dao.InsuranceCoverageOptionDao;
 import com.infinite.jsf.insurance.dao.InsurancePlanDao;
 import com.infinite.jsf.insurance.dao.MemberDao;
+import com.infinite.jsf.insurance.daoImpl.InsuranceCoverageOptionDaoImpl;
 import com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl;
+import com.infinite.jsf.insurance.daoImpl.MemberDaoImpl;
 import com.infinite.jsf.insurance.model.CoveragePlanStatus;
 import com.infinite.jsf.insurance.model.Gender;
 import com.infinite.jsf.insurance.model.InsuranceCompany;
@@ -34,9 +36,9 @@ public class CreateInsuranceController {
 	private InsuranceCoverageOption coverageOption2;
 	private InsuranceCoverageOption coverageOption3;
 	private Member member;
-	private InsuranceCoverageOptionDao insuranceCoverageOptionDao;
+	private InsuranceCoverageOptionDao insuranceCoverageOptionDao=new InsuranceCoverageOptionDaoImpl();
 	private InsurancePlanDao insurancplanDao = new InsurancePlanDaoImpl();
-	private MemberDao memberDao;
+	private MemberDao memberDao=new MemberDaoImpl();
 	private List<InsuranceCoverageOption> planwithCovrageDetailsList;
 	private int yearsToAdd;
 	private List<Member> members;
@@ -75,7 +77,7 @@ public class CreateInsuranceController {
 						coverageOption2.setInsurancePlan(insurancePlan);
 						coverageOption3.setInsurancePlan(insurancePlan);
 
-						String planId=insurancplanDao.addInsurancePlan(insurancePlan);
+						String planId = insurancplanDao.addInsurancePlan(insurancePlan);
 						insurancePlan.setPlanId(planId);
 						for (String relations : selectedRelations) {
 							Member member = new Member();
@@ -123,6 +125,35 @@ public class CreateInsuranceController {
 		}
 
 		return "AInsuranceAdminDashBoard.jsp";
+	}
+
+	public String findAllPlanDetailsByPlanId(String planId) {
+
+		insurancePlan = insurancplanDao.findInsuranceById(planId);
+		members = memberDao.searchMemberByPlanId(planId);
+		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptionsByPlanId(planId);
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
+			coverageOption1=planwithCovrageDetailsList.get(0);
+			coverageOption2=planwithCovrageDetailsList.get(1);
+			coverageOption3=planwithCovrageDetailsList.get(2);
+		
+		
+		System.out.println(insurancePlan);
+		members.forEach(System.out::println);
+		planwithCovrageDetailsList.forEach(System.out::println);
+		
+		for(Member member:members) {
+			String key=member.getRelation().toString();
+
+			relationMap.put(key, true);
+
+		}
+		return "AInsuranceCoverageDetails";
 	}
 
 	public InsurancePlan getInsurancePlan() {

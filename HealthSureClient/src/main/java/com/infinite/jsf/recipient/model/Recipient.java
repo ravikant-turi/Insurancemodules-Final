@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.Set;
 
 import com.infinite.jsf.admin.model.PaymentHistory;
-import com.infinite.jsf.insurance.model.Subscribe;
 import com.infinite.jsf.pharmacy.model.DispensedEquipment;
 import com.infinite.jsf.pharmacy.model.DispensedMedicine;
 import com.infinite.jsf.provider.model.Appointment;
@@ -34,7 +33,7 @@ public class Recipient {
 	// Relationships
 	private Set<Appointment> appointments;
 	private Set<MedicalProcedure> procedures;
-	private Set<Subscribe> subscriptions;
+//	private Set<Subscribe> subscriptions;
 	private Set<Prescription> prescriptions;
 	private Set<DispensedMedicine> dispensedMedicines;
 	private Set<DispensedEquipment> dispensedEquipments;
@@ -208,13 +207,7 @@ public class Recipient {
 		this.procedures = procedures;
 	}
 
-	public Set<Subscribe> getSubscriptions() {
-		return subscriptions;
-	}
-
-	public void setSubscriptions(Set<Subscribe> subscriptions) {
-		this.subscriptions = subscriptions;
-	}
+	
 
 	public Set<Prescription> getPrescriptions() {
 		return prescriptions;
