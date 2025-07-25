@@ -1,5 +1,4 @@
 package com.infinite.jsf.insurance.controller;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,25 +22,26 @@ import com.infinite.jsf.insurance.model.Gender;
 import com.infinite.jsf.insurance.model.InsuranceCompany;
 import com.infinite.jsf.insurance.model.InsuranceCoverageOption;
 import com.infinite.jsf.insurance.model.InsurancePlan;
-import com.infinite.jsf.insurance.model.Member;
+import com.infinite.jsf.insurance.model.MemberPlanRule;
 import com.infinite.jsf.insurance.model.MessageConstants;
 import com.infinite.jsf.insurance.model.PlanType;
 import com.infinite.jsf.insurance.model.Relation;
 
-public class CreateInsuranceController {
+
+public class CreateInsuranceController {	
 	private InsuranceCompany insuranceCompany;
 	private InsurancePlan insurancePlan;
 	private InsuranceCoverageOption coverageOption;
 	private InsuranceCoverageOption coverageOption1;
 	private InsuranceCoverageOption coverageOption2;
 	private InsuranceCoverageOption coverageOption3;
-	private Member member;
+	private MemberPlanRule member;
 	private InsuranceCoverageOptionDao insuranceCoverageOptionDao=new InsuranceCoverageOptionDaoImpl();
 	private InsurancePlanDao insurancplanDao = new InsurancePlanDaoImpl();
 	private MemberDao memberDao=new MemberDaoImpl();
 	private List<InsuranceCoverageOption> planwithCovrageDetailsList;
 	private int yearsToAdd;
-	private List<Member> members;
+	private List<MemberPlanRule> members;
 	private List<InsurancePlan> planList;
 	private Map<String, Boolean> relationMap = new HashMap<>();
 	List<String> selectedRelations;
@@ -80,7 +80,7 @@ public class CreateInsuranceController {
 						String planId = insurancplanDao.addInsurancePlan(insurancePlan);
 						insurancePlan.setPlanId(planId);
 						for (String relations : selectedRelations) {
-							Member member = new Member();
+							MemberPlanRule member = new MemberPlanRule();
 							member.setInsurancePlan(insurancePlan);
 							member.setRelation(Relation.valueOf(relations));
 							if (relations == "SON1" || relations == "SON2" || relations == "FATHER"
@@ -147,7 +147,7 @@ public class CreateInsuranceController {
 		members.forEach(System.out::println);
 		planwithCovrageDetailsList.forEach(System.out::println);
 		
-		for(Member member:members) {
+		for(MemberPlanRule member:members) {
 			String key=member.getRelation().toString();
 
 			relationMap.put(key, true);
@@ -196,11 +196,11 @@ public class CreateInsuranceController {
 		this.coverageOption3 = coverageOption3;
 	}
 
-	public Member getMember() {
+	public MemberPlanRule getMember() {
 		return member;
 	}
 
-	public void setMember(Member member) {
+	public void setMember(MemberPlanRule member) {
 		this.member = member;
 	}
 
@@ -244,11 +244,11 @@ public class CreateInsuranceController {
 		this.yearsToAdd = yearsToAdd;
 	}
 
-	public List<Member> getMembers() {
+	public List<MemberPlanRule> getMembers() {
 		return members;
 	}
 
-	public void setMembers(List<Member> members) {
+	public void setMembers(List<MemberPlanRule> members) {
 		this.members = members;
 	}
 

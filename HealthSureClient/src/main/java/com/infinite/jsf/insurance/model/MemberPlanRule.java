@@ -2,15 +2,15 @@ package com.infinite.jsf.insurance.model;
 
 
 /**
- * Member.java
+ * MemberPlanRule.java
  * 
- * This class represents a member enrolled template or rule in an insurance plan.
- * It includes property of member such as name, age, gender, and relation to the policyholder.
+ * This class represents a MemberPlanRule enrolled template or rule in an insurance plan.
+ * It includes property of MemberPlanRule such as name, age, gender, and relation to the policyholder.
  * 
  * Copyright © 2025 Infinite Computer Solution. All rights reserved.
  */
 
-public class Member {
+public class MemberPlanRule {
 	
 	private String meberId;
 	private String name;
@@ -22,7 +22,7 @@ public class Member {
 	
 
 
-	public Member(String meberId, String name, int age, Gender gender, Relation relation, InsurancePlan insurancePlan) {
+	public MemberPlanRule(String meberId, String name, int age, Gender gender, Relation relation, InsurancePlan insurancePlan) {
 		super();
 		this.meberId = meberId;
 		this.name = name;
@@ -37,7 +37,7 @@ public class Member {
 
 	@Override
 	public String toString() {
-		return "Member [meberId=" + meberId + ", name=" + name + ", age=" + age + ", gender=" + gender + ", relation="
+		return "MemberPlanRule [meberId=" + meberId + ", name=" + name + ", age=" + age + ", gender=" + gender + ", relation="
 				+ relation + ", insurancePlan=" + insurancePlan + "]";
 	}
 
@@ -128,7 +128,7 @@ public class Member {
 
 
 
-	public Member() {
+	public MemberPlanRule() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

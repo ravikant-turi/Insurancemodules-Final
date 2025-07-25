@@ -208,7 +208,7 @@ form {
 						<h:selectOneMenu id="planType"
 							value="#{createInsuranceController.insurancePlan.planType}">
 							<f:selectItem itemLabel="--Select--" itemValue="" />
-							<f:selectItem itemLabel="INDIVIDUAL" itemValue="SELF" />
+							<f:selectItem itemLabel="INDIVIDUAL" itemValue="INDIVIDUAL" />
 							<f:selectItem itemLabel="FAMILY" itemValue="FAMILY" />
 							<f:selectItem itemLabel="CRITICAL_ILLNESS [INDIVIDUAL]" itemValue="CRITICAL_ILLNESS" />
 							<f:selectItem itemLabel="EPIDEMIC_PROTECT [INDIVIDUAL]"

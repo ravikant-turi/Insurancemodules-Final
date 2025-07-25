@@ -1,34 +1,97 @@
 package com.infinite.jsf.insurance.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import com.infinite.jsf.recipient.model.Recipient;
 
 public class SubscribedMember {
 
-	private String subscribeMeberId; // sub001
+	private String memberId;
+	private Recipient recipient;
+	private Subscribe subscribe; // Many-to-One with Subscribe
+	private String fullName;
+	private Integer age;
+	private String gender;
+	private Relation relationWithProposer;
 
-	private Recipient recipient; // HID001
+	public Recipient getRecipient() {
+		return recipient;
+	}
 
-	private InsuranceCoverageOption coverage; // COO1
+	public void setRecipient(Recipient recipient) {
+		this.recipient = recipient;
+	}
 
-	private Date subscriptionStartDate;// plan subscribeDate
+	public Subscribe getSubscribe() {
+		return subscribe;
+	}
 
-	private Date subscriptionEndDate; // plan subscribe endDate
+	public void setSubscribe(Subscribe subscribe) {
+		this.subscribe = subscribe;
+	}
 
-	private Date enrolledDate;
+	public String getFullName() {
+		return fullName;
+	}
 
-	private SubscriptionStatus status; // dynamically calculate by expired date [ACTIVE,INACTIVE] BY DEFALUT ACTIVE
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
-	private double coverageAmount; //
+	public Integer getAge() {
+		return age;
+	}
 
-	private double amountPaid; //
+	public void setAge(Integer age) {
+		this.age = age;
+	}
 
-	private String name;
+	public String getGender() {
+		return gender;
+	}
 
-	private int age;
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-	private Gender gender;
+	
 
+	public Relation getRelationWithProposer() {
+		return relationWithProposer;
+	}
+
+	public void setRelationWithProposer(Relation relationWithProposer) {
+		this.relationWithProposer = relationWithProposer;
+	}
+
+	public String getMemberId() {
+		return memberId;
+	}
+
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
+
+	public SubscribedMember(Recipient recipient, Subscribe subscribe, String fullName, Integer age, String gender,
+			Relation relationWithProposer) {
+		super();
+		this.recipient = recipient;
+		this.subscribe = subscribe;
+		this.fullName = fullName;
+		this.age = age;
+		this.gender = gender;
+		this.relationWithProposer = relationWithProposer;
+	}
+
+	public SubscribedMember() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String toString() {
+		return "SubscribedMember [recipient=" + recipient + ", subscribe=" + subscribe + ", fullName=" + fullName
+				+ ", age=" + age + ", gender=" + gender + ", relationWithProposer=" + relationWithProposer + "]";
+	}
 
 }

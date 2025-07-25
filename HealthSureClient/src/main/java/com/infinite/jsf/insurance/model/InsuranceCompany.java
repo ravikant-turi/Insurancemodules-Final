@@ -52,6 +52,11 @@ public  class InsuranceCompany implements Serializable{
 		return "InsuranceCompany [companyId=" + companyId + ", name=" + name + ", logoUrl=" + logoUrl + ", headOffice="
 				+ headOffice + ", contactEmail=" + contactEmail + ", contactPhone=" + contactPhone + "]";
 	}
+
+	public InsuranceCompany() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public InsuranceCompany(String companyId, String name, String logoUrl, String headOffice, String contactEmail,
 			String contactPhone) {
 		super();
@@ -61,10 +66,6 @@ public  class InsuranceCompany implements Serializable{
 		this.headOffice = headOffice;
 		this.contactEmail = contactEmail;
 		this.contactPhone = contactPhone;
-	}
-	public InsuranceCompany() {
-		super();
-		// TODO Auto-generated constructor stub
 	} 
     
     

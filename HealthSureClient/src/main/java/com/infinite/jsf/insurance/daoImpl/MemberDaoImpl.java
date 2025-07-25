@@ -18,7 +18,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.infinite.jsf.insurance.dao.MemberDao;
-import com.infinite.jsf.insurance.model.Member;
+import com.infinite.jsf.insurance.model.MemberPlanRule;
 import com.infinite.jsf.util.SessionHelper;
 
 public class MemberDaoImpl implements MemberDao {
@@ -38,7 +38,7 @@ public class MemberDaoImpl implements MemberDao {
      * @return "succuss" if the operation is successful
      */
     @Override
-    public String addMember(Member member) {
+    public String addMember(MemberPlanRule member) {
         session = null;
         Transaction trans = null;
         String memberId = generateNextMemberId();
@@ -105,7 +105,7 @@ public class MemberDaoImpl implements MemberDao {
      * @return list of Member objects
      */
     @Override
-    public List<Member> findAllMeberByCoverageId(String coverageId) {
+    public List<MemberPlanRule> findAllMeberByCoverageId(String coverageId) {
         logger.debug("findAllMeberByCoverageId method is not yet implemented.");
         return null;
     }
@@ -117,14 +117,14 @@ public class MemberDaoImpl implements MemberDao {
      * @return null (method not yet implemented)
      */
     @Override
-    public String updateMember(Member member) {
+    public String updateMember(MemberPlanRule member) {
         logger.debug("updateMember method is not yet implemented.");
         return null;
     }
 
 	@Override
-	public List<Member> searchMemberByPlanId(String planId) {
-		List<Member> memberList=null;
+	public List<MemberPlanRule> searchMemberByPlanId(String planId) {
+		List<MemberPlanRule> memberList=null;
 		session =factory.openSession();
 		Transaction trans=session.beginTransaction();
 

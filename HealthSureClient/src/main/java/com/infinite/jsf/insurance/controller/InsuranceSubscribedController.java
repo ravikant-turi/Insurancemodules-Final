@@ -1,17 +1,26 @@
 package com.infinite.jsf.insurance.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.infinite.jsf.insurance.dao.InsuranceSubscribedDao;
-import com.infinite.jsf.insurance.daoImpl.InsuranceSubscribedDaoImpl;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+
+import com.infinite.jsf.insurance.dao.InsuranceSubscribeDao;
+import com.infinite.jsf.insurance.daoImpl.InsuranceSubscribeDaoImpl;
+import com.infinite.jsf.insurance.model.Gender;
 import com.infinite.jsf.insurance.model.InsuranceCompany;
 import com.infinite.jsf.insurance.model.InsuranceCoverageOption;
 import com.infinite.jsf.insurance.model.InsurancePlan;
 import com.infinite.jsf.insurance.model.PlanType;
-import com.infinite.jsf.insurance.model.Subscribed;
+import com.infinite.jsf.insurance.model.Relation;
+import com.infinite.jsf.insurance.model.Subscribe;
 import com.infinite.jsf.insurance.model.SubscribedMember;
 import com.infinite.jsf.insurance.model.SubscriptionStatus;
+import com.infinite.jsf.insurance.model.SubscriptionType;
+import com.infinite.jsf.recipient.model.Recipient;
 
 public class InsuranceSubscribedController {
 	InsurancePlan insurancePlan;
@@ -20,8 +29,8 @@ public class InsuranceSubscribedController {
 	InsuranceCoverageOption coverageOption1;
 	InsuranceCoverageOption coverageOption2;
 	InsuranceCoverageOption coverageOption3;
-
-	Subscribed subscribed;
+	String searchRecipeintId;
+	Subscribe Subscribe;
 	SubscribedMember subscribedMember;
 	SubscribedMember subscribedMember1;
 	SubscribedMember subscribedMember2;
@@ -29,11 +38,15 @@ public class InsuranceSubscribedController {
 	SubscribedMember subscribedMember4;
 	SubscribedMember subscribedMember5;
 	SubscribedMember subscribedMember6;
-	InsuranceSubscribedDao insuranceSubscribeDao = new InsuranceSubscribedDaoImpl();
-	List<SubscribedMember> subscribedMemberList;
+	SubscribedMember subscribedMember7;
+	SubscribedMember subscribedMember8;
+
+	InsuranceSubscribeDao insuranceSubscribeDao = new InsuranceSubscribeDaoImpl();
+	List<SubscribedMember> SubscribedMemberList;
 	List<InsuranceCoverageOption> coverageOptionsList;
 
 	private PlanType selectedPlanType;
+//	private InsuranceSubscribeDao insuranceSubscribeao;
 
 	public PlanType getSelectedPlanType() {
 		return selectedPlanType;
@@ -60,35 +73,176 @@ public class InsuranceSubscribedController {
 		return coverageOptionsList;
 	}
 
-	
+	public String fetchRecipientDetailsIndividual(SubscribedMember subscribedMember, String searchRecipeintId) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		Recipient recipient = insuranceSubscribeDao.searchRecipientById(searchRecipeintId);
+		subscribedMember.setRecipient(recipient);
 
-	public String subscribeToPlan(InsuranceCoverageOption policy) {
-		System.out.println("=============\n coverage : " + policy);
+		if (recipient != null) {
+			if (recipient.getDob() != null) {
+				subscribedMember.setAge(calculateAge(recipient.getDob()));
+			} else {
+				subscribedMember.setAge(0); // Or handle appropriately
+			}
+
+			subscribedMember.setFullName(recipient.getFirstName());
+			System.out.println(
+					recipient.getFirstName() + "===========inside recipent to set " + subscribedMember.getFullName());
+			subscribedMember.setGender(recipient.getGender().toString());
+			Subscribe subscribe = new Subscribe();
+			InsuranceCoverageOption policy = (InsuranceCoverageOption) context.getExternalContext().getSessionMap()
+					.get("coverageOption");
+
+			subscribe = subscribeMemberTosubscribe(subscribedMember, coverageOption);
+			subscribe.setAmountPaid(coverageOption.getPremiumAmount());
+			insuranceSubscribeDao.addIndividualSuscribeMember(subscribe);
+
+		} else {
+			context.addMessage("form:hid",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "You are not a Registerd Member.", null));
+		}
+
+		System.out.println("-------------fetch is clicked------------");
+		System.out.println("-------------subscribedMember1 :" + subscribedMember1);
+		System.out.println("----------------------Recipient: " + recipient);
+		System.out.println("------------------subscribedMember :" + subscribedMember);
+
+		return "InsurancePlanExplore.jsp?faces-redirect=true";
+	}
+
+	public String fetchRecipientDetailsFamily(SubscribedMember subscribedMember, String searchRecipeintId) {
+		
+		Recipient recipient = insuranceSubscribeDao.searchRecipientById(searchRecipeintId);
+		subscribedMember.setRecipient(recipient);
+
+		
+		System.out.println("-------------fetch is clicked------------");
+		System.out.println("-------------subscribedMember1 :" + subscribedMember1);
+		System.out.println("----------------------Recipient: " + recipient);
+		System.out.println("------------------subscribedMember :" + subscribedMember);
+
+		return "null";
+	}
+
+	public String subscribeToPlanButton() {
+		System.out.println("______________________in controller");
+		FacesContext context = FacesContext.getCurrentInstance();
+		InsuranceCoverageOption policy = (InsuranceCoverageOption) context.getExternalContext().getSessionMap()
+				.get("coverageOption");
+
+		System.out.println("=============\n coverage============= : ");
 		SubscribedMember[] meberlist = { subscribedMember1, subscribedMember2, subscribedMember3, subscribedMember4,
-				subscribedMember5, subscribedMember6 };
-//        subscribe.setSubscribeId("sub001");		
-//
-//		subscribe.setCoverage(policy);
-//		subscribe.setAmountPaid(0);
-//		subscribe.setExpiryDate(policy.insurancePlan.getCreatedOn());
-//		subscribe.setTotalPremium(policy.getCoverageAmount());
-//		subscribe.setStatus(SubscriptionStatus.valueOf("ACTIVE")); 
-//        insuranceSubscribeDao.addSubscribe(subscribe);
-//		for (SubscribedMember member : meberlist) {
-//			if (member != null) {
-//
-//				member.setSubscribe(subscribe);
-//				insuranceSubscribeDao.addSubscribedPlanMember(member);
-//
-//			}
-//		}
+				subscribedMember5, subscribedMember6, subscribedMember7, subscribedMember8 };
+		System.out.println(policy.getInsurancePlan().getInsuranceCompany());
+		System.out.println(policy.getInsurancePlan());
+		System.out.println(policy);
 
-		return "InsurancePlanExplore?faces-redirect=true";
+		for (SubscribedMember member : meberlist) {
+			System.out.println(member);
+		}
+
+		if (policy.getInsurancePlan().getPlanType() == PlanType.valueOf("FAMILY")) {
+			Subscribe isPrimeMember = null;
+			for (SubscribedMember member : meberlist) {
+				if (member.getRelationWithProposer() == Relation.FATHER
+						|| member.getRelationWithProposer() == Relation.MOTHER
+						|| member.getRelationWithProposer() == Relation.HUSBAND
+						|| member.getRelationWithProposer() == Relation.WIFE) {
+
+					Subscribe subscribePrime = subscribeMemberTosubscribe(member, policy);
+					String backGeneratedId = insuranceSubscribeDao.addIndividualSuscribeMember(subscribePrime);
+					subscribePrime.setSubscribeId(backGeneratedId);
+					isPrimeMember = subscribePrime;
+				}
+			}
+			for (SubscribedMember member : meberlist) {
+				if (member != null && isPrimeMember != null) {
+					member.setSubscribe(isPrimeMember);
+					insuranceSubscribeDao.addFamilySubscribeMember(member);
+				}
+
+			}
+
+		} else {
+			Subscribe subscribePrime = subscribeMemberTosubscribe(subscribedMember1, policy);
+			insuranceSubscribeDao.addIndividualSuscribeMember(subscribePrime);
+		}
+
+		return "InsurancePlanExplore.jsp?faces-redirect=true";
+
+	}
+
+	public int calculateAge(Date dateOfBirth) {
+		Calendar birthCal = Calendar.getInstance();
+		birthCal.setTime(dateOfBirth);
+
+		Calendar todayCal = Calendar.getInstance();
+
+		int age = todayCal.get(Calendar.YEAR) - birthCal.get(Calendar.YEAR);
+
+		// Agar birthday abhi tak nahi aaya hai is saal, to age se 1 ghata do
+		if (todayCal.get(Calendar.DAY_OF_YEAR) < birthCal.get(Calendar.DAY_OF_YEAR)) {
+			age--;
+		}
+
+		return age;
+	}
+
+	public Subscribe subscribeMemberTosubscribe(SubscribedMember subscribedMember, InsuranceCoverageOption coverage) {
+		Calendar cal = Calendar.getInstance();
+		Date currentDate = cal.getTime(); // current date
+
+		cal.add(Calendar.MONTH, 1); // add 1 month
+		Date nextMonthDate = cal.getTime();
+
+		cal.add(Calendar.YEAR, 1);
+		Date nextDateAfterOneYear = cal.getTime();
+
+		// private String subscribeId; //autogenerate
+		Subscribe subscribe = new Subscribe();
+
+//		private Recipient recipient;// auto
+
+		subscribe.setRecipient(subscribedMember.getRecipient());
+//	    private InsuranceCoverageOption coverage; //g
+		subscribe.setCoverage(coverage);
+//	    private Date subscribeDate;//enrollmentDate
+		subscribe.setSubscribeDate(currentDate);
+//	    private Date StartDate;//subscription startDate
+		subscribe.setStartDate(nextMonthDate);
+//	    private Date expiryDate;//subcription endDate
+		subscribe.setExpiryDate(nextDateAfterOneYear);
+//	    private SubscriptionType type;
+
+		String type = coverage.getInsurancePlan().getPlanType().toString();
+
+		if (type.equalsIgnoreCase("FAMILY")) {
+			subscribe.setType(SubscriptionType.FAMILY);
+		}
+
+		subscribe.setType(SubscriptionType.INDIVIDUAL);
+//	    private SubscriptionStatus status;
+		if (subscribe.getSubscribeDate().after(subscribe.getExpiryDate())) {
+			subscribe.setStatus(SubscriptionStatus.EXPIRED);
+
+		} else {
+			subscribe.setStatus(SubscriptionStatus.ACTIVE);
+
+		}
+//	    private double totalPremium;
+		subscribe.setAmountPaid(coverage.getCoverageAmount());
+//	    private double amountPaid;
+		subscribe.setAmountPaid(coverage.getPremiumAmount());
+//	   List<SubscribedMember> subscribedMember;
+
+		return subscribe;
 	}
 
 	public String showPlicyDetailsToSuscribe(String policyId) {
 		coverageOption = insuranceSubscribeDao.getInsurancePolicyById(policyId);
 		System.out.println("show plicy by id  :" + coverageOption);
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().getSessionMap().put("coverageOption", coverageOption);
 
 		return "ShowPlanDetailsToBeSuscribe?faces-redirect=true";
 	}
@@ -109,28 +263,28 @@ public class InsuranceSubscribedController {
 		this.insuranceCompany = insuranceCompany;
 	}
 
-	public Subscribed getSubscribe() {
-		return subscribed;
+	public Subscribe getSubscribe() {
+		return Subscribe;
 	}
 
-	public void setSubscribe(Subscribed subscribe) {
-		this.subscribed = subscribed;
+	public void setSubscribe(Subscribe subscribe) {
+		this.Subscribe = Subscribe;
 	}
 
 	public SubscribedMember getSubscribedMember() {
 		return subscribedMember;
 	}
 
-	public void setSubscribedMember(SubscribedMember subscribedMember) {
-		this.subscribedMember = subscribedMember;
+	public void setSubscribedMember(SubscribedMember SubscribedMember) {
+		this.subscribedMember = SubscribedMember;
 	}
 
 	public List<SubscribedMember> getSubscribedMemberList() {
-		return subscribedMemberList;
+		return SubscribedMemberList;
 	}
 
-	public void setSubscribedMemberList(List<SubscribedMember> subscribedMemberList) {
-		this.subscribedMemberList = subscribedMemberList;
+	public void setSubscribedMemberList(List<SubscribedMember> SubscribedMemberList) {
+		this.SubscribedMemberList = SubscribedMemberList;
 	}
 
 	public List<InsuranceCoverageOption> getCoverageOptionsList() {
@@ -177,16 +331,24 @@ public class InsuranceSubscribedController {
 		return subscribedMember1;
 	}
 
-	public void setSubscribedMember1(SubscribedMember subscribedMember1) {
-		this.subscribedMember1 = subscribedMember1;
+	public String getSearchRecipeintId() {
+		return searchRecipeintId;
+	}
+
+	public void setSearchRecipeintId(String searchRecipeintId) {
+		this.searchRecipeintId = searchRecipeintId;
 	}
 
 	public SubscribedMember getSubscribedMember2() {
 		return subscribedMember2;
 	}
 
-	public void setSubscribedMember2(SubscribedMember subscribedMember2) {
-		this.subscribedMember2 = subscribedMember2;
+	public SubscribedMember getSubscribedMember4() {
+		return subscribedMember4;
+	}
+
+	public InsuranceSubscribeDao getInsuranceSubscribeao() {
+		return getInsuranceSubscribeao();
 	}
 
 	public SubscribedMember getSubscribedMember3() {
@@ -195,14 +357,6 @@ public class InsuranceSubscribedController {
 
 	public void setSubscribedMember3(SubscribedMember subscribedMember3) {
 		this.subscribedMember3 = subscribedMember3;
-	}
-
-	public SubscribedMember getSubscribedMember4() {
-		return subscribedMember4;
-	}
-
-	public void setSubscribedMember4(SubscribedMember subscribedMember4) {
-		this.subscribedMember4 = subscribedMember4;
 	}
 
 	public SubscribedMember getSubscribedMember5() {
@@ -221,20 +375,48 @@ public class InsuranceSubscribedController {
 		this.subscribedMember6 = subscribedMember6;
 	}
 
-	public InsuranceSubscribedDao getInsuranceSubscribeDao() {
+	public InsuranceSubscribeDao getInsuranceSubscribeDao() {
 		return insuranceSubscribeDao;
 	}
 
-	public void setInsuranceSubscribeDao(InsuranceSubscribedDao insuranceSubscribeDao) {
+	public void setInsuranceSubscribeDao(InsuranceSubscribeDao insuranceSubscribeDao) {
 		this.insuranceSubscribeDao = insuranceSubscribeDao;
 	}
 
-	public Subscribed getSubscribed() {
-		return subscribed;
+	public void setSubscribedMember1(SubscribedMember subscribedMember1) {
+		this.subscribedMember1 = subscribedMember1;
 	}
 
-	public void setSubscribed(Subscribed subscribed) {
-		this.subscribed = subscribed;
+	public void setSubscribedMember2(SubscribedMember subscribedMember2) {
+		this.subscribedMember2 = subscribedMember2;
+	}
+
+	public void setSubscribedMember4(SubscribedMember subscribedMember4) {
+		this.subscribedMember4 = subscribedMember4;
+	}
+
+	public void setInsuranceSubscribeao(InsuranceSubscribeDao insuranceSubscribeao) {
+		this.insuranceSubscribeDao = insuranceSubscribeao;
+	}
+
+	public SubscribedMember getSubscribedMember7() {
+		return subscribedMember7;
+	}
+
+	public void setSubscribedMember7(SubscribedMember subscribedMember7) {
+		this.subscribedMember7 = subscribedMember7;
+	}
+
+	public SubscribedMember getSubscribedMember8() {
+		return subscribedMember8;
+	}
+
+	public void setSubscribedMember8(SubscribedMember subscribedMember8) {
+		this.subscribedMember8 = subscribedMember8;
+	}
+
+	public InsuranceSubscribedController() {
+		super();
 	}
 
 }

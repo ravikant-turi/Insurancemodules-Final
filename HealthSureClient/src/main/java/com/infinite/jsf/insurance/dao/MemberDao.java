@@ -10,7 +10,7 @@
 package com.infinite.jsf.insurance.dao;
 
 import java.util.List;
-import com.infinite.jsf.insurance.model.Member;
+import com.infinite.jsf.insurance.model.MemberPlanRule;
 
 public interface MemberDao {
 
@@ -20,7 +20,7 @@ public interface MemberDao {
      * @param member the Member object to be added
      * @return status message
      */
-    String addMember(Member member);
+    String addMember(MemberPlanRule member);
 
     /**
      * Retrieves all members associated with a specific coverage ID.
@@ -28,7 +28,7 @@ public interface MemberDao {
      * @param coverageId the coverage ID to filter members
      * @return list of Member objects
      */
-    List<Member> findAllMeberByCoverageId(String coverageId);
+    List<MemberPlanRule> findAllMeberByCoverageId(String coverageId);
 
     /**
      * Updates an existing member record.
@@ -36,7 +36,7 @@ public interface MemberDao {
      * @param member the Member object with updated data
      * @return status message
      */
-    String updateMember(Member member);
+    String updateMember(MemberPlanRule member);
     
-   List< Member> searchMemberByPlanId(String planId);
+   List< MemberPlanRule> searchMemberByPlanId(String planId);
 }

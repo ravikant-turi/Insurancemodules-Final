@@ -32,7 +32,7 @@ public class InsurancePlan implements Serializable {
 	private Date activeOn;
 	private String periodicDiseases; // YES or NO
 	
-	private Set<Member> members;
+	private Set<MemberPlanRule> members;
 
 	private int maximumMemberAllowed;
 
@@ -152,11 +152,11 @@ public class InsurancePlan implements Serializable {
 	}
 
 	
-	public Set<Member> getMembers() {
+	public Set<MemberPlanRule> getMembers() {
 		return members;
 	}
 
-	public void setMembers(Set<Member> members) {
+	public void setMembers(Set<MemberPlanRule> members) {
 		this.members = members;
 	}
 
@@ -193,7 +193,7 @@ public class InsurancePlan implements Serializable {
 
 	public InsurancePlan(String planId, InsuranceCompany insuranceCompany, String planName, PlanType planType,
 			int minEntryAge, int maxEntryAge, String description, String availableCoverAmounts, String waitingPeriod,
-			Date createdOn, Date expireDate, Date activeOn, String periodicDiseases, Set<Member> members,
+			Date createdOn, Date expireDate, Date activeOn, String periodicDiseases, Set<MemberPlanRule> members,
 			int maximumMemberAllowed, int minimumMeberAllowed) {
 		super();
 		this.planId = planId;

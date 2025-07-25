@@ -3,7 +3,7 @@
     "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.infinite.jsf.insurance.model.Member" table="member">
+    <class name="com.infinite.jsf.insurance.model.MemberPlanRule" table="member">
         <id name="meberId" column="member_id" type="string">
             <generator class="assigned"/>
         </id>

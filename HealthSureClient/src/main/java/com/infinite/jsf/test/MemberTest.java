@@ -7,6 +7,6 @@ public class MemberTest {
 	public static void main(String[] args) {
              MemberDao dao=new MemberDaoImpl();
              
-             dao.searchMemberByPlanId("PLA014").forEach(System.out::println);
+//             dao.searchMemberByPlanId("PLA014").forEach(System.out::println);
 	}
 }

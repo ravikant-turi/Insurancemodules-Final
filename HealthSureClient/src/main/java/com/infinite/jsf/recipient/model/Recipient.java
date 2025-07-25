@@ -1,10 +1,11 @@
 package com.infinite.jsf.recipient.model;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
 import com.infinite.jsf.admin.model.PaymentHistory;
+import com.infinite.jsf.insurance.model.Subscribe;
 import com.infinite.jsf.pharmacy.model.DispensedEquipment;
 import com.infinite.jsf.pharmacy.model.DispensedMedicine;
 import com.infinite.jsf.provider.model.Appointment;
@@ -12,33 +13,20 @@ import com.infinite.jsf.provider.model.Claims;
 import com.infinite.jsf.provider.model.MedicalProcedure;
 import com.infinite.jsf.provider.model.Prescription;
 
-public class Recipient {
+public class Recipient implements Serializable {
 	private String hId; // Health ID
 	private String firstName;
 	private String lastName;
+	private String fullName;
 	private String mobile;
 	private String userName;
 	private Gender gender;
 	private Date dob;
 	private String address;
-	private Timestamp createdAt;
+	private Date createdAt;
 	private String password;
 	private String email;
 	private RecipientStatus status;
-	private Integer loginAttempts;
-	private Timestamp lockedUntil;
-	private Timestamp lastLogin;
-	private Timestamp passwordUpdatedAt;
-
-	// Relationships
-	private Set<Appointment> appointments;
-	private Set<MedicalProcedure> procedures;
-//	private Set<Subscribe> subscriptions;
-	private Set<Prescription> prescriptions;
-	private Set<DispensedMedicine> dispensedMedicines;
-	private Set<DispensedEquipment> dispensedEquipments;
-	private Set<Claims> claims;
-	private Set<PaymentHistory> paymentHistories;
 
 	// Constructors
 	public Recipient() {
@@ -57,8 +45,7 @@ public class Recipient {
 		this.password = password;
 		this.email = email;
 		this.status = RecipientStatus.ACTIVE;
-		this.loginAttempts = 0;
-		this.createdAt = new Timestamp(System.currentTimeMillis());
+		this.createdAt = new Date(System.currentTimeMillis());
 	}
 
 	// Getters and Setters
@@ -84,6 +71,14 @@ public class Recipient {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String firstName, String lastName) {
+		this.fullName = getFirstName() + " " + getLastName();
 	}
 
 	public String getMobile() {
@@ -126,11 +121,11 @@ public class Recipient {
 		this.address = address;
 	}
 
-	public Timestamp getCreatedAt() {
+	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Timestamp createdAt) {
+	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
 
@@ -158,101 +153,37 @@ public class Recipient {
 		this.status = status;
 	}
 
-	public Integer getLoginAttempts() {
-		return loginAttempts;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
-	public void setLoginAttempts(Integer loginAttempts) {
-		this.loginAttempts = loginAttempts;
-	}
-
-	public Timestamp getLockedUntil() {
-		return lockedUntil;
-	}
-
-	public void setLockedUntil(Timestamp lockedUntil) {
-		this.lockedUntil = lockedUntil;
-	}
-
-	public Timestamp getLastLogin() {
-		return lastLogin;
-	}
-
-	public void setLastLogin(Timestamp lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-
-	public Timestamp getPasswordUpdatedAt() {
-		return passwordUpdatedAt;
-	}
-
-	public void setPasswordUpdatedAt(Timestamp passwordUpdatedAt) {
-		this.passwordUpdatedAt = passwordUpdatedAt;
-	}
-
-	// Relationship getters and setters
-	public Set<Appointment> getAppointments() {
-		return appointments;
-	}
-
-	public void setAppointments(Set<Appointment> appointments) {
-		this.appointments = appointments;
-	}
-
-	public Set<MedicalProcedure> getProcedures() {
-		return procedures;
-	}
-
-	public void setProcedures(Set<MedicalProcedure> procedures) {
-		this.procedures = procedures;
-	}
-
-	
-
-	public Set<Prescription> getPrescriptions() {
-		return prescriptions;
-	}
-
-	public void setPrescriptions(Set<Prescription> prescriptions) {
-		this.prescriptions = prescriptions;
-	}
-
-	public Set<DispensedMedicine> getDispensedMedicines() {
-		return dispensedMedicines;
-	}
-
-	public void setDispensedMedicines(Set<DispensedMedicine> dispensedMedicines) {
-		this.dispensedMedicines = dispensedMedicines;
-	}
-
-	public Set<DispensedEquipment> getDispensedEquipments() {
-		return dispensedEquipments;
-	}
-
-	public void setDispensedEquipments(Set<DispensedEquipment> dispensedEquipments) {
-		this.dispensedEquipments = dispensedEquipments;
-	}
-
-	public Set<Claims> getClaims() {
-		return claims;
-	}
-
-	public void setClaims(Set<Claims> claims) {
-		this.claims = claims;
-	}
-
-	public Set<PaymentHistory> getPaymentHistories() {
-		return paymentHistories;
-	}
-
-	public void setPaymentHistories(Set<PaymentHistory> paymentHistories) {
-		this.paymentHistories = paymentHistories;
+	public Recipient(String hId, String firstName, String lastName, String fullName, String mobile, String userName,
+			Gender gender, Date dob, String address, Date createdAt, String password, String email,
+			RecipientStatus status) {
+		super();
+		this.hId = hId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.fullName = fullName;
+		this.mobile = mobile;
+		this.userName = userName;
+		this.gender = gender;
+		this.dob = dob;
+		this.address = address;
+		this.createdAt = createdAt;
+		this.password = password;
+		this.email = email;
+		this.status = status;
 	}
 
 	@Override
 	public String toString() {
-		return "Recipient{" + "hId='" + hId + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName
-				+ '\'' + ", mobile='" + mobile + '\'' + ", userName='" + userName + '\'' + ", gender=" + gender
-				+ ", dob=" + dob + ", status=" + status + '}';
+		return "Recipient [hId=" + hId + ", firstName=" + firstName + ", lastName=" + lastName + ", fullName="
+				+ fullName + ", mobile=" + mobile + ", userName=" + userName + ", gender=" + gender + ", dob=" + dob
+				+ ", address=" + address + ", createdAt=" + createdAt + ", password=" + password + ", email=" + email
+				+ ", status=" + status + "]";
 	}
+
+	// Relationship getters and setters
+	
 }

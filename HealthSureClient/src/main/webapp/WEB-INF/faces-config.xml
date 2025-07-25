@@ -151,15 +151,15 @@
 	<!-- DAO Bean -->
 	<managed-bean>
 		<managed-bean-name>insuranceSubscribeDao</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.InsuranceSubscribedDaoImpl
+		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.InsuranceSubscribeDaoImpl
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 
 
 	<managed-bean>
-		<managed-bean-name>subscribed</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.model.Subscribed
+		<managed-bean-name>subscribe</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.Subscribe
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
@@ -172,6 +172,48 @@
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>subscribedMember1</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember2</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember3</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember4</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember5</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember6</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember7</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
+		</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>subscribedMember8</managed-bean-name>
 		<managed-bean-class>com.infinite.jsf.insurance.model.SubscribedMember
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
@@ -211,14 +253,40 @@
 			<property-name>coverageOption3</property-name>
 			<value>#{coverageOption3}</value>
 		</managed-property>
-		<managed-property>
-			<property-name>insuranceSubscribeDao</property-name>
-			<value>#{insuranceSubscribeDao}</value>
-		</managed-property>
+		
 		<managed-property>
 			<property-name>subscribedMember1</property-name>
 			<value>#{subscribedMember1}</value>
 		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember2</property-name>
+			<value>#{subscribedMember2}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember3</property-name>
+			<value>#{subscribedMember3}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember4</property-name>
+			<value>#{subscribedMember4}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember5</property-name>
+			<value>#{subscribedMember5}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember6</property-name>
+			<value>#{subscribedMember6}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember7</property-name>
+			<value>#{subscribedMember7}</value>
+		</managed-property>
+		<managed-property>
+			<property-name>subscribedMember8</property-name>
+			<value>#{subscribedMember8}</value>
+		</managed-property>
+		
 		<managed-property>
 			<property-name>subscribedMember</property-name>
 			<value>#{subscribedMember}</value>
