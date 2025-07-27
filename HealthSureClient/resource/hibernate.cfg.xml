@@ -32,7 +32,7 @@
 		<mapping
 			resource="com/infinite/jsf/insurance/mapping/InsuranceCoverageOption.hbm.xml" />
 		<mapping
-			resource="com/infinite/jsf/insurance/mapping/MemberPlanRule.hbm.xml" />
+			resource="com/infinite/jsf/insurance/mapping/MemberPlanRule.xml" />
 		<mapping
 			resource="com/infinite/jsf/insurance/mapping/Subscribed.hbm.xml" />
 		<mapping

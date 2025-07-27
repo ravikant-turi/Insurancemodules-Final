@@ -315,7 +315,7 @@ h3, h4 {
 			rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.planType eq 'FAMILY'}">
 			<h3>Plan Information - FAMILY</h3>
 			<h:panelGroup
-				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed lt 9}">
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 1}">
 
 				<h3>MEMBER-1</h3>
 
@@ -325,9 +325,9 @@ h3, h4 {
 						value="#{insuranceSubscribedController.searchRecipeintId}" />
 
 					<h:commandButton value="SearchMember"
-						action="#{insuranceSubscribedController.fetchRecipientDetailsIndividual(insuranceSubscribedController.subscribedMember1,insuranceSubscribedController.searchRecipeintId)}" />
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember1,insuranceSubscribedController.searchRecipeintId)}" />
 					<br />
-					<h:message for="hid" style="color:red;" />
+					<h:message for="hid1" style="color:red;" />
 					<br /> <br /> <label>Full Name:</label>
 					<h:outputText
 						value="#{insuranceSubscribedController.subscribedMember1.fullName}" />
@@ -342,7 +342,7 @@ h3, h4 {
 				</div>
 			</h:panelGroup>
 			<h:panelGroup
-				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed lt 9}">
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 1}">
 
 				<h3>MEMBER-2</h3>
 
@@ -352,9 +352,9 @@ h3, h4 {
 						value="#{insuranceSubscribedController.searchRecipeintId}" />
 
 					<h:commandButton value="SearchMember"
-						action="#{insuranceSubscribedController.fetchRecipientDetailsIndividual(insuranceSubscribedController.subscribedMember2,insuranceSubscribedController.searchRecipeintId)}" />
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember2,insuranceSubscribedController.searchRecipeintId)}" />
 					<br />
-					<h:message for="hid" style="color:red;" />
+					<h:message for="hid2" style="color:red;" />
 					<br /> <br /> <label>Full Name:</label>
 					<h:outputText
 						value="#{insuranceSubscribedController.subscribedMember2.fullName}" />
@@ -369,7 +369,7 @@ h3, h4 {
 				</div>
 			</h:panelGroup>
 			<h:panelGroup
-				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed lt 9}">
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 2}">
 
 				<h3>MEMBER-3</h3>
 
@@ -379,9 +379,9 @@ h3, h4 {
 						value="#{insuranceSubscribedController.searchRecipeintId}" />
 
 					<h:commandButton value="SearchMember"
-						action="#{insuranceSubscribedController.fetchRecipientDetailsIndividual(insuranceSubscribedController.subscribedMember3,insuranceSubscribedController.searchRecipeintId)}" />
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember3,insuranceSubscribedController.searchRecipeintId)}" />
 					<br />
-					<h:message for="hid" style="color:red;" />
+					<h:message for="hid3" style="color:red;" />
 					<br /> <br /> <label>Full Name:</label>
 					<h:outputText
 						value="#{insuranceSubscribedController.subscribedMember3.fullName}" />
@@ -396,7 +396,7 @@ h3, h4 {
 				</div>
 			</h:panelGroup>
 			<h:panelGroup
-				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed lt 9}">
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 3}">
 
 				<h3>MEMBER-4</h3>
 
@@ -406,9 +406,9 @@ h3, h4 {
 						value="#{insuranceSubscribedController.searchRecipeintId}" />
 
 					<h:commandButton value="SearchMember"
-						action="#{insuranceSubscribedController.fetchRecipientDetailsIndividual(insuranceSubscribedController.subscribedMember4,insuranceSubscribedController.searchRecipeintId)}" />
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember4,insuranceSubscribedController.searchRecipeintId)}" />
 					<br />
-					<h:message for="hid" style="color:red;" />
+					<h:message for="hid4" style="color:red;" />
 					<br /> <br /> <label>Full Name:</label>
 					<h:outputText
 						value="#{insuranceSubscribedController.subscribedMember4.fullName}" />
@@ -418,6 +418,114 @@ h3, h4 {
 					<br /> <label>Gender:</label>
 					<h:outputText
 						value="#{insuranceSubscribedController.subscribedMember4.gender}" />
+					<br /> <br /> <label>Relation With Proposer: INDIVIDUAL</label>
+
+				</div>
+			</h:panelGroup>
+			<h:panelGroup
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 4}">
+
+				<h3>MEMBER-5</h3>
+
+				<div class="member-section">
+					<label>Enter Register HID:</label>
+					<h:inputText id="hid5"
+						value="#{insuranceSubscribedController.searchRecipeintId}" />
+
+					<h:commandButton value="SearchMember"
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember5,insuranceSubscribedController.searchRecipeintId)}" />
+					<br />
+					<h:message for="hid5" style="color:red;" />
+					<br /> <br /> <label>Full Name:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember5.fullName}" />
+					<br /> <label>Age:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember5.age}" />
+					<br /> <label>Gender:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember5.gender}" />
+					<br /> <br /> <label>Relation With Proposer: INDIVIDUAL</label>
+
+				</div>
+			</h:panelGroup>
+			<h:panelGroup
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 5}">
+
+				<h3>MEMBER-6</h3>
+
+				<div class="member-section">
+					<label>Enter Register HID:</label>
+					<h:inputText id="hid6"
+						value="#{insuranceSubscribedController.searchRecipeintId}" />
+
+					<h:commandButton value="SearchMember"
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember6,insuranceSubscribedController.searchRecipeintId)}" />
+					<br />
+					<h:message for="hid6" style="color:red;" />
+					<br /> <br /> <label>Full Name:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember6.fullName}" />
+					<br /> <label>Age:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember6.age}" />
+					<br /> <label>Gender:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember6.gender}" />
+					<br /> <br /> <label>Relation With Proposer: INDIVIDUAL</label>
+
+				</div>
+			</h:panelGroup>
+			<h:panelGroup
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 6}">
+
+				<h3>MEMBER-7</h3>
+
+				<div class="member-section">
+					<label>Enter Register HID:</label>
+					<h:inputText id="hid7"
+						value="#{insuranceSubscribedController.searchRecipeintId}" />
+
+					<h:commandButton value="SearchMember"
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember7,insuranceSubscribedController.searchRecipeintId)}" />
+					<br />
+					<h:message for="hid7" style="color:red;" />
+					<br /> <br /> <label>Full Name:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember7.fullName}" />
+					<br /> <label>Age:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember7.age}" />
+					<br /> <label>Gender:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember7.gender}" />
+					<br /> <br /> <label>Relation With Proposer: INDIVIDUAL</label>
+
+				</div>
+			</h:panelGroup>
+			<h:panelGroup
+				rendered="#{insuranceSubscribedController.coverageOption.insurancePlan.maximumMemberAllowed gt 7}">
+
+				<h3>MEMBER-8</h3>
+
+				<div class="member-section">
+					<label>Enter Register HID:</label>
+					<h:inputText id="hid8"
+						value="#{insuranceSubscribedController.searchRecipeintId}" />
+
+					<h:commandButton value="SearchMember"
+						action="#{insuranceSubscribedController.fetchRecipientDetailsFamily(insuranceSubscribedController.subscribedMember8,insuranceSubscribedController.searchRecipeintId)}" />
+					<br />
+					<h:message for="hid8" style="color:red;" />
+					<br /> <br /> <label>Full Name:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember8.fullName}" />
+					<br /> <label>Age:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember8.age}" />
+					<br /> <label>Gender:</label>
+					<h:outputText
+						value="#{insuranceSubscribedController.subscribedMember8.gender}" />
 					<br /> <br /> <label>Relation With Proposer: INDIVIDUAL</label>
 
 				</div>

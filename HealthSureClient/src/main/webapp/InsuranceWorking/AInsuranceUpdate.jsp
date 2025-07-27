@@ -17,8 +17,7 @@ body {
 
 "
 src /main /webapp /InsuranceWorking /AInsuranceAddInsuranceCoveragePlan.jsp
-	"
-.main-container {
+	 " .main-container {
 	max-width: 1200px;
 	margin: auto;
 }
@@ -181,7 +180,7 @@ form {
 
 		<!-- Add Insurance Plan Form -->
 		<div class="header-container">
-			<h3 class="section-title">Add Insurance Plan</h3>
+			<h3 class="section-title">Update Insurance Plan</h3>
 		</div>
 
 		<h:form id="companyForm">
@@ -198,7 +197,8 @@ form {
 
 					</div>
 					<div class="form-group">
-						<label>Plan Name:</label>
+						<h:outputLabel escape="false"
+							value="<span style='color:green'>*</span>Plan Name :" />
 						<h:inputText id="planName"
 							value="#{createInsuranceController.insurancePlan.planName}" />
 						<h:message for="planName" styleClass="error" />
@@ -251,7 +251,7 @@ form {
 
 					<div class="form-group">
 						<h:outputLabel escape="false"
-							value="<span style='color:red'>*</span>Description: " />
+							value="<span style='color:green'>*</span>Description: " />
 						<h:inputTextarea id="description"
 							value="#{createInsuranceController.insurancePlan.description}"
 							rows="2" cols="20" />
@@ -318,7 +318,8 @@ form {
 				<!-- Row 4 -->
 				<div class="form-row">
 					<div class="form-group">
-						<label>Periodic Diseases:</label>
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>PeriodicDiseases:" />
 						<h:selectOneMenu id="periodicDiseases"
 							value="#{createInsuranceController.insurancePlan.periodicDiseases}">
 							<f:selectItem itemLabel="--Select--" itemValue="" />
@@ -453,12 +454,14 @@ form {
 					<!-- Coverage Option 2 -->
 					<div class="coverage-box">
 						<h3>Add Gold Option</h3>
-						<label>Premium Amount:</label>
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>Premium Amount: " />
 						<h:inputText id="PremiumAmount2"
 							value="#{createInsuranceController.coverageOption2.premiumAmount}" />
 						<h:message for="PremiumAmount2" styleClass="error" />
 
-						<label>Coverage Amount:</label>
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>Coverage Amount: :" />
 						<h:inputText id="CoverageAmount2"
 							value="#{createInsuranceController.coverageOption2.coverageAmount}" />
 						<h:message for="CoverageAmount2" styleClass="error" />
@@ -477,12 +480,14 @@ form {
 					<!-- Coverage Option 3 -->
 					<div class="coverage-box">
 						<h3>Add Platinum Option</h3>
-						<label>Premium Amount:</label>
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>Premium Amount: " />
 						<h:inputText id="PremiumAmount3"
 							value="#{createInsuranceController.coverageOption3.premiumAmount}" />
 						<h:message for="PremiumAmount3" styleClass="error" />
 
-						<label>Coverage Amount:</label>
+						<h:outputLabel escape="false"
+							value="<span style='color:red'>*</span>Coverage Amount: :" />
 						<h:inputText id="CoverageAmount3"
 							value="#{createInsuranceController.coverageOption3.coverageAmount}" />
 						<h:message for="CoverageAmount3" styleClass="error" />

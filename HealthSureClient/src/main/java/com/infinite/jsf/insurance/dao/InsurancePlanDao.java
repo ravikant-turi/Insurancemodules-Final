@@ -43,9 +43,8 @@ public interface InsurancePlanDao {
      * @param insurancePlan the insurance plan with updated data
      * @return status message
      */
-    String updateInsurancePlan(InsurancePlan insurancePlan);
+	String updateInsurancePlan(InsurancePlan insurancePlan);
     
-    String searchByPlainId(String planId);
     
     
     

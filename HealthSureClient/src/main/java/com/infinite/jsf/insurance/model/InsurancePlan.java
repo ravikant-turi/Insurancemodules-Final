@@ -1,9 +1,7 @@
 package com.infinite.jsf.insurance.model;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
-
 /**
  * InsurancePlan.java
  * 
@@ -12,7 +10,6 @@ import java.util.Set;
  * 
  * Copyright © 2025 Infinite Computer Solution. All rights reserved.
  */
-
 public class InsurancePlan implements Serializable {
 	private String planId;
 	private InsuranceCompany insuranceCompany;
@@ -152,6 +149,18 @@ public class InsurancePlan implements Serializable {
 	}
 
 	
+	public int getMinimumMeberAllowed() {
+		return minimumMeberAllowed;
+	}
+
+	public void setMinimumMeberAllowed(int minimumMeberAllowed) {
+		this.minimumMeberAllowed = minimumMeberAllowed;
+	}
+
+	public InsurancePlan() {
+		super();
+	}
+
 	public Set<MemberPlanRule> getMembers() {
 		return members;
 	}
@@ -166,18 +175,6 @@ public class InsurancePlan implements Serializable {
 
 	public void setMaximumMemberAllowed(int maximumMemberAllowed) {
 		this.maximumMemberAllowed = maximumMemberAllowed;
-	}
-
-	public int getMinimumMeberAllowed() {
-		return minimumMeberAllowed;
-	}
-
-	public void setMinimumMeberAllowed(int minimumMeberAllowed) {
-		this.minimumMeberAllowed = minimumMeberAllowed;
-	}
-
-	public InsurancePlan() {
-		super();
 	}
 
 	@Override
@@ -214,4 +211,5 @@ public class InsurancePlan implements Serializable {
 		this.minimumMeberAllowed = minimumMeberAllowed;
 	}
 
+	
 }

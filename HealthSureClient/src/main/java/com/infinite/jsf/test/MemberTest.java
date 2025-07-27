@@ -1,11 +1,11 @@
 package com.infinite.jsf.test;
 
-import com.infinite.jsf.insurance.dao.MemberDao;
-import com.infinite.jsf.insurance.daoImpl.MemberDaoImpl;
+import com.infinite.jsf.insurance.dao.MemberPlanRuleDao;
+import com.infinite.jsf.insurance.daoImpl.MemberPlanRuleDaoImpl;
 
 public class MemberTest {
 	public static void main(String[] args) {
-             MemberDao dao=new MemberDaoImpl();
+             MemberPlanRuleDao dao=new MemberPlanRuleDaoImpl();
              
 //             dao.searchMemberByPlanId("PLA014").forEach(System.out::println);
 	}

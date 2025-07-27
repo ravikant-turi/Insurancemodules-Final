@@ -17,15 +17,15 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.infinite.jsf.insurance.dao.MemberDao;
+import com.infinite.jsf.insurance.dao.MemberPlanRuleDao;
 import com.infinite.jsf.insurance.model.MemberPlanRule;
 import com.infinite.jsf.util.SessionHelper;
 
-public class MemberDaoImpl implements MemberDao {
+public class MemberPlanRuleDaoImpl implements MemberPlanRuleDao {
 
     static SessionFactory factory;
     static Session session;
-    private static final Logger logger = Logger.getLogger(MemberDaoImpl.class);
+    private static final Logger logger = Logger.getLogger(MemberPlanRuleDaoImpl.class);
 
     static {
         factory = SessionHelper.getSessionFactory();
@@ -74,7 +74,7 @@ public class MemberDaoImpl implements MemberDao {
         try {
             session = factory.openSession();
             lastId = (String) session.createQuery(
-                "SELECT m.meberId FROM Member m ORDER BY m.meberId DESC")
+                "SELECT m.meberId FROM MemberPlanRule m ORDER BY m.meberId DESC")
                 .setMaxResults(1)
                 .uniqueResult();
             logger.debug("Last member ID fetched: " + lastId);
@@ -128,7 +128,7 @@ public class MemberDaoImpl implements MemberDao {
 		session =factory.openSession();
 		Transaction trans=session.beginTransaction();
 
-	    String hql = "FROM Member m WHERE m.insurancePlan.planId = :planId";
+	    String hql = "FROM MemberPlanRule m WHERE m.insurancePlan.planId = :planId";
 	    Query query = session.createQuery(hql);
 	    query.setParameter("planId", planId);
 	    memberList=query.list();

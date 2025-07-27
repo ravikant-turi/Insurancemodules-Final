@@ -389,3 +389,50 @@
 				</div>
 
 			</h:panelGroup>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			=============.form-group {
+    flex: 1;
+    min-width: 280px;
+    margin-right: 20px;
+}
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+h\:outputText {
+    display: block;
+    padding: 10px 14px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    color: #555;
+    font-size: 15px;
+}
+
+.coverage-box {
+    background-color: #fdfdfd;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    width: 100%;
+}
+
+.coverage-box h3 {
+    margin-top: 0;
+    color: #2c

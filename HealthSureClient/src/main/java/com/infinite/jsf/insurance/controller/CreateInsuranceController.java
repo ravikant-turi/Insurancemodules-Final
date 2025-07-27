@@ -1,4 +1,5 @@
 package com.infinite.jsf.insurance.controller;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,10 +14,9 @@ import javax.faces.context.FacesContext;
 
 import com.infinite.jsf.insurance.dao.InsuranceCoverageOptionDao;
 import com.infinite.jsf.insurance.dao.InsurancePlanDao;
-import com.infinite.jsf.insurance.dao.MemberDao;
+import com.infinite.jsf.insurance.dao.MemberPlanRuleDao;
 import com.infinite.jsf.insurance.daoImpl.InsuranceCoverageOptionDaoImpl;
 import com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl;
-import com.infinite.jsf.insurance.daoImpl.MemberDaoImpl;
 import com.infinite.jsf.insurance.model.CoveragePlanStatus;
 import com.infinite.jsf.insurance.model.Gender;
 import com.infinite.jsf.insurance.model.InsuranceCompany;
@@ -27,18 +27,17 @@ import com.infinite.jsf.insurance.model.MessageConstants;
 import com.infinite.jsf.insurance.model.PlanType;
 import com.infinite.jsf.insurance.model.Relation;
 
-
-public class CreateInsuranceController {	
+public class CreateInsuranceController {
 	private InsuranceCompany insuranceCompany;
 	private InsurancePlan insurancePlan;
 	private InsuranceCoverageOption coverageOption;
 	private InsuranceCoverageOption coverageOption1;
 	private InsuranceCoverageOption coverageOption2;
 	private InsuranceCoverageOption coverageOption3;
-	private MemberPlanRule member;
-	private InsuranceCoverageOptionDao insuranceCoverageOptionDao=new InsuranceCoverageOptionDaoImpl();
+	private MemberPlanRule memberPlanRule;
+	private InsuranceCoverageOptionDao insuranceCoverageOptionDao = new InsuranceCoverageOptionDaoImpl();
 	private InsurancePlanDao insurancplanDao = new InsurancePlanDaoImpl();
-	private MemberDao memberDao=new MemberDaoImpl();
+	private MemberPlanRuleDao memberPlanRuleDao;
 	private List<InsuranceCoverageOption> planwithCovrageDetailsList;
 	private int yearsToAdd;
 	private List<MemberPlanRule> members;
@@ -91,7 +90,7 @@ public class CreateInsuranceController {
 
 							}
 
-							memberDao.addMember(member);
+							memberPlanRuleDao.addMember(member);
 						}
 
 						if (coverageOption1 != null
@@ -130,30 +129,67 @@ public class CreateInsuranceController {
 	public String findAllPlanDetailsByPlanId(String planId) {
 
 		insurancePlan = insurancplanDao.findInsuranceById(planId);
-		members = memberDao.searchMemberByPlanId(planId);
+		members = memberPlanRuleDao.searchMemberByPlanId(planId);
 		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptionsByPlanId(planId);
-        System.out.println("=====================");
-        System.out.println("=====================");
-        System.out.println("=====================");
-        System.out.println("=====================");
-        System.out.println("=====================");
-        System.out.println("=====================");
-			coverageOption1=planwithCovrageDetailsList.get(0);
-			coverageOption2=planwithCovrageDetailsList.get(1);
-			coverageOption3=planwithCovrageDetailsList.get(2);
-		
-		
+		System.out.println("=====================");
+		System.out.println("=====================");
+		System.out.println("=====================");
+		System.out.println("=====================");
+		System.out.println("=====================");
+		System.out.println("=====================");
+		coverageOption1 = planwithCovrageDetailsList.get(0);
+		coverageOption2 = planwithCovrageDetailsList.get(1);
+		coverageOption3 = planwithCovrageDetailsList.get(2);
+
 		System.out.println(insurancePlan);
 		members.forEach(System.out::println);
 		planwithCovrageDetailsList.forEach(System.out::println);
-		
-		for(MemberPlanRule member:members) {
-			String key=member.getRelation().toString();
+
+		for (MemberPlanRule member : members) {
+			String key = member.getRelation().toString();
 
 			relationMap.put(key, true);
 
 		}
 		return "AInsuranceCoverageDetails";
+//		return "showdetails.jsp";
+	}
+
+	public String updateInsurancePlan(String planId) {
+		insurancePlan = insurancplanDao.findInsuranceById(planId);
+		members = memberPlanRuleDao.searchMemberByPlanId(planId);
+		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptionsByPlanId(planId);
+
+		for (int i = 0; i < planwithCovrageDetailsList.size(); i++) {
+
+			if (coverageOption1 == null) {
+
+				coverageOption1 = planwithCovrageDetailsList.get(0);
+			} else if (coverageOption1 != null && coverageOption2 == null) {
+
+				coverageOption2 = planwithCovrageDetailsList.get(1);
+			} else {
+
+				coverageOption3 = planwithCovrageDetailsList.get(2);
+			}
+
+		}
+
+		for (MemberPlanRule member : members) {
+			String key = member.getRelation().toString();
+			relationMap.put(key, true);
+
+		}
+		return "AInsuranceUpdate";
+	}
+
+	public String updateInsurancePlanHelper(InsurancePlan plan) {
+
+		if (validateInsurancePlanWithFacesMessage(plan)) {
+			insurancplanDao.updateInsurancePlan(plan);
+			return "AInsuranceAdminDashBoard.jsp";
+		}
+		return null;
 	}
 
 	public InsurancePlan getInsurancePlan() {
@@ -196,14 +232,6 @@ public class CreateInsuranceController {
 		this.coverageOption3 = coverageOption3;
 	}
 
-	public MemberPlanRule getMember() {
-		return member;
-	}
-
-	public void setMember(MemberPlanRule member) {
-		this.member = member;
-	}
-
 	public InsuranceCoverageOptionDao getInsuranceCoverageOptionDao() {
 		return insuranceCoverageOptionDao;
 	}
@@ -216,16 +244,32 @@ public class CreateInsuranceController {
 		return insurancplanDao;
 	}
 
+	public MessageConstants getMsg() {
+		return msg;
+	}
+
+	public void setMsg(MessageConstants msg) {
+		this.msg = msg;
+	}
+
 	public void setInsurancplanDao(InsurancePlanDao insurancplanDao) {
 		this.insurancplanDao = insurancplanDao;
 	}
 
-	public MemberDao getMemberDao() {
-		return memberDao;
+	public MemberPlanRule getMemberPlanRule() {
+		return memberPlanRule;
 	}
 
-	public void setMemberDao(MemberDao memberDao) {
-		this.memberDao = memberDao;
+	public void setMemberPlanRule(MemberPlanRule memberPlanRule) {
+		this.memberPlanRule = memberPlanRule;
+	}
+
+	public MemberPlanRuleDao getMemberPlanRuleDao() {
+		return memberPlanRuleDao;
+	}
+
+	public void setMemberPlanRuleDao(MemberPlanRuleDao memberPlanRuleDao) {
+		this.memberPlanRuleDao = memberPlanRuleDao;
 	}
 
 	public List<InsuranceCoverageOption> getPlanwithCovrageDetailsList() {

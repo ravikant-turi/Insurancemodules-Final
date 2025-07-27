@@ -45,7 +45,9 @@
 		<property name="periodicDiseases" column="periodic_diseases"
 			type="string" />
 		<property name="maximumMemberAllowed"
+
 			column="maximum_member_allowed" type="int" />
+
 		<property name="minimumMeberAllowed"
 			column="minimum_member_allowed" type="int" />
 

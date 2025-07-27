@@ -42,7 +42,7 @@ public class InsuranceSubscribedController {
 	SubscribedMember subscribedMember8;
 
 	InsuranceSubscribeDao insuranceSubscribeDao = new InsuranceSubscribeDaoImpl();
-	List<SubscribedMember> SubscribedMemberList;
+	List<SubscribedMember> subscribedMemberList;
 	List<InsuranceCoverageOption> coverageOptionsList;
 
 	private PlanType selectedPlanType;
@@ -111,16 +111,45 @@ public class InsuranceSubscribedController {
 	}
 
 	public String fetchRecipientDetailsFamily(SubscribedMember subscribedMember, String searchRecipeintId) {
-		
+		System.out.println("----------------------this is id :"+searchRecipeintId);
+//		FacesContext context = FacesContext.getCurrentInstance();
 		Recipient recipient = insuranceSubscribeDao.searchRecipientById(searchRecipeintId);
+		System.out.println(searchRecipeintId+""+recipient);
 		subscribedMember.setRecipient(recipient);
 
-		
-		System.out.println("-------------fetch is clicked------------");
-		System.out.println("-------------subscribedMember1 :" + subscribedMember1);
+//		if (recipient != null) {
+//			if (recipient.getDob() != null) {
+//				subscribedMember.setAge(calculateAge(recipient.getDob()));
+//			} else {
+//				subscribedMember.setAge(0); // Or handle appropriately
+//			}
+//
+//			subscribedMember.setFullName(recipient.getFirstName());
+//			System.out.println(
+//					recipient.getFirstName() + "===========inside recipent to set " + subscribedMember.getFullName());
+//			subscribedMember.setGender(recipient.getGender().toString());
+//			Subscribe subscribe = new Subscribe();
+//			InsuranceCoverageOption policy = (InsuranceCoverageOption) context.getExternalContext().getSessionMap()
+//					.get("coverageOption");
+
+//			subscribe = subscribeMemberTosubscribe(subscribedMember, coverageOption);
+//			subscribe.setAmountPaid(coverageOption.getPremiumAmount());
+//			insuranceSubscribeDao.addIndividualSuscribeMember(subscribe);
+
+//		} else {
+//			context.addMessage("form:hid",
+//					new FacesMessage(FacesMessage.SEVERITY_ERROR, "You are not a Registerd Member.", null));
+//		}
+
+//		subscribedMemberList.add(subscribedMember);
+		subscribedMember.setRecipient(recipient);
+		System.out.println("-------------Family is clicked------------");
+		System.out.println("-------------subscribedMember1 :" + subscribedMember);
 		System.out.println("----------------------Recipient: " + recipient);
 		System.out.println("------------------subscribedMember :" + subscribedMember);
 
+//		subscribedMemberList.forEach(System.out::println);
+        searchRecipeintId=null;
 		return "null";
 	}
 
@@ -280,11 +309,11 @@ public class InsuranceSubscribedController {
 	}
 
 	public List<SubscribedMember> getSubscribedMemberList() {
-		return SubscribedMemberList;
+		return subscribedMemberList;
 	}
 
-	public void setSubscribedMemberList(List<SubscribedMember> SubscribedMemberList) {
-		this.SubscribedMemberList = SubscribedMemberList;
+	public void setSubscribedMemberList(List<SubscribedMember> subscribedMemberList) {
+		this.subscribedMemberList = subscribedMemberList;
 	}
 
 	public List<InsuranceCoverageOption> getCoverageOptionsList() {

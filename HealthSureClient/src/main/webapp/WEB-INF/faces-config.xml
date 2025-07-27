@@ -43,8 +43,8 @@
 
 	<!-- Member model -->
 	<managed-bean>
-		<managed-bean-name>member</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.model.Member
+		<managed-bean-name>memberPlanRule</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.model.MemberPlanRule
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
@@ -77,8 +77,8 @@
 
 	<!-- Member DAO -->
 	<managed-bean>
-		<managed-bean-name>memberDao</managed-bean-name>
-		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.MemberDaoImpl
+		<managed-bean-name>memberPlanRuleDao</managed-bean-name>
+		<managed-bean-class>com.infinite.jsf.insurance.daoImpl.MemberPlanRuleDaoImpl
 		</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
@@ -120,8 +120,8 @@
 			<value>#{coverageOption3}</value>
 		</managed-property>
 		<managed-property>
-			<property-name>member</property-name>
-			<value>#{member}</value>
+			<property-name>memberPlanRule</property-name>
+			<value>#{memberPlanRule}</value>
 		</managed-property>
 		<managed-property>
 			<property-name>insuranceCoverageOptionDao</property-name>
@@ -132,8 +132,8 @@
 			<value>#{insurancplanDao}</value>
 		</managed-property>
 		<managed-property>
-			<property-name>memberDao</property-name>
-			<value>#{memberDao}</value>
+			<property-name>memberPlanRuleDao</property-name>
+			<value>#{memberPlanRuleDao}</value>
 		</managed-property>
 	</managed-bean>
 
