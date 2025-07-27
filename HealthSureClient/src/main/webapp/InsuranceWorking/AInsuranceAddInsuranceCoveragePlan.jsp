@@ -186,6 +186,7 @@ form {
 
 		<h:form id="companyForm">
 			<div class="form-box">
+					<h3>InsurancePlan Details</h3>
 
 				<!-- Row 1 -->
 				<div class="form-row">

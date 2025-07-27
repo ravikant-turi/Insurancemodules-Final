@@ -192,7 +192,7 @@ table, th, td {
 			</f:facet>
 			<h:form>
 				<h:commandButton value="Update" styleClass="action-btn"
-					action="#{createInsuranceController.showPlanDetailsToUpdate(plan.planId)}" />
+					action="#{createInsuranceController.updateInsurancePlan(plan.planId)}" />
 			</h:form>
 		</h:column>
 
