@@ -174,6 +174,14 @@ form {
 
 </head>
 <body>
+	<script>
+  window.onload = function () {
+    const fields = document.querySelectorAll('.readonly-field');
+    fields.forEach(field => {
+      field.setAttribute('title', 'This field is read-only');
+    });
+  };
+</script>
 
 	<div class="main-container">
 
@@ -183,16 +191,17 @@ form {
 		</div>
 
 		<h:form id="companyForm">
-		
+
 			<div class="form-box">
-							<h3>Plan Details</h3>
+				<h3>Plan Details</h3>
 
 				<!-- Row 1 -->
 				<div class="form-row">
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Company Name :" />
-						<h:inputText id="companyId"
+						<h:inputText id="companyId" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.insuranceCompany.name}" />
 						<br />
 						<h:message for="companyId" styleClass="error" />
@@ -210,18 +219,9 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value=" <span style='color:red'>*</span>PlanType: " />
-						<h:selectOneMenu id="planType"
-							value="#{createInsuranceController.insurancePlan.planType}">
-							<f:selectItem itemLabel="--Select--" itemValue="" />
-							<f:selectItem itemLabel="INDIVIDUAL" itemValue="INDIVIDUAL" />
-							<f:selectItem itemLabel="FAMILY" itemValue="FAMILY" />
-							<f:selectItem itemLabel="CRITICAL_ILLNESS [INDIVIDUAL]"
-								itemValue="CRITICAL_ILLNESS" />
-							<f:selectItem itemLabel="EPIDEMIC_PROTECT [INDIVIDUAL]"
-								itemValue="EPIDEMIC_PROTECT [INDIVIDUAL]" />
-							<f:selectItem itemLabel="SUPER_ELITE [INDIVIDUAL]"
-								itemValue="SUPER_ELITE" />
-						</h:selectOneMenu>
+						<h:inputText id="planType" readonly="true"
+							title="This field is read-only"
+							value="#{createInsuranceController.insurancePlan.planType}" />
 						<br />
 						<h:message for="planType" styleClass="error" />
 
@@ -235,7 +235,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Max Age: " />
-						<h:inputText id="maxAge"
+						<h:inputText id="maxAge" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.maxEntryAge}" />
 						<h:message for="maxAge" styleClass="error" />
 						<br />
@@ -244,7 +245,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Min Age: " />
-						<h:inputText id="minAge"
+						<h:inputText id="minAge" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.minEntryAge}" />
 						<h:message for="minAge" styleClass="error" />
 						<br />
@@ -254,7 +256,7 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:green'>*</span>Description: " />
-						<h:inputTextarea id="description"
+						<h:inputTextarea id="description" title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.description}"
 							rows="2" cols="20" />
 						<h:message for="description" styleClass="error" />
@@ -268,7 +270,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Available Amount: " />
-						<h:inputText id="cover"
+						<h:inputText id="cover" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.availableCoverAmounts}" />
 						<h:message for="cover" styleClass="error" />
 						<br />
@@ -277,7 +280,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Waiting Period: " />
-						<h:inputText id="waitingPeriod"
+						<h:inputText id="waitingPeriod" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.waitingPeriod}" />
 						<h:message for="waitingPeriod" styleClass="error" />
 						<br />
@@ -286,7 +290,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Active On: " />
-						<h:inputText id="activeOn"
+						<h:inputText id="activeOn" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.activeOn}">
 							<f:convertDateTime pattern="yyyy-MM-dd" />
 						</h:inputText>
@@ -300,7 +305,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>MaximumMemberAllowed: " />
-						<h:inputText id="maximumMemberAllowed"
+						<h:inputText id="maximumMemberAllowed" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.maximumMemberAllowed}" />
 						<h:message for="maximumMemberAllowed" styleClass="error" />
 						<br />
@@ -309,7 +315,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>minimumMeberAllowed: " />
-						<h:inputText id="minimumMeberAllowed"
+						<h:inputText id="minimumMeberAllowed" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.minimumMeberAllowed}" />
 						<h:message for="minimumMeberAllowed" styleClass="error" />
 						<br />
@@ -319,7 +326,8 @@ form {
 					<div class="form-group">
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>createdOn: " />
-						<h:inputText id="createdOn"
+						<h:inputText id="createdOn" readonly="true"
+							title="This field is read-only"
 							value="#{createInsuranceController.insurancePlan.createdOn}">
 							<f:convertDateTime pattern="yyyy-MM-dd" />
 						</h:inputText>
@@ -345,42 +353,50 @@ form {
 				<div
 					style="padding-left: 35px; display: flex; flex-wrap: wrap; justify-content: space-evenly; width: 100%;">
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['DAUGHTER1']}" />
 							Daughter1</label>
 					</div>
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['DAUGHTER2']}" />
 							Daughter2</label>
 					</div>
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['SON1']}" />
 							Son1</label>
 					</div>
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['SON2']}" />
 							Son2</label>
 					</div>
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['FATHER']}" />
 							Father</label>
 					</div>
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['MOTHER']}" />
 							Mother</label>
 					</div>
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['HUSBAND']}" />
 							Husband</label>
 					</div>
 					<div style="flex: 1; min-width: 120px;">
-						<label><h:selectBooleanCheckbox
+						<label><h:selectBooleanCheckbox disabled="true"
+								title="This field is read-only"
 								value="#{createInsuranceController.relationMap['WIFE']}" />
 							Wife</label>
 					</div>
@@ -399,17 +415,19 @@ form {
 				<!-- Coverage Option 1 -->
 				<div class="coverage-box">
 
-					<h3> Silver Option</h3>
+					<h3>Silver Option</h3>
 
 					<h:outputLabel escape="false"
 						value="<span style='color:red'>*</span>Premium Amount: " />
-					<h:inputText id="PremiumAmount"
+					<h:inputText id="PremiumAmount" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption1.premiumAmount}" />
 					<h:message for="PremiumAmount" styleClass="error" />
 
 					<h:outputLabel escape="false"
 						value="<span style='color:red'>*</span>Coverage Amount: :" />
-					<h:inputText id="CoverageAmount"
+					<h:inputText id="CoverageAmount" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption1.coverageAmount}" />
 					<h:message for="CoverageAmount" styleClass="error" />
 
@@ -418,7 +436,8 @@ form {
 
 					<h:outputLabel escape="false"
 						value=" <span style='color:red'>*</span>CoverageType " />
-					<h:selectOneMenu id="coverageType"
+					<h:selectOneMenu id="coverageType" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption1.coverageType}">
 						<f:selectItem itemLabel="SILVER" itemValue="SILVER" />
 
@@ -431,22 +450,25 @@ form {
 
 				<!-- Coverage Option 2 -->
 				<div class="coverage-box">
-					<h3> Gold Option</h3>
+					<h3>Gold Option</h3>
 					<h:outputLabel escape="false"
 						value="<span style='color:red'>*</span>Premium Amount: " />
-					<h:inputText id="PremiumAmount2"
+					<h:inputText id="PremiumAmount2" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption2.premiumAmount}" />
 					<h:message for="PremiumAmount2" styleClass="error" />
 
 					<h:outputLabel escape="false"
 						value="<span style='color:red'>*</span>Coverage Amount: :" />
-					<h:inputText id="CoverageAmount2"
+					<h:inputText id="CoverageAmount2" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption2.coverageAmount}" />
 					<h:message for="CoverageAmount2" styleClass="error" />
 
 					<h:outputLabel escape="false"
 						value=" <span style='color:red'>*</span>CoverageType " />
-					<h:selectOneMenu id="coverageType2"
+					<h:selectOneMenu id="coverageType2" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption2.coverageType}">
 						<f:selectItem itemLabel="GOLD" itemValue="GOLD" />
 					</h:selectOneMenu>
@@ -457,23 +479,26 @@ form {
 
 				<!-- Coverage Option 3 -->
 				<div class="coverage-box">
-					<h3> Platinum Option</h3>
+					<h3>Platinum Option</h3>
 					<h:outputLabel escape="false"
 						value="<span style='color:red'>*</span>Premium Amount: " />
-					<h:inputText id="PremiumAmount3"
+					<h:inputText id="PremiumAmount3" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption3.premiumAmount}" />
 					<h:message for="PremiumAmount3" styleClass="error" />
 
 					<h:outputLabel escape="false"
 						value="<span style='color:red'>*</span>Coverage Amount: :" />
-					<h:inputText id="CoverageAmount3"
+					<h:inputText id="CoverageAmount3" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption3.coverageAmount}" />
 					<h:message for="CoverageAmount3" styleClass="error" />
 
 
 					<h:outputLabel escape="false"
 						value=" <span style='color:red'>*</span>CoverageType " />
-					<h:selectOneMenu id="coverageType3"
+					<h:selectOneMenu id="coverageType3" readonly="true"
+						title="This field is read-only"
 						value="#{createInsuranceController.coverageOption3.coverageType}">
 
 						<f:selectItem itemLabel="PLATINUM" itemValue="PLATINUM" />
@@ -501,7 +526,7 @@ form {
 					action="#{createInsuranceController.updateInsurancePlanHelper(createInsuranceController.insurancePlan)}"
 					styleClass="action-btn" />
 			</div>
-	</h:form>
+		</h:form>
 	</div>
 	<h:messages globalOnly="true" style="color:red" />
 </body>

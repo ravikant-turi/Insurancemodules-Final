@@ -1,3 +1,20 @@
+/**
+ * CreateInsuranceController.java
+ *
+ * This controller class is responsible for handling user interactions related to
+ * the creation of insurance entities such as plans, coverage options, and associated rules.
+ * It acts as a bridge between the JSF view layer and the backend services or DAOs,
+ * managing form submissions, validations, and data persistence.
+ *
+ * Typical responsibilities include:
+ * - Initializing form data
+ * - Handling user input and triggering business logic
+ * - Managing navigation outcomes
+ * - Coordinating with DAO classes to persist insurance-related data
+ *
+ * Copyright © 2025 Infinite Computer Solution. All rights reserved.
+ */
+
 package com.infinite.jsf.insurance.controller;
 
 import java.text.SimpleDateFormat;
@@ -23,7 +40,7 @@ import com.infinite.jsf.insurance.model.InsuranceCompany;
 import com.infinite.jsf.insurance.model.InsuranceCoverageOption;
 import com.infinite.jsf.insurance.model.InsurancePlan;
 import com.infinite.jsf.insurance.model.MemberPlanRule;
-import com.infinite.jsf.insurance.model.MessageConstants;
+import com.infinite.jsf.insurance.model.CreateInsuranceMessageConstants;
 import com.infinite.jsf.insurance.model.PlanType;
 import com.infinite.jsf.insurance.model.Relation;
 
@@ -44,7 +61,7 @@ public class CreateInsuranceController {
 	private List<InsurancePlan> planList;
 	private Map<String, Boolean> relationMap = new HashMap<>();
 	List<String> selectedRelations;
-	MessageConstants msg;
+	CreateInsuranceMessageConstants msg;
 
 	// show plans on dashBoard
 	public List<InsurancePlan> showAllPlan() {
@@ -52,9 +69,9 @@ public class CreateInsuranceController {
 		return planList;
 	}
 
+// Add insurancePlan and coverage : Silver , Gold , Platinum
 	public String addInsurancePlanWithCoveragePlan() {
 
-		System.out.println("========Details==========");
 		insurancePlan.setInsuranceCompany(insuranceCompany);
 
 		if (insurancePlan.getActiveOn() != null) {
@@ -126,21 +143,82 @@ public class CreateInsuranceController {
 		return "AInsuranceAdminDashBoard.jsp";
 	}
 
+	// add the plan but only silver is only mandatory to add
+
+	public String addSilverOnlyMendatory() {
+		insurancePlan.setInsuranceCompany(insuranceCompany);
+
+		if (insurancePlan.getActiveOn() != null) {
+			insurancePlan.setExpireDate(calculateExpiryDate(insurancePlan.getActiveOn(), yearsToAdd));
+		}
+		insurancePlan.setActiveOn(new Date());
+
+		System.out.println(insurancePlan);
+		System.out.println(coverageOption1);
+		System.out.println(coverageOption2);
+		System.out.println(coverageOption3);
+		// silver(coverage1) is mandatory
+		if ((validateInsurancePlanWithFacesMessage(insurancePlan)
+				|| validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1))
+				&& (coverageOption2 != null && validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2))
+				&& (coverageOption3 != null && validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3))) {
+
+			if (insurancePlan != null && coverageOption1 != null) {
+				coverageOption1.setInsurancePlan(insurancePlan);
+				insurancplanDao.addInsurancePlan(insurancePlan);
+				insuranceCoverageOptionDao.addCoveragePlan(coverageOption1);
+				for (String relations : selectedRelations) {
+					MemberPlanRule member = new MemberPlanRule();
+					member.setInsurancePlan(insurancePlan);
+					member.setRelation(Relation.valueOf(relations));
+					if (relations == "SON1" || relations == "SON2" || relations == "FATHER" || relations == "HUSBAND") {
+						member.setGender(Gender.MALE);
+					} else {
+						member.setGender(Gender.FEMALE);
+
+					}
+
+					memberPlanRuleDao.addMember(member);
+				}
+			}
+			if (insurancePlan != null && coverageOption2 != null
+					&& validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)) {
+				coverageOption2.setInsurancePlan(insurancePlan);
+				insuranceCoverageOptionDao.addCoveragePlan(coverageOption2);
+			}
+			if (insurancePlan != null && coverageOption1 != null
+					&& validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)) {
+				coverageOption3.setInsurancePlan(insurancePlan);
+				insuranceCoverageOptionDao.addCoveragePlan(coverageOption3);
+			}
+
+			return "AInsuranceAdminDashBoard.jsp";
+
+		}
+		return null;
+	}
+
+	// read details of the plan by plainId
 	public String findAllPlanDetailsByPlanId(String planId) {
 
 		insurancePlan = insurancplanDao.findInsuranceById(planId);
 		members = memberPlanRuleDao.searchMemberByPlanId(planId);
 		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptionsByPlanId(planId);
-		System.out.println("=====================");
-		System.out.println("=====================");
-		System.out.println("=====================");
-		System.out.println("=====================");
-		System.out.println("=====================");
-		System.out.println("=====================");
-		coverageOption1 = planwithCovrageDetailsList.get(0);
-		coverageOption2 = planwithCovrageDetailsList.get(1);
-		coverageOption3 = planwithCovrageDetailsList.get(2);
 
+		for (int i = 0; i < planwithCovrageDetailsList.size(); i++) {
+
+			if (coverageOption1 == null) {
+
+				coverageOption1 = planwithCovrageDetailsList.get(i);
+			} else if (coverageOption1 != null && coverageOption2 == null) {
+
+				coverageOption2 = planwithCovrageDetailsList.get(i);
+			} else {
+
+				coverageOption3 = planwithCovrageDetailsList.get(i);
+			}
+
+		}
 		System.out.println(insurancePlan);
 		members.forEach(System.out::println);
 		planwithCovrageDetailsList.forEach(System.out::println);
@@ -152,9 +230,9 @@ public class CreateInsuranceController {
 
 		}
 		return "AInsuranceCoverageDetails";
-//		return "showdetails.jsp";
 	}
 
+//update the plan by planId
 	public String updateInsurancePlan(String planId) {
 		insurancePlan = insurancplanDao.findInsuranceById(planId);
 		members = memberPlanRuleDao.searchMemberByPlanId(planId);
@@ -164,13 +242,13 @@ public class CreateInsuranceController {
 
 			if (coverageOption1 == null) {
 
-				coverageOption1 = planwithCovrageDetailsList.get(0);
+				coverageOption1 = planwithCovrageDetailsList.get(i);
 			} else if (coverageOption1 != null && coverageOption2 == null) {
 
-				coverageOption2 = planwithCovrageDetailsList.get(1);
+				coverageOption2 = planwithCovrageDetailsList.get(i);
 			} else {
 
-				coverageOption3 = planwithCovrageDetailsList.get(2);
+				coverageOption3 = planwithCovrageDetailsList.get(i);
 			}
 
 		}
@@ -183,13 +261,36 @@ public class CreateInsuranceController {
 		return "AInsuranceUpdate";
 	}
 
+//helper method to help the update the plan 
 	public String updateInsurancePlanHelper(InsurancePlan plan) {
-
-		if (validateInsurancePlanWithFacesMessage(plan)) {
+		FacesContext context = FacesContext.getCurrentInstance();
+		boolean isValid = true;
+		// Description
+		if (plan.getDescription() == null || plan.getDescription().trim().isEmpty()) {
+			context.addMessage("companyForm:description",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description is required.", null));
+			isValid = false;
+		} else if (plan.getDescription().trim().length() <= 5) {
+			context.addMessage("companyForm:description",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description must be more than 5 characters.", null));
+			isValid = false;
+		}
+		// Plan Name
+		if (plan.getPlanName() == null || plan.getPlanName().trim().isEmpty()) {
+			context.addMessage("companyForm:planName",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, msg.getPLAN_NAME_REQUIRED(), null));
+			isValid = false;
+		} else if (plan.getPlanName().trim().length() < 4) {
+			context.addMessage("companyForm:planName",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan name must be at least 4 characters.", null));
+			isValid = false;
+		}
+		if (isValid) {
 			insurancplanDao.updateInsurancePlan(plan);
 			return "AInsuranceAdminDashBoard.jsp";
 		}
 		return null;
+
 	}
 
 	public InsurancePlan getInsurancePlan() {
@@ -244,11 +345,11 @@ public class CreateInsuranceController {
 		return insurancplanDao;
 	}
 
-	public MessageConstants getMsg() {
+	public CreateInsuranceMessageConstants getMsg() {
 		return msg;
 	}
 
-	public void setMsg(MessageConstants msg) {
+	public void setMsg(CreateInsuranceMessageConstants msg) {
 		this.msg = msg;
 	}
 
@@ -330,16 +431,16 @@ public class CreateInsuranceController {
 
 	@PostConstruct
 	public void init() {
-		msg = MessageConstants.getInstance();
+		msg = CreateInsuranceMessageConstants.getInstance();
 
-		relationMap.put("SON1", false);
+		relationMap.put("SON1", true);
 		relationMap.put("SON2", false);
-		relationMap.put("DAUGHTER1", false);
+		relationMap.put("DAUGHTER1", true);
 		relationMap.put("DAUGHTER2", false);
 		relationMap.put("FATHER", false);
 		relationMap.put("MOTHER", false);
-		relationMap.put("HUSBAND", false);
-		relationMap.put("WIFE", false);
+		relationMap.put("HUSBAND", true);
+		relationMap.put("WIFE", true);
 		relationMap.put("SELF", false);
 //dynamically update the COVERAGEPLAN STATUS : ACTIVE OR INACTIVE
 		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptions();
@@ -383,6 +484,7 @@ public class CreateInsuranceController {
 
 //	VALIDATION :: INSURANCEPLAN
 	// validation of plan
+	@SuppressWarnings("unused")
 	public boolean validateInsurancePlanWithFacesMessage(InsurancePlan plan) {
 		FacesContext context = FacesContext.getCurrentInstance();
 		boolean isValid = true;
@@ -395,6 +497,10 @@ public class CreateInsuranceController {
 		} else if (plan.getPlanName().trim().length() < 4) {
 			context.addMessage("companyForm:planName",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan name must be at least 4 characters.", null));
+			isValid = false;
+		} else if (!plan.getPlanName().matches("^[A-Za-z]+$")) {
+			context.addMessage("companyForm:planName", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Plan name must contain only alphabetic characters (no digits or special characters).", null));
 			isValid = false;
 		}
 
@@ -415,43 +521,43 @@ public class CreateInsuranceController {
 			context.addMessage("companyForm:description",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description must be more than 5 characters.", null));
 			isValid = false;
+		} else if (!plan.getDescription().matches("^[A-Za-z]+$")) {
+			context.addMessage("companyForm:description", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Only alphabetic characters are allowed (no digits or special characters).", null));
+			isValid = false;
 		}
 
 		// Available Cover Amounts (assume it's a String, convert to double if needed)
 
-		// Available Cover Amounts
+		// Assume this is the raw input from the form
 		String coverAmountStr = plan.getAvailableCoverAmounts();
+
 		if (coverAmountStr == null || coverAmountStr.trim().isEmpty()) {
 			context.addMessage("companyForm:cover",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cover amount is required.", null));
 			isValid = false;
-		} else if (!coverAmountStr.trim().matches("\\d+(\\.\\d+)?")) {
-			context.addMessage("companyForm:cover",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cover amount must be a valid number.", null));
+		} else if (!coverAmountStr.trim().matches("^[0-9]+(\\.[0-9]+)?$")) {
+			context.addMessage("companyForm:cover", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Cover amount must contain only digits (no letters or special characters).", null));
 			isValid = false;
 		} else {
-			double coverAmount = Double.parseDouble(coverAmountStr.trim());
-			if (coverAmount <= 0) {
+			try {
+				double coverAmount = Double.parseDouble(coverAmountStr.trim());
+				if (coverAmount <= 0) {
+					context.addMessage("companyForm:cover", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Cover amount must be greater than zero.", null));
+					isValid = false;
+				} else {
+					plan.setAvailableCoverAmounts(coverAmountStr); // set the actual double field
+				}
+			} catch (NumberFormatException e) {
 				context.addMessage("companyForm:cover",
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cover amount must be positive.", null));
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid number format for cover amount.", null));
 				isValid = false;
 			}
 		}
 
-		// Min Entry Age
-//		FacesContext context1 = FacesContext.getCurrentInstance();
-//		UIComponent component = context1.getViewRoot().findComponent("companyForm:minAge");
-//
-//		if (component instanceof UIInput) {
-//			String inputValue = (String) ((UIInput) component).getSubmittedValue();
-//
-//			if (inputValue == null || !inputValue.matches("\\d+")) {
-//				context.addMessage("companyForm:minAge",
-//						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Only digits are allowed for Min Age.", null));
-//				isValid = false;
-//			}
-//		}
-
+//Min age
 		Integer minAge = plan.getMinEntryAge();
 
 		if (minAge == null) {
@@ -466,6 +572,7 @@ public class CreateInsuranceController {
 
 		// Max Entry Age
 		Integer maxAge = plan.getMaxEntryAge();
+
 		if (maxAge == null) {
 			context.addMessage("companyForm:maxAge",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maximum age is required.", null));
@@ -542,7 +649,7 @@ public class CreateInsuranceController {
 		return isValid;
 	}
 
-	// VALIDATION :: INSURANCECOVERAGE
+	// VALIDATION :: INSURANCECOVERAGE : SILVER , GOLD , PLATINUM
 
 	public boolean validateInsuranceCoverageOptionWithFacesMessage1(InsuranceCoverageOption option) {
 		FacesContext context = FacesContext.getCurrentInstance();

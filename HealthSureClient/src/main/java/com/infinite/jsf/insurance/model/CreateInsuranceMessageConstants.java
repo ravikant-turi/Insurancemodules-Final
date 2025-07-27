@@ -8,18 +8,18 @@ package com.infinite.jsf.insurance.model;
  *
  * Copyright © 2025 Infinite Computer Solution. All rights reserved.
  */
-public class MessageConstants {
+public class CreateInsuranceMessageConstants {
 
     // Singleton instance
-    private static MessageConstants instance;
+    private static CreateInsuranceMessageConstants instance;
 
     // Private constructor
-    private MessageConstants() {}
+    private CreateInsuranceMessageConstants() {}
 
     // Synchronized method to get the singleton instance
-    public static synchronized MessageConstants getInstance() {
+    public static synchronized CreateInsuranceMessageConstants getInstance() {
         if (instance == null) {
-            instance = new MessageConstants();
+            instance = new CreateInsuranceMessageConstants();
         }
         return instance;
     }
@@ -118,8 +118,8 @@ public class MessageConstants {
 		return PLAN_NAME_REQUIRED;
 	}
 
-	public static void setInstance(MessageConstants instance) {
-		MessageConstants.instance = instance;
+	public static void setInstance(CreateInsuranceMessageConstants instance) {
+		CreateInsuranceMessageConstants.instance = instance;
 	}
     
 }

@@ -9,7 +9,7 @@ public class InsurancePlaneTest {
 		
 		InsurancePlanDao dao=new InsurancePlanDaoImpl();
 		
-		dao.searchByPlainId("PLA014");
+		dao.findInsuranceById("PLA014");
 		
 		
 	}

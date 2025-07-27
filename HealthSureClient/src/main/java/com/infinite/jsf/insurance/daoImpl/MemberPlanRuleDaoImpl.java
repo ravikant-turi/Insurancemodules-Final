@@ -1,8 +1,9 @@
 /**
- * MemberDaoImpl.java
+ * MemberPlanRuleDaoImpl.java
  *
- * This class provides the implementation of the MemberDao interface.
- * It handles operations related to Member entities such as adding and updating members.
+ * This class provides the implementation of the MemberPlanRuleDao interface.
+ * It handles operations related to MemberPlanRule entities such as adding members,
+ * generating member IDs, searching members by plan ID, and updating member records.
  *
  * Copyright © 2025 Infinite Computer Solution. All rights reserved.
  */
@@ -21,30 +22,29 @@ import com.infinite.jsf.insurance.dao.MemberPlanRuleDao;
 import com.infinite.jsf.insurance.model.MemberPlanRule;
 import com.infinite.jsf.util.SessionHelper;
 
+/**
+ * Implementation of MemberPlanRuleDao interface.
+ * Provides CRUD operations and search functionalities for MemberPlanRule entities.
+ */
 public class MemberPlanRuleDaoImpl implements MemberPlanRuleDao {
 
-    static SessionFactory factory;
-    static Session session;
+    private static final SessionFactory factory = SessionHelper.getSessionFactory();
     private static final Logger logger = Logger.getLogger(MemberPlanRuleDaoImpl.class);
 
-    static {
-        factory = SessionHelper.getSessionFactory();
-    }
-
     /**
-     * Adds a new Member to the database.
+     * Adds a new MemberPlanRule to the database.
      *
-     * @param member the Member object to be added
-     * @return "succuss" if the operation is successful
+     * @param member the MemberPlanRule object to be added
+     * @return "success" if the operation is successful
      */
     @Override
     public String addMember(MemberPlanRule member) {
-        session = null;
         Transaction trans = null;
+        Session session = null;
         String memberId = generateNextMemberId();
-        logger.info(memberId + " : memberId is generated");
         member.setMeberId(memberId);
-        logger.info("Member details: " + member);
+        logger.info("Generated Member ID: " + memberId);
+        logger.debug("Member details to be saved: " + member);
 
         try {
             session = factory.openSession();
@@ -52,20 +52,20 @@ public class MemberPlanRuleDaoImpl implements MemberPlanRuleDao {
             session.save(member);
             trans.commit();
             logger.info("Member saved successfully with ID: " + memberId);
+            return "success";
         } catch (Exception e) {
             if (trans != null) trans.rollback();
-            logger.error("Error while saving member: " + e.getMessage(), e);
+            logger.error("Error while saving member", e);
+            return "failure";
         } finally {
             if (session != null) session.close();
         }
-
-        return "succuss";
     }
 
     /**
      * Generates the next member ID in the format MEM###.
      *
-     * @return the next member ID
+     * @return the next generated member ID
      */
     public String generateNextMemberId() {
         Session session = null;
@@ -79,15 +79,14 @@ public class MemberPlanRuleDaoImpl implements MemberPlanRuleDao {
                 .uniqueResult();
             logger.debug("Last member ID fetched: " + lastId);
         } catch (Exception e) {
-            logger.error("Error generating next member ID: " + e.getMessage(), e);
+            logger.error("Error fetching last member ID", e);
         } finally {
             if (session != null) session.close();
         }
 
         int nextNum = 1;
-
         if (lastId != null && lastId.toUpperCase().startsWith("MEM") && lastId.length() == 6) {
-            String numPart = lastId.substring(3); // "001"
+            String numPart = lastId.substring(3);
             if (numPart.matches("\\d{3}")) {
                 nextNum = Integer.parseInt(numPart) + 1;
             }
@@ -99,41 +98,61 @@ public class MemberPlanRuleDaoImpl implements MemberPlanRuleDao {
     }
 
     /**
-     * Retrieves all members associated with a specific coverage ID.
+     * Retrieves all MemberPlanRule records associated with a specific coverage ID.
+     * (Currently not implemented)
      *
      * @param coverageId the coverage ID to filter members
-     * @return list of Member objects
+     * @return list of MemberPlanRule objects or null
      */
     @Override
     public List<MemberPlanRule> findAllMeberByCoverageId(String coverageId) {
-        logger.debug("findAllMeberByCoverageId method is not yet implemented.");
+        logger.warn("findAllMeberByCoverageId method is not yet implemented.");
         return null;
     }
 
     /**
-     * Updates an existing Member record.
+     * Updates an existing MemberPlanRule record in the database.
+     * (Currently not implemented)
      *
-     * @param member the Member object with updated data
-     * @return null (method not yet implemented)
+     * @param member the MemberPlanRule object with updated data
+     * @return null
      */
     @Override
     public String updateMember(MemberPlanRule member) {
-        logger.debug("updateMember method is not yet implemented.");
+        logger.warn("updateMember method is not yet implemented.");
         return null;
     }
 
-	@Override
-	public List<MemberPlanRule> searchMemberByPlanId(String planId) {
-		List<MemberPlanRule> memberList=null;
-		session =factory.openSession();
-		Transaction trans=session.beginTransaction();
+    /**
+     * Searches and retrieves all MemberPlanRule records associated with a specific plan ID.
+     *
+     * @param planId the insurance plan ID to filter members
+     * @return list of MemberPlanRule objects
+     */
+    @Override
+    public List<MemberPlanRule> searchMemberByPlanId(String planId) {
+        List<MemberPlanRule> memberList = null;
+        Session session = null;
+        Transaction trans = null;
 
-	    String hql = "FROM MemberPlanRule m WHERE m.insurancePlan.planId = :planId";
-	    Query query = session.createQuery(hql);
-	    query.setParameter("planId", planId);
-	    memberList=query.list();
-		trans.commit();
-		session.clear();
-	    return memberList;
-	}
+        try {
+            session = factory.openSession();
+            trans = session.beginTransaction();
+
+            String hql = "FROM MemberPlanRule m WHERE m.insurancePlan.planId = :planId";
+            Query query = session.createQuery(hql);
+            query.setParameter("planId", planId);
+            memberList = query.list();
+
+            trans.commit();
+            logger.info("Members retrieved for plan ID: " + planId);
+        } catch (Exception e) {
+            if (trans != null) trans.rollback();
+            logger.error("Error retrieving members by plan ID", e);
+        } finally {
+            if (session != null) session.clear();
+        }
+
+        return memberList;
+    }
 }

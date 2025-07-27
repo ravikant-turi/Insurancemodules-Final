@@ -37,6 +37,12 @@ public interface MemberPlanRuleDao {
      * @return status message
      */
     String updateMember(MemberPlanRule member);
-    
-   List< MemberPlanRule> searchMemberByPlanId(String planId);
+    /**
+     * Retrieves all members associated with a specific plan ID.
+     *
+     * @param planId the plan ID to filter members
+     * @return list of MemberPlanRule objects
+     */
+    List<MemberPlanRule> searchMemberByPlanId(String planId);
+
 }
