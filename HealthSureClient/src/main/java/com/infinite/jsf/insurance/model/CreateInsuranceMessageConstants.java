@@ -3,123 +3,41 @@ package com.infinite.jsf.insurance.model;
 /**
  * MessageConstants.java
  *
- * Singleton class to hold all application-wide message constants.
- * Ensures only one instance is created and accessed in a thread-safe manner.
+ * Singleton class to hold all application-wide message constants. Ensures only
+ * one instance is created and accessed in a thread-safe manner.
  *
  * Copyright © 2025 Infinite Computer Solution. All rights reserved.
  */
 public class CreateInsuranceMessageConstants {
 
-    // Singleton instance
-    private static CreateInsuranceMessageConstants instance;
+	public static final String PLAN_NAME_REQUIRED = "Plan name is required.";
+	public static final String PLAN_NAME_TOO_SHORT = "Plan name must be at least 4 characters.";
+	public static final String PLAN_NAME_INVALID = "Plan name must contain only alphabetic characters (no digits or special characters).";
+	public static final String COMPANY_REQUIRED = "Insurance company is required.";
+	public static final String DESCRIPTION_REQUIRED = "Description is required.";
+	public static final String DESCRIPTION_TOO_SHORT = "Description must be more than 5 characters.";
+	public static final String DESCRIPTION_INVALID = "Only alphabetic characters are allowed (no digits or special characters).";
+	public static final String COVER_AMOUNT_REQUIRED = "Cover amount is required.";
+	public static final String COVER_AMOUNT_INVALID_FORMAT = "Cover amount must contain only digits (no letters or special characters).";
+	public static final String COVER_AMOUNT_NEGATIVE = "Cover amount must be greater than zero.";
+	public static final String COVER_AMOUNT_PARSE_ERROR = "Invalid number format for cover amount.";
+	public static final String MIN_AGE_REQUIRED = "Minimum age is required.";
+	public static final String MIN_AGE_INVALID = "Minimum age must be greater than 0.";
+	public static final String MAX_AGE_REQUIRED = "Maximum age is required.";
+	public static final String MAX_AGE_INVALID = "Maximum age must be greater than 0.";
+	public static final String MAX_AGE_LESS_THAN_MIN = "Maximum age must be greater than or equal to minimum age.";
+	public static final String MAX_AGE_TOO_HIGH = "Maximum age must not be greater than 70.";
+	public static final String WAITING_PERIOD_INVALID = "Invalid waiting period.";
+	public static final String WAITING_PERIOD_OUT_OF_RANGE = "Waiting period must be between 0 and 12 months.";
+	public static final String PERIODIC_DISEASES_REQUIRED = "Periodic diseases field is required.";
+	public static final String PLAN_TYPE_REQUIRED = "Plan Type field is required.";
+	public static final String ACTIVE_ON_REQUIRED = "Active On date is required.";
+	public static final String ACTIVE_ON_BEFORE_CREATED = "Active On date cannot be before Created On date.";
+	public static final String ACTIVE_ON_AFTER_EXPIRE = "Active On date cannot be after Expire date.";
+	public static final String DURATION_REQUIRED = "You must choose a duration.";
+	public static final String LINKED_PLAN_REQUIRED = "Linked Insurance Plan is required.";
+	public static final String PREMIUM_AMOUNT_RANGE = "Premium amount must be between ₹500 and ₹100,000.";
+	public static final String COVERAGE_AMOUNT_RANGE = "Coverage amount must be between ₹1,00,000 (1L) and ₹5,00,00,000 (5Cr).";
+	public static final String COVERAGE_GREATER_THAN_PREMIUM = "Coverage amount must be greater than premiumAmount.";
 
-    // Private constructor
-    private CreateInsuranceMessageConstants() {}
-
-    // Synchronized method to get the singleton instance
-    public static synchronized CreateInsuranceMessageConstants getInstance() {
-        if (instance == null) {
-            instance = new CreateInsuranceMessageConstants();
-        }
-        return instance;
-    }
-
-    // Private message fields
-    private final String MEMBER_ADDED_SUCCESS = "Member added successfully.";
-    private final String MEMBER_ADD_FAILED = "Failed to add member.";
-
-    private final String PLAN_ADDED_SUCCESS = "Insurance plan added successfully.";
-    private final String PLAN_ADD_FAILED = "Failed to add insurance plan.";
-
-    private final String COVERAGE_ADDED_SUCCESS = "Coverage option added successfully.";
-    private final String COVERAGE_ADD_FAILED = "Failed to add coverage option.";
-
-    private final String UPDATE_SUCCESS = "Update successful.";
-    private final String UPDATE_FAILED = "Update failed.";
-
-    private final String DATA_NOT_FOUND = "Requested data not found.";
-    
-    private final String PLAN_NAME_REQUIRED="Plan name is required.";
-
-    // Public getters
-    public String getMemberAddedSuccess() {
-        return MEMBER_ADDED_SUCCESS;
-    }
-
-    public String getMemberAddFailed() {
-        return MEMBER_ADD_FAILED;
-    }
-
-    public String getPlanAddedSuccess() {
-        return PLAN_ADDED_SUCCESS;
-    }
-
-    public String getPlanAddFailed() {
-        return PLAN_ADD_FAILED;
-    }
-
-    public String getCoverageAddedSuccess() {
-        return COVERAGE_ADDED_SUCCESS;
-    }
-
-    public String getCoverageAddFailed() {
-        return COVERAGE_ADD_FAILED;
-    }
-
-    public String getUpdateSuccess() {
-        return UPDATE_SUCCESS;
-    }
-
-    public String getUpdateFailed() {
-        return UPDATE_FAILED;
-    }
-
-    public String getDataNotFound() {
-        return DATA_NOT_FOUND;
-    }
-
-	public String getMEMBER_ADDED_SUCCESS() {
-		return MEMBER_ADDED_SUCCESS;
-	}
-
-	public String getMEMBER_ADD_FAILED() {
-		return MEMBER_ADD_FAILED;
-	}
-
-	public String getPLAN_ADDED_SUCCESS() {
-		return PLAN_ADDED_SUCCESS;
-	}
-
-	public String getPLAN_ADD_FAILED() {
-		return PLAN_ADD_FAILED;
-	}
-
-	public String getCOVERAGE_ADDED_SUCCESS() {
-		return COVERAGE_ADDED_SUCCESS;
-	}
-
-	public String getCOVERAGE_ADD_FAILED() {
-		return COVERAGE_ADD_FAILED;
-	}
-
-	public String getUPDATE_SUCCESS() {
-		return UPDATE_SUCCESS;
-	}
-
-	public String getUPDATE_FAILED() {
-		return UPDATE_FAILED;
-	}
-
-	public String getDATA_NOT_FOUND() {
-		return DATA_NOT_FOUND;
-	}
-
-	public String getPLAN_NAME_REQUIRED() {
-		return PLAN_NAME_REQUIRED;
-	}
-
-	public static void setInstance(CreateInsuranceMessageConstants instance) {
-		CreateInsuranceMessageConstants.instance = instance;
-	}
-    
 }

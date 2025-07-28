@@ -61,16 +61,31 @@ public class CreateInsuranceController {
 	private List<InsurancePlan> planList;
 	private Map<String, Boolean> relationMap = new HashMap<>();
 	List<String> selectedRelations;
-	CreateInsuranceMessageConstants msg;
 
-	// show plans on dashBoard
+	CreateInsuranceMessageConstants validationMessages = new CreateInsuranceMessageConstants();
+
+	/**
+	 * Retrieves and returns a list of all available insurance plans to be displayed
+	 * on the dashboard. This method delegates the data fetching to the
+	 * InsurancePlan DAO layer.
+	 *
+	 * @return List of InsurancePlan objects representing all available plans.
+	 */
 	public List<InsurancePlan> showAllPlan() {
 		planList = insurancplanDao.showAllPlan();
 		return planList;
 	}
 
-// Add insurancePlan and coverage : Silver , Gold , Platinum
+	/**
+	 * Adds a new insurance plan along with predefined coverage options: Silver,
+	 * Gold, and Platinum. This method is responsible for creating the base
+	 * insurance plan and associating it with standard coverage tiers, each with its
+	 * own premium and coverage amount.
+	 *
+	 * @return Navigation outcome or status string indicating success or failure.
+	 */
 	public String addInsurancePlanWithCoveragePlan() {
+		// Implementation goes here
 
 		insurancePlan.setInsuranceCompany(insuranceCompany);
 
@@ -143,8 +158,14 @@ public class CreateInsuranceController {
 		return "AInsuranceAdminDashBoard.jsp";
 	}
 
-	// add the plan but only silver is only mandatory to add
-
+	/**
+	 * Adds a new insurance plan along with predefined coverage options: Silver,
+	 * Gold, and Platinum. This method is responsible for creating the base
+	 * insurance plan and associating it with standard coverage tiers, each with its
+	 * own premium and coverage amount.
+	 *
+	 * @return Navigation outcome or status string indicating success or failure.
+	 */
 	public String addSilverOnlyMendatory() {
 		insurancePlan.setInsuranceCompany(insuranceCompany);
 
@@ -198,7 +219,15 @@ public class CreateInsuranceController {
 		return null;
 	}
 
-	// read details of the plan by plainId
+	/**
+	 * Retrieves detailed information of a specific insurance plan based on the
+	 * provided plan ID. This method is typically used to display full plan details
+	 * on the dashboard or detail view.
+	 *
+	 * @param planId The unique identifier of the insurance plan to be retrieved.
+	 * @return A status string or navigation outcome indicating the result of the
+	 *         operation.
+	 */
 	public String findAllPlanDetailsByPlanId(String planId) {
 
 		insurancePlan = insurancplanDao.findInsuranceById(planId);
@@ -232,8 +261,16 @@ public class CreateInsuranceController {
 		return "AInsuranceCoverageDetails";
 	}
 
-//update the plan by planId
+	/**
+	 * Updates the details of an existing insurance plan identified by the given plan ID.
+	 * This method typically fetches the plan, applies modifications, and persists the changes.
+	 *
+	 * @param planId The unique identifier of the insurance plan to be updated.
+	 * @return A status string or navigation outcome indicating the result of the update operation.
+	 */
 	public String updateInsurancePlan(String planId) {
+	   
+
 		insurancePlan = insurancplanDao.findInsuranceById(planId);
 		members = memberPlanRuleDao.searchMemberByPlanId(planId);
 		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptionsByPlanId(planId);
@@ -261,28 +298,36 @@ public class CreateInsuranceController {
 		return "AInsuranceUpdate";
 	}
 
-//helper method to help the update the plan 
+	/**
+	 * Helper method to perform the actual update logic for an insurance plan.
+	 * This method receives the modified InsurancePlan object and applies the necessary
+	 * updates to the database or persistence layer.
+	 *
+	 * @param plan The InsurancePlan object containing updated details.
+	 * @return A status string or navigation outcome indicating the result of the update operation.
+	 */
 	public String updateInsurancePlanHelper(InsurancePlan plan) {
+	 
 		FacesContext context = FacesContext.getCurrentInstance();
 		boolean isValid = true;
 		// Description
 		if (plan.getDescription() == null || plan.getDescription().trim().isEmpty()) {
 			context.addMessage("companyForm:description",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DESCRIPTION_REQUIRED, null));
 			isValid = false;
 		} else if (plan.getDescription().trim().length() <= 5) {
 			context.addMessage("companyForm:description",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description must be more than 5 characters.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DESCRIPTION_TOO_SHORT, null));
 			isValid = false;
 		}
 		// Plan Name
 		if (plan.getPlanName() == null || plan.getPlanName().trim().isEmpty()) {
 			context.addMessage("companyForm:planName",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, msg.getPLAN_NAME_REQUIRED(), null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_NAME_REQUIRED, null));
 			isValid = false;
 		} else if (plan.getPlanName().trim().length() < 4) {
 			context.addMessage("companyForm:planName",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan name must be at least 4 characters.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,validationMessages.PLAN_NAME_TOO_SHORT, null));
 			isValid = false;
 		}
 		if (isValid) {
@@ -345,12 +390,12 @@ public class CreateInsuranceController {
 		return insurancplanDao;
 	}
 
-	public CreateInsuranceMessageConstants getMsg() {
-		return msg;
+	public CreateInsuranceMessageConstants getvalidationMessages() {
+		return validationMessages;
 	}
 
-	public void setMsg(CreateInsuranceMessageConstants msg) {
-		this.msg = msg;
+	public void setvalidationMessages(CreateInsuranceMessageConstants validationMessages) {
+		validationMessages = validationMessages;
 	}
 
 	public void setInsurancplanDao(InsurancePlanDao insurancplanDao) {
@@ -431,7 +476,6 @@ public class CreateInsuranceController {
 
 	@PostConstruct
 	public void init() {
-		msg = CreateInsuranceMessageConstants.getInstance();
 
 		relationMap.put("SON1", true);
 		relationMap.put("SON2", false);
@@ -492,15 +536,15 @@ public class CreateInsuranceController {
 		// Plan Name
 		if (plan.getPlanName() == null || plan.getPlanName().trim().isEmpty()) {
 			context.addMessage("companyForm:planName",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, msg.getPLAN_NAME_REQUIRED(), null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_NAME_REQUIRED, null));
 			isValid = false;
 		} else if (plan.getPlanName().trim().length() < 4) {
 			context.addMessage("companyForm:planName",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan name must be at least 4 characters.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_NAME_TOO_SHORT, null));
 			isValid = false;
 		} else if (!plan.getPlanName().matches("^[A-Za-z]+$")) {
-			context.addMessage("companyForm:planName", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Plan name must contain only alphabetic characters (no digits or special characters).", null));
+			context.addMessage("companyForm:planName",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_NAME_INVALID, null));
 			isValid = false;
 		}
 
@@ -508,141 +552,138 @@ public class CreateInsuranceController {
 		if (plan.getInsuranceCompany() == null || plan.getInsuranceCompany().getCompanyId() == null
 				|| plan.getInsuranceCompany().getCompanyId().trim().isEmpty()) {
 			context.addMessage("companyForm:companyId",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Insurance company is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.COMPANY_REQUIRED, null));
 			isValid = false;
 		}
 
 		// Description
 		if (plan.getDescription() == null || plan.getDescription().trim().isEmpty()) {
 			context.addMessage("companyForm:description",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DESCRIPTION_REQUIRED, null));
 			isValid = false;
 		} else if (plan.getDescription().trim().length() <= 5) {
 			context.addMessage("companyForm:description",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Description must be more than 5 characters.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DESCRIPTION_TOO_SHORT, null));
 			isValid = false;
 		} else if (!plan.getDescription().matches("^[A-Za-z]+$")) {
-			context.addMessage("companyForm:description", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Only alphabetic characters are allowed (no digits or special characters).", null));
+			context.addMessage("companyForm:description",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DESCRIPTION_INVALID, null));
 			isValid = false;
 		}
 
-		// Available Cover Amounts (assume it's a String, convert to double if needed)
-
-		// Assume this is the raw input from the form
+		// Cover Amount
 		String coverAmountStr = plan.getAvailableCoverAmounts();
-
 		if (coverAmountStr == null || coverAmountStr.trim().isEmpty()) {
 			context.addMessage("companyForm:cover",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cover amount is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.COVER_AMOUNT_REQUIRED, null));
 			isValid = false;
 		} else if (!coverAmountStr.trim().matches("^[0-9]+(\\.[0-9]+)?$")) {
 			context.addMessage("companyForm:cover", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Cover amount must contain only digits (no letters or special characters).", null));
+					validationMessages.COVER_AMOUNT_INVALID_FORMAT, null));
 			isValid = false;
 		} else {
 			try {
 				double coverAmount = Double.parseDouble(coverAmountStr.trim());
 				if (coverAmount <= 0) {
 					context.addMessage("companyForm:cover", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-							"Cover amount must be greater than zero.", null));
+							validationMessages.COVER_AMOUNT_NEGATIVE, null));
 					isValid = false;
 				} else {
-					plan.setAvailableCoverAmounts(coverAmountStr); // set the actual double field
+					plan.setAvailableCoverAmounts(coverAmountStr);
 				}
 			} catch (NumberFormatException e) {
-				context.addMessage("companyForm:cover",
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid number format for cover amount.", null));
+				context.addMessage("companyForm:cover", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						validationMessages.COVER_AMOUNT_PARSE_ERROR, null));
 				isValid = false;
 			}
 		}
 
-//Min age
+		// Min Age
 		Integer minAge = plan.getMinEntryAge();
-
 		if (minAge == null) {
 			context.addMessage("companyForm:minAge",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Minimum age is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.MIN_AGE_REQUIRED, null));
 			isValid = false;
 		} else if (minAge <= 0) {
 			context.addMessage("companyForm:minAge",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Minimum age must be greater than 0.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.MIN_AGE_INVALID, null));
 			isValid = false;
 		}
 
-		// Max Entry Age
+		// Max Age
 		Integer maxAge = plan.getMaxEntryAge();
-
 		if (maxAge == null) {
 			context.addMessage("companyForm:maxAge",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maximum age is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.MAX_AGE_REQUIRED, null));
 			isValid = false;
 		} else if (maxAge <= 0) {
 			context.addMessage("companyForm:maxAge",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maximum age must be greater than 0.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.MAX_AGE_INVALID, null));
 			isValid = false;
 		} else if (minAge != null && maxAge < minAge) {
-			context.addMessage("companyForm:maxAge", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Maximum age must be greater than or equal to minimum age.", null));
+			context.addMessage("companyForm:maxAge",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.MAX_AGE_LESS_THAN_MIN, null));
 			isValid = false;
 		} else if (maxAge > 70) {
 			context.addMessage("companyForm:maxAge",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Maximum age must not be greater than 70.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.MAX_AGE_TOO_HIGH, null));
 			isValid = false;
 		}
 
-		// Waiting Period (must be between 0 and 12)
+		// Waiting Period
 		try {
 			int waiting = Integer.parseInt(plan.getWaitingPeriod().trim());
 			if (waiting < 0 || waiting > 12) {
 				context.addMessage("companyForm:waitingPeriod", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Waiting period must be between 0 and 12 months.", null));
+						validationMessages.WAITING_PERIOD_OUT_OF_RANGE, null));
 				isValid = false;
 			}
 		} catch (Exception e) {
 			context.addMessage("companyForm:waitingPeriod",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid waiting period.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.WAITING_PERIOD_INVALID, null));
 			isValid = false;
 		}
 
 		// Periodic Diseases
 		if (plan.getPeriodicDiseases() == null || plan.getPeriodicDiseases().trim().isEmpty()) {
 			context.addMessage("companyForm:periodicDiseases",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Periodic diseases field is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PERIODIC_DISEASES_REQUIRED, null));
 			isValid = false;
 		}
 
-		// planType
+		// Plan Type
 		if (plan.getPlanType() == null || plan.getPlanType().toString().isEmpty()) {
 			context.addMessage("companyForm:planType",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Plan Type  field is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_TYPE_REQUIRED, null));
 			isValid = false;
 		}
 
-		// Active On, Created On, Expire Date logic
+		// Dates
 		Date activeOn = plan.getActiveOn();
 		Date createdOn = plan.getCreatedOn();
 		Date expireDate = plan.getExpireDate();
 
 		if (activeOn == null) {
 			context.addMessage("companyForm:activeOn",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Active On date is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.ACTIVE_ON_REQUIRED, null));
 			isValid = false;
 		} else {
 			if (createdOn != null && activeOn.before(createdOn)) {
 				context.addMessage("companyForm:activeOn", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Active On date cannot be before Created On date.", null));
+						validationMessages.ACTIVE_ON_BEFORE_CREATED, null));
 				isValid = false;
 			}
 			if (expireDate != null && activeOn.after(expireDate)) {
-				context.addMessage("companyForm:activeOn", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"Active On date cannot be after Expire date.", null));
+				context.addMessage("companyForm:activeOn",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.ACTIVE_ON_AFTER_EXPIRE, null));
 				isValid = false;
 			}
 		}
+
+		// Duration
 		if (yearsToAdd == 0) {
 			context.addMessage("companyForm:yearsToAdd",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "you must chose a duration.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DURATION_REQUIRED, null));
 			isValid = false;
 		}
 
@@ -656,29 +697,30 @@ public class CreateInsuranceController {
 		boolean isValid = true;
 
 		// Validate plan
-		if (option.getInsurancePlan() == null || option.getInsurancePlan() == null) {
+		if (option.getInsurancePlan() == null) {
 			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Linked Insurance Plan is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.LINKED_PLAN_REQUIRED, null));
 			isValid = false;
 		}
 
 		// Validate premiumAmount
 		if (option.getPremiumAmount() < 500 || option.getPremiumAmount() > 100000) {
-			context.addMessage("companyForm:PremiumAmount", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Premium amount must be between ₹500 and ₹100,000.", null));
+			context.addMessage("companyForm:PremiumAmount",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PREMIUM_AMOUNT_RANGE, null));
 			isValid = false;
 		}
 
 		// Validate coverageAmount
 		if (option.getCoverageAmount() < 100000 || option.getCoverageAmount() > 50000000) {
-			context.addMessage("companyForm:CoverageAmount", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Coverage amount must be between ₹1,00,000 (1L) and ₹5,00,00,000 (5Cr).", null));
+			context.addMessage("companyForm:CoverageAmount",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.COVERAGE_AMOUNT_RANGE, null));
 			isValid = false;
 		}
-		// option.premiumAmount > option.coverageAmount
+
+		// Premium should not exceed coverage
 		if (option.getPremiumAmount() > option.getCoverageAmount()) {
 			context.addMessage("companyForm:CoverageAmount", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Coverage amount must be greater than premiumAmount", null));
+					validationMessages.COVERAGE_GREATER_THAN_PREMIUM, null));
 			isValid = false;
 		}
 
@@ -692,27 +734,27 @@ public class CreateInsuranceController {
 		// Validate plan
 		if (option.getInsurancePlan() == null || option.getInsurancePlan() == null) {
 			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Linked Insurance Plan is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.LINKED_PLAN_REQUIRED, null));
 			isValid = false;
 		}
 
 		// Validate premiumAmount
 		if (option.getPremiumAmount() < 500 || option.getPremiumAmount() > 100000) {
-			context.addMessage("companyForm:PremiumAmount2", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Premium amount must be between ₹500 and ₹100,000.", null));
+			context.addMessage("companyForm:PremiumAmount2",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PREMIUM_AMOUNT_RANGE, null));
 			isValid = false;
 		}
 
 		// Validate coverageAmount
 		if (option.getCoverageAmount() < 100000 || option.getCoverageAmount() > 50000000) {
-			context.addMessage("companyForm:CoverageAmount2", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Coverage amount must be between ₹1,00,000 (1L) and ₹5,00,00,000 (5Cr).", null));
+			context.addMessage("companyForm:CoverageAmount2",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.COVERAGE_AMOUNT_RANGE, null));
 			isValid = false;
 		}
 		// option.premiumAmount > option.coverageAmount
 		if (option.getPremiumAmount() > option.getCoverageAmount()) {
 			context.addMessage("companyForm:CoverageAmount2", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Coverage amount must be greater than premiumAmount", null));
+					validationMessages.COVERAGE_GREATER_THAN_PREMIUM, null));
 			isValid = false;
 		}
 
@@ -726,27 +768,27 @@ public class CreateInsuranceController {
 		// Validate plan
 		if (option.getInsurancePlan() == null || option.getInsurancePlan() == null) {
 			context.addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Linked Insurance Plan is required.", null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.LINKED_PLAN_REQUIRED, null));
 			isValid = false;
 		}
 
 		// Validate premiumAmount
 		if (option.getPremiumAmount() < 500 || option.getPremiumAmount() > 100000) {
-			context.addMessage("companyForm:PremiumAmount3", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Premium amount must be between ₹500 and ₹100,000.", null));
+			context.addMessage("companyForm:PremiumAmount3",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PREMIUM_AMOUNT_RANGE, null));
 			isValid = false;
 		}
 
 		// Validate coverageAmount
 		if (option.getCoverageAmount() < 100000 || option.getCoverageAmount() > 50000000) {
-			context.addMessage("companyForm:CoverageAmount3", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Coverage amount must be between ₹1,00,000 (1L) and ₹5,00,00,000 (5Cr).", null));
+			context.addMessage("companyForm:CoverageAmount3",
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.COVERAGE_AMOUNT_RANGE, null));
 			isValid = false;
 		}
 		// option.premiumAmount > option.coverageAmount
 		if (option.getPremiumAmount() > option.getCoverageAmount()) {
 			context.addMessage("companyForm:CoverageAmount3", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Coverage amount must be greater than premiumAmount", null));
+					validationMessages.COVERAGE_GREATER_THAN_PREMIUM, null));
 			isValid = false;
 		}
 

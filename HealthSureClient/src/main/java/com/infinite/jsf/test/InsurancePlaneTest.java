@@ -8,8 +8,8 @@ public class InsurancePlaneTest {
 	public static void main(String[] args) {
 		
 		InsurancePlanDao dao=new InsurancePlanDaoImpl();
-		
 		dao.findInsuranceById("PLA014");
+		dao.findInsuranceById("PLA004");
 		
 		
 	}

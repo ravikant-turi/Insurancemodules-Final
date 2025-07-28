@@ -515,7 +515,7 @@ form {
 					<h:commandButton value="Cancel"
 						action="AInsuranceAdminDashBoard.jsp"
 						styleClass="action-btn right-btn" />
-					<h:commandButton value="Create Plan"
+					<h:commandButton value="Create "
 						action="#{createInsuranceController.addSilverOnlyMendatory}"
 						styleClass="action-btn" />
 				</div>
