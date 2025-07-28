@@ -117,70 +117,103 @@ table, th, td {
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Plan Id" />
+				<h:form>
+					<h:commandLink value="Plan Id" style="color:white"
+						action="#{createInsuranceController.sortBy('planId')}" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.planId}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Plan Name" />
+				<h:form>
+					<h:commandLink value="Plan Name"
+						action="#{createInsuranceController.sortBy('planName')}" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.planName}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Type" />
+				<h:form>
+					<h:commandLink value="Type"
+						action="#{createInsuranceController.sortBy('planType')}" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.planType}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Covers" />
+				<h:form>
+
+					<h:commandLink value="Covers"
+						action="#{createInsuranceController.sortBy('availableCoverAmounts') }" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.availableCoverAmounts}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Waiting Period" />
+				<h:form>
+					<h:commandLink value="Waiting Period"
+						action="#{createInsuranceController.sortBy('waitingPeriod')}" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.waitingPeriod}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Expire Date" />
+				<h:form>
+					<h:commandLink value="Expire Date"
+						action="#{createInsuranceController.sortBy('expireDate')}" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.expireDate}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Active On" />
+				<h:form>
+					<h:commandLink value="Active On"
+						action="#{createInsuranceController.sortBy('activeOn')}" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.activeOn}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="MaxMember" />
+				<h:form>
+					<h:commandLink value="MaxMember"
+						action="#{createInsuranceController.sortBy('maximumMemberAllowed')}" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.maximumMemberAllowed}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Periodic Diseases" />
+				<h:form>
+
+					<h:commandLink value="Covers"
+						action="#{createInsuranceController.sortBy('periodicDiseases') }" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.periodicDiseases}" />
 		</h:column>
 
 		<h:column>
 			<f:facet name="header">
-				<h:outputLabel value="Description" />
+				<h:form>
+
+					<h:commandLink value="Covers"
+						action="#{createInsuranceController.sortBy('description') }" />
+				</h:form>
 			</f:facet>
 			<h:outputText value="#{plan.description}" />
 		</h:column>
@@ -226,6 +259,7 @@ table, th, td {
 	<h:messages globalOnly="true" style="color:red" />
 
 </body>
+
 
 	</html>
 </f:view>

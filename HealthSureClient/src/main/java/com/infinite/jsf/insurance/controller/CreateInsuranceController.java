@@ -19,6 +19,7 @@ package com.infinite.jsf.insurance.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,14 +64,6 @@ public class CreateInsuranceController {
 	List<String> selectedRelations;
 
 	CreateInsuranceMessageConstants validationMessages = new CreateInsuranceMessageConstants();
-
-	/**
-	 * Retrieves and returns a list of all available insurance plans to be displayed
-	 * on the dashboard. This method delegates the data fetching to the
-	 * InsurancePlan DAO layer.
-	 *
-	 * @return List of InsurancePlan objects representing all available plans.
-	 */
 
 	// =======================
 
@@ -118,12 +111,67 @@ public class CreateInsuranceController {
 		return pageSize;
 	}
 
+	// ===========================
+	private String sortField = "planId"; // default sort field
+	private boolean sortAscending = true;
+
+	public void sortBy(String field) {
+	    if (sortField.equals(field)) {
+	        sortAscending = !sortAscending;
+	    } else {
+	        sortField = field;
+	        sortAscending = true;
+	    }
+
+	    Comparator<InsurancePlan> comparator = null;
+
+	    switch (field) {
+	        case "planName": // Integer
+	            comparator = Comparator.comparing(InsurancePlan::getPlanName);
+	            break;
+	        case "planType": // Enum
+	            comparator = Comparator.comparing(InsurancePlan::getPlanType);
+	            break;
+	        case "waitingPeriod": // Integer
+	            comparator = Comparator.comparing(InsurancePlan::getWaitingPeriod);
+	            break;
+	        case "expireDate": // Date
+	            comparator = Comparator.comparing(InsurancePlan::getExpireDate);
+	            break;
+	        case "activeOn": // Date
+	            comparator = Comparator.comparing(InsurancePlan::getActiveOn);
+	            break;
+	        case "maximumMemberAllowed": // Integer
+	            comparator = Comparator.comparing(InsurancePlan::getMaximumMemberAllowed);
+	            break;
+	        default: // planId (Integer)
+	            comparator = Comparator.comparing(InsurancePlan::getPlanId);
+	            break;
+	    }
+
+	    if (comparator != null) {
+	        if (!sortAscending) {
+	            comparator = comparator.reversed();
+	        }
+	        planList.sort(comparator);
+	    }
+	}
+
+
+	// ==========================
+	/**
+	 * Retrieves and returns a list of all available insurance plans to be displayed
+	 * on the dashboard. This method delegates the data fetching to the
+	 * InsurancePlan DAO layer.
+	 *
+	 * @return List of InsurancePlan objects representing all available plans.
+	 */
+
 	public List<InsurancePlan> showAllPlan() {
 		planList = insurancplanDao.showAllPlan();
 		return planList;
 	}
 
-	//===========================
 	/**
 	 * Adds a new insurance plan along with predefined coverage options: Silver,
 	 * Gold, and Platinum. This method is responsible for creating the base
