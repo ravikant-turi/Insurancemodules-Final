@@ -97,6 +97,14 @@ table, th, td {
 .action-btn:hover {
 	background-color: #2980b9;
 }
+
+.btn-link {
+	color: white;
+	text-decoration: none;
+	background: none;
+	border: none;
+	cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -118,7 +126,7 @@ table, th, td {
 		<h:column>
 			<f:facet name="header">
 				<h:form>
-					<h:commandLink value="Plan Id" style="color:white"
+					<h:commandLink styleClass="btn-link" value="Plan Id"
 						action="#{createInsuranceController.sortBy('planId')}" />
 				</h:form>
 			</f:facet>
@@ -128,7 +136,7 @@ table, th, td {
 		<h:column>
 			<f:facet name="header">
 				<h:form>
-					<h:commandLink value="Plan Name"
+					<h:commandLink value="Plan Name" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('planName')}" />
 				</h:form>
 			</f:facet>
@@ -138,7 +146,7 @@ table, th, td {
 		<h:column>
 			<f:facet name="header">
 				<h:form>
-					<h:commandLink value="Type"
+					<h:commandLink value="Type" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('planType')}" />
 				</h:form>
 			</f:facet>
@@ -149,7 +157,7 @@ table, th, td {
 			<f:facet name="header">
 				<h:form>
 
-					<h:commandLink value="Covers"
+					<h:commandLink value="Covers" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('availableCoverAmounts') }" />
 				</h:form>
 			</f:facet>
@@ -159,7 +167,7 @@ table, th, td {
 		<h:column>
 			<f:facet name="header">
 				<h:form>
-					<h:commandLink value="Waiting Period"
+					<h:commandLink value="Waiting Period" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('waitingPeriod')}" />
 				</h:form>
 			</f:facet>
@@ -169,7 +177,7 @@ table, th, td {
 		<h:column>
 			<f:facet name="header">
 				<h:form>
-					<h:commandLink value="Expire Date"
+					<h:commandLink value="Expire Date" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('expireDate')}" />
 				</h:form>
 			</f:facet>
@@ -179,7 +187,7 @@ table, th, td {
 		<h:column>
 			<f:facet name="header">
 				<h:form>
-					<h:commandLink value="Active On"
+					<h:commandLink value="Active On" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('activeOn')}" />
 				</h:form>
 			</f:facet>
@@ -189,7 +197,7 @@ table, th, td {
 		<h:column>
 			<f:facet name="header">
 				<h:form>
-					<h:commandLink value="MaxMember"
+					<h:commandLink value="MaxMember" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('maximumMemberAllowed')}" />
 				</h:form>
 			</f:facet>
@@ -200,7 +208,7 @@ table, th, td {
 			<f:facet name="header">
 				<h:form>
 
-					<h:commandLink value="Covers"
+					<h:commandLink value="PeriodicDiseases" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('periodicDiseases') }" />
 				</h:form>
 			</f:facet>
@@ -211,7 +219,7 @@ table, th, td {
 			<f:facet name="header">
 				<h:form>
 
-					<h:commandLink value="Covers"
+					<h:commandLink value="Description" styleClass="btn-link"
 						action="#{createInsuranceController.sortBy('description') }" />
 				</h:form>
 			</f:facet>
