@@ -71,11 +71,59 @@ public class CreateInsuranceController {
 	 *
 	 * @return List of InsurancePlan objects representing all available plans.
 	 */
+
+	// =======================
+
+	private int pageSize = 5;
+	private int currentPage = 0;
+
+	public List<InsurancePlan> getPaginatedPlans() {
+		if (planList == null) {
+			planList = showAllPlan(); // Load once
+		}
+		int start = currentPage * pageSize;
+		int end = Math.min(start + pageSize, planList.size());
+		return planList.subList(start, end);
+	}
+
+	public void nextPage() {
+		if (isNext()) {
+			currentPage++;
+		}
+	}
+
+	public void previousPage() {
+		if (isPrevious()) {
+			currentPage--;
+		}
+	}
+
+	public boolean isNext() {
+		return (currentPage + 1) * pageSize < planList.size();
+	}
+
+	public boolean isPrevious() {
+		return currentPage > 0;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public int getTotalPages() {
+		return (int) Math.ceil((double) planList.size() / pageSize);
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+
 	public List<InsurancePlan> showAllPlan() {
 		planList = insurancplanDao.showAllPlan();
 		return planList;
 	}
 
+	//===========================
 	/**
 	 * Adds a new insurance plan along with predefined coverage options: Silver,
 	 * Gold, and Platinum. This method is responsible for creating the base
@@ -262,14 +310,15 @@ public class CreateInsuranceController {
 	}
 
 	/**
-	 * Updates the details of an existing insurance plan identified by the given plan ID.
-	 * This method typically fetches the plan, applies modifications, and persists the changes.
+	 * Updates the details of an existing insurance plan identified by the given
+	 * plan ID. This method typically fetches the plan, applies modifications, and
+	 * persists the changes.
 	 *
 	 * @param planId The unique identifier of the insurance plan to be updated.
-	 * @return A status string or navigation outcome indicating the result of the update operation.
+	 * @return A status string or navigation outcome indicating the result of the
+	 *         update operation.
 	 */
 	public String updateInsurancePlan(String planId) {
-	   
 
 		insurancePlan = insurancplanDao.findInsuranceById(planId);
 		members = memberPlanRuleDao.searchMemberByPlanId(planId);
@@ -299,15 +348,16 @@ public class CreateInsuranceController {
 	}
 
 	/**
-	 * Helper method to perform the actual update logic for an insurance plan.
-	 * This method receives the modified InsurancePlan object and applies the necessary
+	 * Helper method to perform the actual update logic for an insurance plan. This
+	 * method receives the modified InsurancePlan object and applies the necessary
 	 * updates to the database or persistence layer.
 	 *
 	 * @param plan The InsurancePlan object containing updated details.
-	 * @return A status string or navigation outcome indicating the result of the update operation.
+	 * @return A status string or navigation outcome indicating the result of the
+	 *         update operation.
 	 */
 	public String updateInsurancePlanHelper(InsurancePlan plan) {
-	 
+
 		FacesContext context = FacesContext.getCurrentInstance();
 		boolean isValid = true;
 		// Description
@@ -327,7 +377,7 @@ public class CreateInsuranceController {
 			isValid = false;
 		} else if (plan.getPlanName().trim().length() < 4) {
 			context.addMessage("companyForm:planName",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR,validationMessages.PLAN_NAME_TOO_SHORT, null));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_NAME_TOO_SHORT, null));
 			isValid = false;
 		}
 		if (isValid) {
@@ -392,10 +442,6 @@ public class CreateInsuranceController {
 
 	public CreateInsuranceMessageConstants getvalidationMessages() {
 		return validationMessages;
-	}
-
-	public void setvalidationMessages(CreateInsuranceMessageConstants validationMessages) {
-		validationMessages = validationMessages;
 	}
 
 	public void setInsurancplanDao(InsurancePlanDao insurancplanDao) {
@@ -472,6 +518,22 @@ public class CreateInsuranceController {
 
 	public void setRelationMap(Map<String, Boolean> relationMap) {
 		this.relationMap = relationMap;
+	}
+
+	public CreateInsuranceMessageConstants getValidationMessages() {
+		return validationMessages;
+	}
+
+	public void setValidationMessages(CreateInsuranceMessageConstants validationMessages) {
+		this.validationMessages = validationMessages;
+	}
+
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
 	}
 
 	@PostConstruct

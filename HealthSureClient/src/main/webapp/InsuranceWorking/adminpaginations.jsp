@@ -105,15 +105,15 @@ table, th, td {
 	<div class="header-bar">
 		<h1>Insurance Plan List</h1>
 		<h:form>
-			<h:commandButton value="Add" action="AInsuranceAddInsuranceCoveragePlan.jsp" styleClass="action-btn"
-				style="background-color:gray" />
+			<h:commandButton value="Add"
+				action="AInsuranceAddInsuranceCoveragePlan.jsp"
+				styleClass="action-btn" style="background-color:gray" />
 		</h:form>
 	</div>
 
 	<!-- ✅ Data Table -->
-	<h:dataTable value="#{createInsuranceController.showAllPlan()}"
+	<h:dataTable value="#{createInsuranceController.paginatedPlans}"
 		var="plan" border="1" styleClass="insuranceTable">
-
 
 		<h:column>
 			<f:facet name="header">
@@ -121,7 +121,6 @@ table, th, td {
 			</f:facet>
 			<h:outputText value="#{plan.planId}" />
 		</h:column>
-
 
 		<h:column>
 			<f:facet name="header">
@@ -164,6 +163,7 @@ table, th, td {
 			</f:facet>
 			<h:outputText value="#{plan.activeOn}" />
 		</h:column>
+
 		<h:column>
 			<f:facet name="header">
 				<h:outputLabel value="MaxMember" />
@@ -185,7 +185,6 @@ table, th, td {
 			<h:outputText value="#{plan.description}" />
 		</h:column>
 
-
 		<h:column>
 			<f:facet name="header">
 				<h:outputLabel value="Update" />
@@ -206,11 +205,27 @@ table, th, td {
 			</h:form>
 		</h:column>
 
-
 	</h:dataTable>
+
+	<!-- ✅ Pagination Controls -->
+	<div style="text-align: center; margin: 20px;">
+		<h:form>
+			<h:commandButton value="Previous"
+				action="#{createInsuranceController.previousPage}"
+				disabled="#{createInsuranceController.currentPage lt 1}" />
+
+			<h:outputText
+				value=" Page #{createInsuranceController.currentPage + 1} of #{createInsuranceController.totalPages} " />
+
+			<h:commandButton value="Next"
+				action="#{createInsuranceController.nextPage}"
+				disabled="#{!createInsuranceController.next}" />
+		</h:form>
+	</div>
 
 	<h:messages globalOnly="true" style="color:red" />
 
 </body>
+
 	</html>
 </f:view>
