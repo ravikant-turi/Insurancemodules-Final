@@ -280,7 +280,7 @@ form {
 					</div>
 					<div class="form-group">
 						<h:outputLabel escape="false"
-							value="<span style='color:red'>*</span>Waiting Period: " />
+							value="<span style='color:red'>*</span>Waiting Period (Month): " />
 						<h:inputText id="waitingPeriod"
 							value="#{createInsuranceController.insurancePlan.waitingPeriod}">
 							<f:convertNumber type="number" />
@@ -292,7 +292,7 @@ form {
 					</div>
 					<div class="form-group">
 						<h:outputLabel escape="false"
-							value="<span style='color:red'>*</span>Active On: " />
+							value="<span style='color:red'>*</span>Active On:YYYY-MM-DD " />
 						<h:inputText id="activeOn"
 							value="#{createInsuranceController.insurancePlan.activeOn}">
 							<f:convertDateTime pattern="yyyy-MM-dd" />

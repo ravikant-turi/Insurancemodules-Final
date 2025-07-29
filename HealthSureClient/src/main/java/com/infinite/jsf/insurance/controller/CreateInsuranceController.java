@@ -41,6 +41,7 @@ import com.infinite.jsf.insurance.daoImpl.InsuranceCompanyDaoImpl;
 import com.infinite.jsf.insurance.daoImpl.InsuranceCoverageOptionDaoImpl;
 import com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl;
 import com.infinite.jsf.insurance.model.CoveragePlanStatus;
+import com.infinite.jsf.insurance.model.CoverageType;
 import com.infinite.jsf.insurance.model.Gender;
 import com.infinite.jsf.insurance.model.InsuranceCompany;
 import com.infinite.jsf.insurance.model.InsuranceCoverageOption;
@@ -195,67 +196,69 @@ public class CreateInsuranceController {
 		}
 		insurancePlan.setCreatedOn(new Date());
 		coverageOption1.setInsurancePlan(insurancePlan);
-
-		System.out.println(insurancePlan);
-		System.out.println(coverageOption1);
-		System.out.println(coverageOption2);
-		System.out.println(coverageOption3);
-		System.out.println("good to go");
-		// silver(coverage1) is mandatory
+		coverageOption2.setInsurancePlan(insurancePlan);
+		coverageOption3.setInsurancePlan(insurancePlan);
 		if (isSilver && validateInsurancePlanWithFacesMessage(insurancePlan)
 				&& validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1)
-				&& validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)) {
+				&& validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)
+				&& (isGold && validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)
+						&& (isPlatinum && validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)))) {
 
-			System.out.println("---------we are inside the validation check===");
-			insurancplanDao.addInsurancePlan(insurancePlan);
-			coverageOption1.setInsurancePlan(insurancePlan);
-			insuranceCoverageOptionDao.addCoveragePlan(coverageOption1);
+			// silver(coverage1) is mandatory
+			if (isSilver && validateInsurancePlanWithFacesMessage(insurancePlan)
+					&& validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1)
+					&& validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)
+					&& validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)) {
 
-			if (insurancePlan.getPlanType() == PlanType.INDIVIDUAL) {
-				logger.info("we are inside individual type to make member object");
-				MemberPlanRule member = new MemberPlanRule();
-				member.setInsurancePlan(insurancePlan);
-				member.setRelation(Relation.INDIVIDUAL);
-				member.setGender(Gender.valueOf(individualMemberGender));
-				memberPlanRuleDao.addMember(member);
-
-			} else {
-
-				for (String relations : selectedRelations) {
+				if (insurancePlan.getPlanType() == PlanType.INDIVIDUAL) {
+					logger.info("we are inside individual type to make member object");
 					MemberPlanRule member = new MemberPlanRule();
 					member.setInsurancePlan(insurancePlan);
-					member.setRelation(Relation.valueOf(relations));
-					if (relations == "SON1" || relations == "SON2" || relations == "FATHER" || relations == "HUSBAND") {
-						member.setGender(Gender.MALE);
-					} else {
-						member.setGender(Gender.FEMALE);
-					}
+					member.setRelation(Relation.INDIVIDUAL);
+					member.setGender(Gender.valueOf(individualMemberGender));
 					memberPlanRuleDao.addMember(member);
+
+				} // family type
+				else {
+					for (String relations : selectedRelations) {
+						MemberPlanRule member = new MemberPlanRule();
+						member.setInsurancePlan(insurancePlan);
+						member.setRelation(Relation.valueOf(relations));
+						if (relations == "SON1" || relations == "SON2" || relations == "FATHER"
+								|| relations == "HUSBAND") {
+							member.setGender(Gender.MALE);
+						} else {
+							member.setGender(Gender.FEMALE);
+						}
+						memberPlanRuleDao.addMember(member);
+					}
 				}
+				insurancplanDao.addInsurancePlan(insurancePlan);
+				coverageOption1.setInsurancePlan(insurancePlan);
+				insuranceCoverageOptionDao.addCoveragePlan(coverageOption1);
+
+				if (isSilver && isGold && validateInsurancePlanWithFacesMessage(insurancePlan)
+						&& validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)) {
+					coverageOption3.setInsurancePlan(insurancePlan);
+					insuranceCoverageOptionDao.addCoveragePlan(coverageOption2);
+				}
+				if (isSilver && isPlatinum && validateInsurancePlanWithFacesMessage(insurancePlan)
+						&& validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)) {
+					coverageOption3.setInsurancePlan(insurancePlan);
+					insuranceCoverageOptionDao.addCoveragePlan(coverageOption3);
+				}
+				return "AInsuranceAdminDashBoard.jsp";
 			}
-		} else {
 
-			System.out.println("=======validation fails==========");
-			return null;
 		}
-		if (isSilver && isGold && validateInsurancePlanWithFacesMessage(insurancePlan)
-				&& validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)) {
-			coverageOption3.setInsurancePlan(insurancePlan);
-			insuranceCoverageOptionDao.addCoveragePlan(coverageOption2);
-		}
-		if (isSilver && isPlatinum && validateInsurancePlanWithFacesMessage(insurancePlan)
-				&& validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)) {
-			coverageOption3.setInsurancePlan(insurancePlan);
-			insuranceCoverageOptionDao.addCoveragePlan(coverageOption3);
-		}
+		return null;
 
-		return "AInsuranceAdminDashBoard.jsp";
 	}
 
 	/**
 	 * Retrieves detailed information of a specific insurance plan based on the
 	 * provided plan ID. This method is typically used to display full plan details
-	 * on the dashboard or detail view.
+	 * on the dashBoard or detail view.
 	 *
 	 * @param planId The unique identifier of the insurance plan to be retrieved.
 	 * @return A status string or navigation outcome indicating the result of the
@@ -264,18 +267,22 @@ public class CreateInsuranceController {
 	public String findAllPlanDetailsByPlanId(String planId) {
 
 		insurancePlan = insurancplanDao.findInsuranceById(planId);
+
 		members = memberPlanRuleDao.searchMemberByPlanId(planId);
+
 		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptionsByPlanId(planId);
 
 		for (int i = 0; i < planwithCovrageDetailsList.size(); i++) {
 
-			if (coverageOption1 == null) {
+			if (planwithCovrageDetailsList.get(i).getCoverageType().equals(CoverageType.SILVER)) {
 
 				coverageOption1 = planwithCovrageDetailsList.get(i);
-			} else if (coverageOption1 != null && coverageOption2 == null) {
+
+			} else if (planwithCovrageDetailsList.get(i).getCoverageType().equals(CoverageType.GOLD)) {
 
 				coverageOption2 = planwithCovrageDetailsList.get(i);
-			} else if (coverageOption3 == null && coverageOption1 != null && coverageOption2 != null) {
+
+			} else if (planwithCovrageDetailsList.get(i).getCoverageType().equals(CoverageType.PLATINUM)) {
 
 				coverageOption3 = planwithCovrageDetailsList.get(i);
 			}
@@ -311,13 +318,15 @@ public class CreateInsuranceController {
 
 		for (int i = 0; i < planwithCovrageDetailsList.size(); i++) {
 
-			if (coverageOption1 == null) {
+			if (planwithCovrageDetailsList.get(i).getCoverageType().equals(CoverageType.SILVER)) {
 
 				coverageOption1 = planwithCovrageDetailsList.get(i);
-			} else if (coverageOption1 != null && coverageOption2 == null) {
+
+			} else if (planwithCovrageDetailsList.get(i).getCoverageType().equals(CoverageType.GOLD)) {
 
 				coverageOption2 = planwithCovrageDetailsList.get(i);
-			} else {
+
+			} else if (planwithCovrageDetailsList.get(i).getCoverageType().equals(CoverageType.PLATINUM)) {
 
 				coverageOption3 = planwithCovrageDetailsList.get(i);
 			}
@@ -591,8 +600,19 @@ public class CreateInsuranceController {
 		}
 	}
 
-//Coverage plan status dynamically update so 2 date compare
+	// Coverage plan status dynamically update so 2 date compare
+	/**
+	 * Checks whether the given date is before or equal to today's date. This method
+	 * is typically used to determine if a coverage plan is currently active based
+	 * on its activation date.
+	 *
+	 * @param activeOn the date when the coverage plan becomes active
+	 * @return true if the activation date is before or equal to today, false
+	 *         otherwise
+	 */
 	public static boolean isActiveBeforeOrEqualToday(Date activeOn) {
+		// method logic here
+
 		try {
 			// Format to yyyy-MM-dd
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -726,7 +746,28 @@ public class CreateInsuranceController {
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.MAX_AGE_TOO_HIGH, null));
 			isValid = false;
 		}
+		// minimum Member and maximum member
+		if (plan.getPlanType() == PlanType.valueOf("FAMILY")) {
+			if (plan.getMaximumMemberAllowed() > 8) {
+				context.addMessage("companyForm:maximumMemberAllowed",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "maximum 8 member is allowed", null));
+				logger.info("Atmost 8 member is allowed in Family Type");
+				isValid = false;
+			}
+			if (plan.getMinimumMeberAllowed() < 2) {
+				context.addMessage("companyForm:minimumMeberAllowed",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "atleat 2 member in FAMILY plan", null));
+				logger.info("Atleat 2 member must selected in Family Type");
+				isValid = false;
+			}
+			if (plan.getMinimumMeberAllowed() > plan.getMaxEntryAge()) {
+				context.addMessage("companyForm:minimumMeberAllowed",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "minimum cant be greater than maximum", null));
+				logger.info("minimum cant be grater than maximum");
+				isValid = false;
+			}
 
+		}
 		// Waiting Period
 		try {
 			int waiting = Integer.parseInt(plan.getWaitingPeriod().trim());
@@ -894,6 +935,7 @@ public class CreateInsuranceController {
 
 	public boolean validateInsuranceMeberRelationsWithFacesMessage(InsurancePlan insurancePlan) {
 		FacesContext context = FacesContext.getCurrentInstance();
+		boolean isValid = true;
 		logger.info("we inside the member validation");
 		logger.info("insurancePlanType : " + insurancePlan.getPlanType());
 
@@ -913,23 +955,24 @@ public class CreateInsuranceController {
 				.collect(Collectors.toList());
 		System.out.println(selectedRelations);
 
-		if (insurancePlan.getPlanType() == PlanType.FAMILY) {
-			List<String> requiredRelations = Arrays.asList("FATHER", "MOTHER", "HUSBAND", "WIFE");
-
-			boolean hasRequiredRelation = selectedRelations.stream().anyMatch(requiredRelations::contains);
-
-			if (!hasRequiredRelation) {
-				context.addMessage("companyForm:memberValidation", new FacesMessage(FacesMessage.SEVERITY_ERROR,
-						"For FAMILY plan, at least one member must be Father, Mother, Husband, or Wife.", null));
-
-				return false;
-			}
-		}
 		if (insurancePlan.getPlanType() == PlanType.valueOf("FAMILY")) {
-			if (selectedRelations.size() < 2) {
-				context.addMessage("companyForm:memberValidation",
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Must select 2 meber ATLEAST ", null));
-				return false;
+			if (selectedRelations.size() != insurancePlan.getMaximumMemberAllowed()) {
+				context.addMessage("companyForm:memberValidation", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Must choise maximum member that you mention", null));
+				isValid = false;
+
+			}
+			if (selectedRelations.size() == insurancePlan.getMaximumMemberAllowed()) {
+				List<String> requiredRelations = Arrays.asList("FATHER", "MOTHER", "HUSBAND", "WIFE");
+
+				boolean hasRequiredRelation = selectedRelations.stream().anyMatch(requiredRelations::contains);
+
+				if (!hasRequiredRelation) {
+					context.addMessage("companyForm:memberValidation", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"For FAMILY plan, atleast one member must be Father, Mother, Husband, or Wife.", null));
+
+					isValid = false;
+				}
 			}
 		}
 
@@ -954,18 +997,24 @@ public class CreateInsuranceController {
 				context.addMessage("companyForm:individualMemberGender",
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "MUST CHOSSE GENDER", null));
 				logger.info("genderValidation fails ");
-				return false;
+				isValid = false;
 			}
 		}
 		if (insurancePlan.getPlanType() == PlanType.valueOf("INDIVIDUAL")) {
-			if (insurancePlan.getMaximumMemberAllowed() != 1 && insurancePlan.getMinimumMeberAllowed() != 1) {
-				context.addMessage("companyForm:maximumMemberAllowed",
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "MUST CHOSSE GENDER", null));
-				logger.info("genderValidation fails ");
-				return false;
+			if (insurancePlan.getMaximumMemberAllowed() != 1) {
+				context.addMessage("companyForm:maximumMemberAllowed", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Only One member should Allowed in individual", null));
+				logger.info("only one member allowed in individual in individual Type");
+				isValid = false;
+			}
+			if (insurancePlan.getMinimumMeberAllowed() != 1) {
+				context.addMessage("companyForm:minimumMeberAllowed", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Only One member should Allowed in individual", null));
+				logger.info("only one member allowed in individual in individual Type");
+				isValid = false;
 			}
 		}
-		return true;
+		return isValid;
 	}
 
 }
