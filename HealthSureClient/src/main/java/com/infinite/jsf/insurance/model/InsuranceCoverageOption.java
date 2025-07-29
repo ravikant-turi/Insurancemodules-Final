@@ -20,7 +20,7 @@ public class InsuranceCoverageOption {
 
 	private double coverageAmount;
 
-	private CoveragePlanStatus status=CoveragePlanStatus.INACTIVE;
+	private CoveragePlanStatus status;
 
 	
 

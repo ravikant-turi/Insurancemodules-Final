@@ -18,6 +18,8 @@
 package com.infinite.jsf.insurance.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -30,9 +32,12 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
+import org.apache.log4j.Logger;
+
 import com.infinite.jsf.insurance.dao.InsuranceCoverageOptionDao;
 import com.infinite.jsf.insurance.dao.InsurancePlanDao;
 import com.infinite.jsf.insurance.dao.MemberPlanRuleDao;
+import com.infinite.jsf.insurance.daoImpl.InsuranceCompanyDaoImpl;
 import com.infinite.jsf.insurance.daoImpl.InsuranceCoverageOptionDaoImpl;
 import com.infinite.jsf.insurance.daoImpl.InsurancePlanDaoImpl;
 import com.infinite.jsf.insurance.model.CoveragePlanStatus;
@@ -61,9 +66,13 @@ public class CreateInsuranceController {
 	private List<MemberPlanRule> members;
 	private List<InsurancePlan> planList;
 	private Map<String, Boolean> relationMap = new HashMap<>();
-	List<String> selectedRelations;
-
+	List<String> selectedRelations = new ArrayList<String>();
+	private boolean isSilver = true;
+	private boolean isGold = false;
+	private boolean isPlatinum = false;
+	private String individualMemberGender;
 	CreateInsuranceMessageConstants validationMessages = new CreateInsuranceMessageConstants();
+	private static final Logger logger = Logger.getLogger(InsuranceCompanyDaoImpl.class);
 
 	// =======================
 
@@ -116,47 +125,46 @@ public class CreateInsuranceController {
 	private boolean sortAscending = true;
 
 	public void sortBy(String field) {
-	    if (sortField.equals(field)) {
-	        sortAscending = !sortAscending;
-	    } else {
-	        sortField = field;
-	        sortAscending = true;
-	    }
+		if (sortField.equals(field)) {
+			sortAscending = !sortAscending;
+		} else {
+			sortField = field;
+			sortAscending = true;
+		}
 
-	    Comparator<InsurancePlan> comparator = null;
+		Comparator<InsurancePlan> comparator = null;
 
-	    switch (field) {
-	        case "planName": // Integer
-	            comparator = Comparator.comparing(InsurancePlan::getPlanName);
-	            break;
-	        case "planType": // Enum
-	            comparator = Comparator.comparing(InsurancePlan::getPlanType);
-	            break;
-	        case "waitingPeriod": // Integer
-	            comparator = Comparator.comparing(InsurancePlan::getWaitingPeriod);
-	            break;
-	        case "expireDate": // Date
-	            comparator = Comparator.comparing(InsurancePlan::getExpireDate);
-	            break;
-	        case "activeOn": // Date
-	            comparator = Comparator.comparing(InsurancePlan::getActiveOn);
-	            break;
-	        case "maximumMemberAllowed": // Integer
-	            comparator = Comparator.comparing(InsurancePlan::getMaximumMemberAllowed);
-	            break;
-	        default: // planId (Integer)
-	            comparator = Comparator.comparing(InsurancePlan::getPlanId);
-	            break;
-	    }
+		switch (field) {
+		case "planName": // Integer
+			comparator = Comparator.comparing(InsurancePlan::getPlanName);
+			break;
+		case "planType": // Enum
+			comparator = Comparator.comparing(InsurancePlan::getPlanType);
+			break;
+		case "waitingPeriod": // Integer
+			comparator = Comparator.comparing(InsurancePlan::getWaitingPeriod);
+			break;
+		case "expireDate": // Date
+			comparator = Comparator.comparing(InsurancePlan::getExpireDate);
+			break;
+		case "activeOn": // Date
+			comparator = Comparator.comparing(InsurancePlan::getActiveOn);
+			break;
+		case "maximumMemberAllowed": // Integer
+			comparator = Comparator.comparing(InsurancePlan::getMaximumMemberAllowed);
+			break;
+		default: // planId (Integer)
+			comparator = Comparator.comparing(InsurancePlan::getPlanId);
+			break;
+		}
 
-	    if (comparator != null) {
-	        if (!sortAscending) {
-	            comparator = comparator.reversed();
-	        }
-	        planList.sort(comparator);
-	    }
+		if (comparator != null) {
+			if (!sortAscending) {
+				comparator = comparator.reversed();
+			}
+			planList.sort(comparator);
+		}
 	}
-
 
 	// ==========================
 	/**
@@ -180,110 +188,39 @@ public class CreateInsuranceController {
 	 *
 	 * @return Navigation outcome or status string indicating success or failure.
 	 */
-	public String addInsurancePlanWithCoveragePlan() {
-		// Implementation goes here
-
-		insurancePlan.setInsuranceCompany(insuranceCompany);
-
-		if (insurancePlan.getActiveOn() != null) {
-			insurancePlan.setExpireDate(calculateExpiryDate(insurancePlan.getActiveOn(), yearsToAdd));
-		}
-		insurancePlan.setActiveOn(new Date());
-
-		if (validateInsurancePlanWithFacesMessage(insurancePlan) || validateInsurancePlanWithFacesMessage(insurancePlan)
-				|| validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1)
-				|| validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)
-				|| validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)
-				|| validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)) {
-
-			if (insurancePlan != null && validateInsurancePlanWithFacesMessage(insurancePlan)) {
-				if (validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)) {
-
-					if (coverageOption1 != null || coverageOption2 != null || coverageOption3 != null) {
-						coverageOption1.setInsurancePlan(insurancePlan);
-						coverageOption2.setInsurancePlan(insurancePlan);
-						coverageOption3.setInsurancePlan(insurancePlan);
-
-						String planId = insurancplanDao.addInsurancePlan(insurancePlan);
-						insurancePlan.setPlanId(planId);
-						for (String relations : selectedRelations) {
-							MemberPlanRule member = new MemberPlanRule();
-							member.setInsurancePlan(insurancePlan);
-							member.setRelation(Relation.valueOf(relations));
-							if (relations == "SON1" || relations == "SON2" || relations == "FATHER"
-									|| relations == "HUSBAND") {
-								member.setGender(Gender.MALE);
-							} else {
-								member.setGender(Gender.FEMALE);
-
-							}
-
-							memberPlanRuleDao.addMember(member);
-						}
-
-						if (coverageOption1 != null
-								&& validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1)) {
-							insuranceCoverageOptionDao.addCoveragePlan(coverageOption1);
-						}
-						if (coverageOption2 != null
-								&& validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)) {
-							insuranceCoverageOptionDao.addCoveragePlan(coverageOption2);
-
-						}
-						if (coverageOption3 != null
-								&& validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)) {
-							insuranceCoverageOptionDao.addCoveragePlan(coverageOption3);
-
-						}
-					} else {
-						return null;
-					}
-				} else {
-					return null;
-				}
-
-			} else {
-				return null;
-			}
-
-		} else {
-
-			return null;
-		}
-
-		return "AInsuranceAdminDashBoard.jsp";
-	}
-
-	/**
-	 * Adds a new insurance plan along with predefined coverage options: Silver,
-	 * Gold, and Platinum. This method is responsible for creating the base
-	 * insurance plan and associating it with standard coverage tiers, each with its
-	 * own premium and coverage amount.
-	 *
-	 * @return Navigation outcome or status string indicating success or failure.
-	 */
 	public String addSilverOnlyMendatory() {
 		insurancePlan.setInsuranceCompany(insuranceCompany);
-
 		if (insurancePlan.getActiveOn() != null) {
 			insurancePlan.setExpireDate(calculateExpiryDate(insurancePlan.getActiveOn(), yearsToAdd));
 		}
-		insurancePlan.setActiveOn(new Date());
+		insurancePlan.setCreatedOn(new Date());
+		coverageOption1.setInsurancePlan(insurancePlan);
 
 		System.out.println(insurancePlan);
 		System.out.println(coverageOption1);
 		System.out.println(coverageOption2);
 		System.out.println(coverageOption3);
+		System.out.println("good to go");
 		// silver(coverage1) is mandatory
-		if ((validateInsurancePlanWithFacesMessage(insurancePlan)
-				|| validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1))
-				&& (coverageOption2 != null && validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2))
-				&& (coverageOption3 != null && validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3))) {
+		if (isSilver && validateInsurancePlanWithFacesMessage(insurancePlan)
+				&& validateInsuranceCoverageOptionWithFacesMessage1(coverageOption1)
+				&& validateInsuranceMeberRelationsWithFacesMessage(insurancePlan)) {
 
-			if (insurancePlan != null && coverageOption1 != null) {
-				coverageOption1.setInsurancePlan(insurancePlan);
-				insurancplanDao.addInsurancePlan(insurancePlan);
-				insuranceCoverageOptionDao.addCoveragePlan(coverageOption1);
+			System.out.println("---------we are inside the validation check===");
+			insurancplanDao.addInsurancePlan(insurancePlan);
+			coverageOption1.setInsurancePlan(insurancePlan);
+			insuranceCoverageOptionDao.addCoveragePlan(coverageOption1);
+
+			if (insurancePlan.getPlanType() == PlanType.INDIVIDUAL) {
+				logger.info("we are inside individual type to make member object");
+				MemberPlanRule member = new MemberPlanRule();
+				member.setInsurancePlan(insurancePlan);
+				member.setRelation(Relation.INDIVIDUAL);
+				member.setGender(Gender.valueOf(individualMemberGender));
+				memberPlanRuleDao.addMember(member);
+
+			} else {
+
 				for (String relations : selectedRelations) {
 					MemberPlanRule member = new MemberPlanRule();
 					member.setInsurancePlan(insurancePlan);
@@ -292,27 +229,27 @@ public class CreateInsuranceController {
 						member.setGender(Gender.MALE);
 					} else {
 						member.setGender(Gender.FEMALE);
-
 					}
-
 					memberPlanRuleDao.addMember(member);
 				}
 			}
-			if (insurancePlan != null && coverageOption2 != null
-					&& validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)) {
-				coverageOption2.setInsurancePlan(insurancePlan);
-				insuranceCoverageOptionDao.addCoveragePlan(coverageOption2);
-			}
-			if (insurancePlan != null && coverageOption1 != null
-					&& validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)) {
-				coverageOption3.setInsurancePlan(insurancePlan);
-				insuranceCoverageOptionDao.addCoveragePlan(coverageOption3);
-			}
+		} else {
 
-			return "AInsuranceAdminDashBoard.jsp";
-
+			System.out.println("=======validation fails==========");
+			return null;
 		}
-		return null;
+		if (isSilver && isGold && validateInsurancePlanWithFacesMessage(insurancePlan)
+				&& validateInsuranceCoverageOptionWithFacesMessage2(coverageOption2)) {
+			coverageOption3.setInsurancePlan(insurancePlan);
+			insuranceCoverageOptionDao.addCoveragePlan(coverageOption2);
+		}
+		if (isSilver && isPlatinum && validateInsurancePlanWithFacesMessage(insurancePlan)
+				&& validateInsuranceCoverageOptionWithFacesMessage3(coverageOption3)) {
+			coverageOption3.setInsurancePlan(insurancePlan);
+			insuranceCoverageOptionDao.addCoveragePlan(coverageOption3);
+		}
+
+		return "AInsuranceAdminDashBoard.jsp";
 	}
 
 	/**
@@ -338,7 +275,7 @@ public class CreateInsuranceController {
 			} else if (coverageOption1 != null && coverageOption2 == null) {
 
 				coverageOption2 = planwithCovrageDetailsList.get(i);
-			} else {
+			} else if (coverageOption3 == null && coverageOption1 != null && coverageOption2 != null) {
 
 				coverageOption3 = planwithCovrageDetailsList.get(i);
 			}
@@ -528,6 +465,10 @@ public class CreateInsuranceController {
 		this.yearsToAdd = yearsToAdd;
 	}
 
+	public void setSilver(boolean isSilver) {
+		this.isSilver = isSilver;
+	}
+
 	public List<MemberPlanRule> getMembers() {
 		return members;
 	}
@@ -584,6 +525,50 @@ public class CreateInsuranceController {
 		this.currentPage = currentPage;
 	}
 
+	public String getIndividualMemberGender() {
+		return individualMemberGender;
+	}
+
+	public void setIndividualMemberGender(String individualMemberGender) {
+		this.individualMemberGender = individualMemberGender;
+	}
+
+	public boolean isSilver() {
+		return isSilver;
+	}
+
+	public boolean isGold() {
+		return isGold;
+	}
+
+	public void setGold(boolean isGold) {
+		this.isGold = isGold;
+	}
+
+	public boolean isPlatinum() {
+		return isPlatinum;
+	}
+
+	public void setPlatinum(boolean isPlatinum) {
+		this.isPlatinum = isPlatinum;
+	}
+
+	public String getSortField() {
+		return sortField;
+	}
+
+	public void setSortField(String sortField) {
+		this.sortField = sortField;
+	}
+
+	public boolean isSortAscending() {
+		return sortAscending;
+	}
+
+	public void setSortAscending(boolean sortAscending) {
+		this.sortAscending = sortAscending;
+	}
+
 	@PostConstruct
 	public void init() {
 
@@ -596,6 +581,7 @@ public class CreateInsuranceController {
 		relationMap.put("HUSBAND", true);
 		relationMap.put("WIFE", true);
 		relationMap.put("SELF", false);
+		relationMap.put("INDIVIDUAL", false);
 //dynamically update the COVERAGEPLAN STATUS : ACTIVE OR INACTIVE
 		planwithCovrageDetailsList = insuranceCoverageOptionDao.findAllInsuranceCoverageOptions();
 		for (InsuranceCoverageOption options : planwithCovrageDetailsList) {
@@ -652,7 +638,8 @@ public class CreateInsuranceController {
 			context.addMessage("companyForm:planName",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_NAME_TOO_SHORT, null));
 			isValid = false;
-		} else if (!plan.getPlanName().matches("^[A-Za-z]+$")) {
+		} else if (!plan.getPlanName().matches("^[A-Za-z\\s]+$")) {
+
 			context.addMessage("companyForm:planName",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.PLAN_NAME_INVALID, null));
 			isValid = false;
@@ -675,7 +662,7 @@ public class CreateInsuranceController {
 			context.addMessage("companyForm:description",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DESCRIPTION_TOO_SHORT, null));
 			isValid = false;
-		} else if (!plan.getDescription().matches("^[A-Za-z]+$")) {
+		} else if (!plan.getDescription().matches("^[A-Za-z\\s]+$")) {
 			context.addMessage("companyForm:description",
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, validationMessages.DESCRIPTION_INVALID, null));
 			isValid = false;
@@ -907,11 +894,37 @@ public class CreateInsuranceController {
 
 	public boolean validateInsuranceMeberRelationsWithFacesMessage(InsurancePlan insurancePlan) {
 		FacesContext context = FacesContext.getCurrentInstance();
+		logger.info("we inside the member validation");
+		logger.info("insurancePlanType : " + insurancePlan.getPlanType());
+
+		// Ensure SON1 is true if SON2 is true and SON1 is false
+		if (Boolean.TRUE.equals(relationMap.get("SON2")) && !Boolean.TRUE.equals(relationMap.get("SON1"))) {
+			relationMap.put("SON1", true);
+			relationMap.put("SON2", false); // Optional: make SON2 false if only one should be selected
+		}
+
+		// Ensure DAUGHTER1 is true if DAUGHTER2 is true and DAUGHTER1 is false
+		if (Boolean.TRUE.equals(relationMap.get("DAUGHTER2")) && !Boolean.TRUE.equals(relationMap.get("DAUGHTER1"))) {
+			relationMap.put("DAUGHTER1", true);
+			relationMap.put("DAUGHTER2", false); // Optional
+		}
 
 		selectedRelations = relationMap.entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey)
 				.collect(Collectors.toList());
 		System.out.println(selectedRelations);
 
+		if (insurancePlan.getPlanType() == PlanType.FAMILY) {
+			List<String> requiredRelations = Arrays.asList("FATHER", "MOTHER", "HUSBAND", "WIFE");
+
+			boolean hasRequiredRelation = selectedRelations.stream().anyMatch(requiredRelations::contains);
+
+			if (!hasRequiredRelation) {
+				context.addMessage("companyForm:memberValidation", new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"For FAMILY plan, at least one member must be Father, Mother, Husband, or Wife.", null));
+
+				return false;
+			}
+		}
 		if (insurancePlan.getPlanType() == PlanType.valueOf("FAMILY")) {
 			if (selectedRelations.size() < 2) {
 				context.addMessage("companyForm:memberValidation",
@@ -920,10 +933,29 @@ public class CreateInsuranceController {
 			}
 		}
 
-		else if (selectedRelations.size() < 0 && selectedRelations.size() > 1) {
-			context.addMessage("companyForm:memberValidation",
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "ONLY one relation is allowed", null));
-			return false;
+		if (insurancePlan.getPlanType() == PlanType.valueOf("INDIVIDUAL")) {
+			logger.info("we are inside individual Type");
+			logger.info("and gender is: " + individualMemberGender);
+			relationMap.put("SON1", false);
+			relationMap.put("SON2", false);
+			relationMap.put("DAUGHTER1", false);
+			relationMap.put("DAUGHTER2", false);
+			relationMap.put("FATHER", false);
+			relationMap.put("MOTHER", false);
+			relationMap.put("HUSBAND", false);
+			relationMap.put("WIFE", false);
+			relationMap.put("SELF", false);
+			relationMap.put("INDIVIDUAL", true);
+			selectedRelations = relationMap.entrySet().stream().filter(Map.Entry::getValue).map(Map.Entry::getKey)
+					.collect(Collectors.toList());
+			System.out.println(selectedRelations);
+			if (individualMemberGender == null) {
+				
+				context.addMessage("companyForm:individualMemberGender",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "MUST CHOSSE GENDER", null));
+				logger.info("genderValidation fails ");
+				return false;
+			}
 		}
 		return true;
 	}

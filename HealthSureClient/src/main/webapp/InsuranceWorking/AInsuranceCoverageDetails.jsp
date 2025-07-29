@@ -289,7 +289,11 @@ h\:outputText {
 							Wife</label>
 					</div>
 
-
+<div style="flex: 1; min-width: 120px;">
+						<label><h:selectBooleanCheckbox
+								value="#{createInsuranceController.relationMap['INDIVIDUAL']}" />
+							INDIVIDUAL</label>
+					</div>
 				</div>
 				<br />
 			</div>

@@ -105,6 +105,19 @@ table, th, td {
 	border: none;
 	cursor: pointer;
 }
+.pagination{
+    background-color: gray;
+	color: white;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 14px;
+	font-weight:12px;
+	width: 90px; /* Fixed width for uniform size */
+	text-align: center;
+	height: 35px;
+}
 </style>
 </head>
 <body>
@@ -251,14 +264,14 @@ table, th, td {
 	<!-- ✅ Pagination Controls -->
 	<div style="text-align: center; margin: 20px;">
 		<h:form>
-			<h:commandButton value="Previous"
+			<h:commandButton value="Previous" styleClass="pagination"
 				action="#{createInsuranceController.previousPage}"
 				disabled="#{createInsuranceController.currentPage lt 1}" />
 
 			<h:outputText
 				value=" Page #{createInsuranceController.currentPage + 1} of #{createInsuranceController.totalPages} " />
 
-			<h:commandButton value="Next"
+			<h:commandButton value="Next" styleClass="pagination"
 				action="#{createInsuranceController.nextPage}"
 				disabled="#{!createInsuranceController.next}" />
 		</h:form>

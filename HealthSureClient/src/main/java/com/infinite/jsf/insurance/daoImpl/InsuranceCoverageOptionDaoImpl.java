@@ -19,6 +19,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import com.infinite.jsf.insurance.dao.InsuranceCoverageOptionDao;
+import com.infinite.jsf.insurance.model.CoveragePlanStatus;
 import com.infinite.jsf.insurance.model.InsuranceCoverageOption;
 import com.infinite.jsf.util.SessionHelper;
 
@@ -43,6 +44,7 @@ public class InsuranceCoverageOptionDaoImpl implements InsuranceCoverageOptionDa
         Transaction trans = null;
         String coverageId = generateNextInsuranceCoverageOptionId();
         coverageOption.setCoverageId(coverageId);
+        coverageOption.setStatus(CoveragePlanStatus.INACTIVE);
         logger.info("Generated Coverage ID: " + coverageId);
 
         try {
