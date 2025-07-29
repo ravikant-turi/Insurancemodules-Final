@@ -950,8 +950,16 @@ public class CreateInsuranceController {
 					.collect(Collectors.toList());
 			System.out.println(selectedRelations);
 			if (individualMemberGender == null) {
-				
+
 				context.addMessage("companyForm:individualMemberGender",
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "MUST CHOSSE GENDER", null));
+				logger.info("genderValidation fails ");
+				return false;
+			}
+		}
+		if (insurancePlan.getPlanType() == PlanType.valueOf("INDIVIDUAL")) {
+			if (insurancePlan.getMaximumMemberAllowed() != 1 && insurancePlan.getMinimumMeberAllowed() != 1) {
+				context.addMessage("companyForm:maximumMemberAllowed",
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "MUST CHOSSE GENDER", null));
 				logger.info("genderValidation fails ");
 				return false;

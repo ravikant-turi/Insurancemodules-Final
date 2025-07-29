@@ -232,7 +232,9 @@ form {
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Max Age: " />
 						<h:inputText id="maxAge"
-							value="#{createInsuranceController.insurancePlan.maxEntryAge}" />
+							value="#{createInsuranceController.insurancePlan.maxEntryAge}">
+							<f:convertNumber type="number" />
+						</h:inputText>
 						<h:message for="maxAge" styleClass="error" />
 						<br />
 
@@ -241,7 +243,10 @@ form {
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Min Age: " />
 						<h:inputText id="minAge"
-							value="#{createInsuranceController.insurancePlan.minEntryAge}" />
+							value="#{createInsuranceController.insurancePlan.minEntryAge}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="minAge" styleClass="error" />
 						<br />
 
@@ -265,7 +270,10 @@ form {
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Available Amount: " />
 						<h:inputText id="cover"
-							value="#{createInsuranceController.insurancePlan.availableCoverAmounts}" />
+							value="#{createInsuranceController.insurancePlan.availableCoverAmounts}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="cover" styleClass="error" />
 						<br />
 
@@ -274,7 +282,10 @@ form {
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>Waiting Period: " />
 						<h:inputText id="waitingPeriod"
-							value="#{createInsuranceController.insurancePlan.waitingPeriod}" />
+							value="#{createInsuranceController.insurancePlan.waitingPeriod}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="waitingPeriod" styleClass="error" />
 						<br />
 
@@ -297,7 +308,10 @@ form {
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>MaximumMemberAllowed: " />
 						<h:inputText id="maximumMemberAllowed"
-							value="#{createInsuranceController.insurancePlan.maximumMemberAllowed}" />
+							value="#{createInsuranceController.insurancePlan.maximumMemberAllowed}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="maximumMemberAllowed" styleClass="error" />
 						<br />
 
@@ -306,7 +320,10 @@ form {
 						<h:outputLabel escape="false"
 							value="<span style='color:red'>*</span>minimumMeberAllowed: " />
 						<h:inputText id="minimumMeberAllowed"
-							value="#{createInsuranceController.insurancePlan.minimumMeberAllowed}" />
+							value="#{createInsuranceController.insurancePlan.minimumMeberAllowed}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="minimumMeberAllowed" styleClass="error" />
 						<br />
 
@@ -339,6 +356,7 @@ form {
 							<f:selectItem itemLabel="5 Years" itemValue="5" />
 							<f:selectItem itemLabel="10 Years" itemValue="10" />
 							<f:selectItem itemLabel="12 Years" itemValue="12" />
+
 						</h:selectOneMenu>
 						<br />
 						<h:message for="yearsToAdd" styleClass="error" />
@@ -414,12 +432,14 @@ form {
 					<h3>
 						<h:outputLabel>Individual  </h:outputLabel>
 					</h3>
-					<label>Select Gender</label>
-					<h:selectOneRadio id="individualMemberGender"
-						value="#{createInsuranceController.individualMemberGender}">
-						<f:selectItem itemLabel="Male" itemValue="MALE" />
-						<f:selectItem itemLabel="Female" itemValue="FEMALE" />
-					</h:selectOneRadio>
+					<div style="display: flex">
+						<label>Select Gender</label>
+						<h:selectOneRadio id="individualMemberGender"
+							value="#{createInsuranceController.individualMemberGender}">
+							<f:selectItem itemLabel="Male" itemValue="MALE" />
+							<f:selectItem itemLabel="Female" itemValue="FEMALE" />
+						</h:selectOneRadio>
+					</div>
 					<h:message for="individualMemberGender" styleClass="error" />
 
 				</h:panelGroup>
@@ -474,12 +494,18 @@ form {
 						<h3>Add Gold Option</h3>
 						<label>Premium Amount:</label>
 						<h:inputText id="PremiumAmount2"
-							value="#{createInsuranceController.coverageOption2.premiumAmount}" />
+							value="#{createInsuranceController.coverageOption2.premiumAmount}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="PremiumAmount2" styleClass="error" />
 
 						<label>Coverage Amount:</label>
 						<h:inputText id="CoverageAmount2"
-							value="#{createInsuranceController.coverageOption2.coverageAmount}" />
+							value="#{createInsuranceController.coverageOption2.coverageAmount}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="CoverageAmount2" styleClass="error" />
 						<h:outputLabel escape="false"
 							value=" <span style='color:red'>*</span>CoverageType " />
@@ -504,12 +530,18 @@ form {
 						<h3>Add Platinum Option</h3>
 						<label>Premium Amount:</label>
 						<h:inputText id="PremiumAmount3"
-							value="#{createInsuranceController.coverageOption3.premiumAmount}" />
+							value="#{createInsuranceController.coverageOption3.premiumAmount}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="PremiumAmount3" styleClass="error" />
 
 						<label>Coverage Amount:</label>
 						<h:inputText id="CoverageAmount3"
-							value="#{createInsuranceController.coverageOption3.coverageAmount}" />
+							value="#{createInsuranceController.coverageOption3.coverageAmount}">
+							<f:convertNumber type="number" />
+
+						</h:inputText>
 						<h:message for="CoverageAmount3" styleClass="error" />
 						<h:outputLabel escape="false"
 							value=" <span style='color:red'>*</span>CoverageType " />
